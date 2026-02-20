@@ -219,3 +219,33 @@ def clusters_to_ticket_payloads(
         )
         for c in clusters
     ]
+
+
+def apply_tier_overrides(
+    tickets: list[DevTicketPayload],
+    clusters: list[VulnerabilityCluster],
+    overrides: dict[str, str],
+) -> list[DevTicketPayload]:
+    """
+    Apply consultant tier overrides to ticket payloads.
+
+    For each cluster index where vulnerability_id is in overrides, replace the
+    ticket's risk_tier_label and title with the override value. Unknown
+    vulnerability_ids in overrides are ignored (no-op). Returns a new list.
+    """
+    if not overrides or len(tickets) != len(clusters):
+        return tickets
+    result: list[DevTicketPayload] = []
+    for i, (ticket, cluster) in enumerate(zip(tickets, clusters)):
+        vuln_id = cluster.vulnerability_id
+        if vuln_id in overrides:
+            new_label = overrides[vuln_id]
+            new_title = _build_title(new_label, cluster)
+            result.append(
+                ticket.model_copy(
+                    update={"risk_tier_label": new_label, "title": new_title}
+                )
+            )
+        else:
+            result.append(ticket)
+    return result

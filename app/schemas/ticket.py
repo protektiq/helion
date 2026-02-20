@@ -1,8 +1,11 @@
 """Pydantic schemas for Jira-ready ticket payloads produced from vulnerability clusters."""
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.schemas.findings import VulnerabilityCluster
+
+# Allowed risk tier labels for manual override (case-sensitive, match jira_export and ticket_generator).
+TIER_OVERRIDE_VALUES: frozenset[str] = frozenset({"Tier 1", "Tier 2", "Tier 3"})
 
 # Jira-friendly limits: title 255, description typically 32k; we cap for safety and abuse prevention.
 TITLE_MAX_LENGTH = 255
@@ -74,6 +77,24 @@ class TicketsRequest(BaseModel):
         default=False,
         description="If true, run reasoning and risk tier assignment and attach to each ticket.",
     )
+    tier_overrides: dict[str, str] | None = Field(
+        default=None,
+        description="Optional consultant override: vulnerability_id -> Tier 1 | Tier 2 | Tier 3.",
+    )
+
+    @field_validator("tier_overrides")
+    @classmethod
+    def validate_tier_overrides(cls, v: dict[str, str] | None) -> dict[str, str] | None:
+        if v is None or len(v) == 0:
+            return v
+        for key, val in v.items():
+            if not key or not isinstance(key, str) or not key.strip():
+                raise ValueError("tier_overrides keys must be non-empty strings (vulnerability_id).")
+            if not isinstance(val, str) or val not in TIER_OVERRIDE_VALUES:
+                raise ValueError(
+                    f"tier_overrides values must be one of {sorted(TIER_OVERRIDE_VALUES)}, got {val!r}."
+                )
+        return v
 
 
 class TicketsResponse(BaseModel):

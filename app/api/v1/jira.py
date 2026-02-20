@@ -20,6 +20,7 @@ from app.services.jira_export import JiraApiError, JiraNotConfiguredError, expor
 from app.services.reasoning import ReasoningServiceError, run_reasoning
 from app.services.risk_tier import assign_risk_tiers
 from app.services.ticket_generator import (
+    apply_tier_overrides,
     clusters_to_ticket_payloads,
     resolve_affected_services,
 )
@@ -89,6 +90,8 @@ async def post_jira_export(
         tier_by_id=tier_by_id if tier_by_id else None,
         affected_services_by_id=affected_services_by_id if affected_services_by_id else None,
     )
+    if body.tier_overrides:
+        tickets = apply_tier_overrides(tickets, clusters, body.tier_overrides)
 
     if not tickets:
         return JiraExportResponse(epics={}, issues=[], errors=[])
