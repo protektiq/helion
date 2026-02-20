@@ -11,7 +11,8 @@ from app.core.database import get_db
 from app.models import Finding
 from app.schemas.findings import RawFinding
 from app.schemas.upload import UploadResponse
-from app.services.normalize import normalize_finding
+from app.services.normalize import deduplicate_finding_pairs, normalize_finding
+from app.services.scanner_mappers import normalize_shape_to_rawfinding
 
 router = APIRouter()
 
@@ -55,7 +56,8 @@ def _parse_and_validate_findings(data: list | dict) -> list[RawFinding]:
                 detail=f"Finding at index {i} must be an object.",
             )
         try:
-            findings.append(RawFinding.model_validate(raw_item))
+            shaped = normalize_shape_to_rawfinding(raw_item)
+            findings.append(RawFinding.model_validate(shaped))
         except ValidationError as e:
             raise HTTPException(status_code=422, detail=e.errors()) from e
     return findings
@@ -129,9 +131,11 @@ async def upload_findings(
     if not raw_list:
         return UploadResponse(accepted=0, ids=[])
 
+    pairs = [(raw, normalize_finding(raw)) for raw in raw_list]
+    deduped = deduplicate_finding_pairs(pairs)
+
     ids: list[int] = []
-    for raw in raw_list:
-        normalized = normalize_finding(raw)
+    for raw, normalized in deduped:
         row = Finding(
             vulnerability_id=normalized.vulnerability_id,
             severity=normalized.severity,

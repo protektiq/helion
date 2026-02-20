@@ -75,12 +75,7 @@ class RawFinding(BaseModel):
         description="Original scanner payload for traceability.",
     )
 
-    @field_validator("severity")
-    @classmethod
-    def validate_severity_if_present(cls, v: str | None) -> str | None:
-        if v is None:
-            return None
-        return _validate_severity(v)
+    # Severity is not strictly validated here; the normalizer maps aliases/numeric/CVSS to canonical levels.
 
     @field_validator("cvss_score")
     @classmethod
