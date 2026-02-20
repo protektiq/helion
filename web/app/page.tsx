@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 
 const DEFAULT_API_URL = "http://localhost:8000";
 
@@ -108,6 +109,15 @@ export default function UploadPage() {
       <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>
         Upload findings (JSON)
       </h1>
+      <nav style={{ marginBottom: "1rem" }}>
+        <Link
+          href="/results"
+          style={{ color: "#2563eb", textDecoration: "underline" }}
+          aria-label="Go to results summary"
+        >
+          Results summary
+        </Link>
+      </nav>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
           <label htmlFor="file-input" style={{ display: "block", marginBottom: "0.5rem" }}>

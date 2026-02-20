@@ -10,7 +10,7 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
 - `app/models/` – SQLAlchemy models (Base, Finding)
 - `app/schemas/` – Pydantic request/response schemas
 - `app/services/` – business logic (clustering, normalization, reasoning)
-- `web/` – minimal Next.js upload UI (single page: file input, submit, status)
+- `web/` – minimal Next.js UI: upload page (file input, submit, status) and results summary page (raw/cluster counts, severity breakdown, Export to Jira)
 
 ## Setup
 
@@ -87,7 +87,10 @@ Response (201): `{ "accepted": N, "ids": [ ... ] }` with the count and database 
 
 ### Upload UI (frontend)
 
-A minimal Next.js upload page is in the `web/` folder. It lets you select a `.json` file and submit it to the upload API.
+A minimal Next.js app in the `web/` folder provides:
+
+- **Upload page** (http://localhost:3000): Select a `.json` file and submit it to the upload API.
+- **Results summary** (http://localhost:3000/results): Shows raw findings count, cluster count, risk tier (severity) breakdown in a summary table, and an **Export to Jira** button that calls `POST /api/v1/jira/export` with current DB clusters. Jira env vars must be set for export to succeed.
 
 1. **Install dependencies** (from project root):
 
@@ -103,7 +106,7 @@ A minimal Next.js upload page is in the `web/` folder. It lets you select a `.js
    cd web && npm run dev
    ```
 
-   Open http://localhost:3000 (or the port Next.js prints). Select a JSON file and click Submit; the page shows uploading state and then the accepted count or any API error.
+   Open http://localhost:3000. Use the upload page to submit a JSON file; use **Results summary** to view counts and export to Jira.
 
 ## Reasoning (local LLM) and risk tiers
 
