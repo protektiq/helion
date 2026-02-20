@@ -90,17 +90,21 @@ flowchart LR
   Ollama[Ollama Llama3]
   Parse[Parse JSON]
   Resp[ReasoningResponse]
+  TierAssign[Risk tier assignment]
+  Enriched[Enriched response]
   Client -->|"clusters JSON or use_db"| POST
   POST --> Reason
   Reason --> Prompt
   Prompt --> Ollama
   Ollama --> Parse
   Parse --> Resp
-  Resp --> Client
+  Resp --> TierAssign
+  TierAssign -->|"deterministic overrides"| Enriched
+  Enriched --> Client
 ```
 
-- **POST /api/v1/reasoning**: Input is a list of `VulnerabilityCluster` in the request body, or `use_db: true` to load current clusters from the database (same as GET /clusters). The **ReasoningService** builds a prompt with the cluster data, sends it to the local LLM (Ollama with Llama 3) via `POST {OLLAMA_BASE_URL}/api/generate` with `format: "json"`. The model returns a single JSON object; the service parses it into **ReasoningResponse** (summary + cluster_notes with vulnerability_id, priority, reasoning) and returns it to the client.
-- **Backend usage**: Other code can call `run_reasoning(clusters, settings)` from `app.services.reasoning` with a list of `VulnerabilityCluster` and the app settings to get structured reasoning without going through the HTTP endpoint.
+- **POST /api/v1/reasoning**: Input is a list of `VulnerabilityCluster` in the request body, or `use_db: true` to load current clusters from the database (same as GET /clusters). The **ReasoningService** builds a prompt with the cluster data, sends it to the local LLM (Ollama with Llama 3) via `POST {OLLAMA_BASE_URL}/api/generate` with `format: "json"`. The model returns a single JSON object; the service parses it into **ReasoningResponse** (summary + cluster_notes with vulnerability_id, priority, reasoning). **Risk tier assignment** (in `app.services.risk_tier`) then runs deterministically on clusters + reasoning: override rules (e.g. CVSS > 9 → Tier 1 unless dev-only) produce Tier 1/2/3 per cluster; the response is enriched with `assigned_tier` and `override_applied` on each cluster note. Final tier is AI-assisted, not AI-dependent.
+- **Backend usage**: Other code can call `run_reasoning(clusters, settings)` from `app.services.reasoning` with a list of `VulnerabilityCluster` and the app settings to get structured reasoning without going through the HTTP endpoint. Use `assign_risk_tiers(clusters, reasoning_response=result, cluster_dev_only=...)` from `app.services.risk_tier` to compute tiers without the endpoint.
 
 ## Exploitability flow
 

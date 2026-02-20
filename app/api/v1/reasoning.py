@@ -1,4 +1,4 @@
-"""Reasoning endpoint: send vulnerability clusters to local LLM (Ollama) and return structured reasoning."""
+"""Reasoning endpoint: send vulnerability clusters to local LLM (Ollama) and return structured reasoning plus deterministic risk tiers."""
 
 from typing import Annotated
 
@@ -8,9 +8,10 @@ from sqlalchemy.orm import Session
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.models import Finding
-from app.schemas.reasoning import ReasoningRequest, ReasoningResponse
+from app.schemas.reasoning import ClusterNote, ReasoningRequest, ReasoningResponse
 from app.services.clustering import build_clusters
 from app.services.reasoning import ReasoningServiceError, run_reasoning
+from app.services.risk_tier import assign_risk_tiers
 
 router = APIRouter()
 
@@ -25,7 +26,9 @@ async def post_reasoning(
 
     Send a list of clusters in the request body, or set use_db=true to use current
     clusters from the database (same as GET /clusters). Returns a summary and
-    per-cluster notes (priority and reasoning) from the model.
+    per-cluster notes (priority and reasoning from the LLM). Assigned risk tiers
+    (Tier 1/2/3) are computed deterministically by override rules (e.g. CVSS > 9
+    → Tier 1 unless dev-only); final tier is AI-assisted, not AI-dependent.
     """
     settings = get_settings()
 
@@ -51,4 +54,21 @@ async def post_reasoning(
             raise HTTPException(status_code=502, detail=e.message) from e
         raise HTTPException(status_code=422, detail=e.message) from e
 
-    return result
+    # Deterministic risk tier assignment: overrides (e.g. CVSS > 9 → Tier 1) apply; LLM only informs.
+    tier_results = assign_risk_tiers(clusters, reasoning_response=result, cluster_dev_only=None)
+    tier_by_id = {r.vulnerability_id: r for r in tier_results}
+
+    enriched_notes: list[ClusterNote] = []
+    for note in result.cluster_notes:
+        tr = tier_by_id.get(note.vulnerability_id)
+        enriched_notes.append(
+            ClusterNote(
+                vulnerability_id=note.vulnerability_id,
+                priority=note.priority,
+                reasoning=note.reasoning,
+                assigned_tier=tr.assigned_tier if tr else None,
+                override_applied=tr.override_applied if tr else None,
+            )
+        )
+
+    return ReasoningResponse(summary=result.summary, cluster_notes=enriched_notes)

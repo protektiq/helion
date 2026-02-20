@@ -84,8 +84,8 @@ Response includes `status`, `environment`, and `database` (connected/disconnecte
 
 Response (201): `{ "accepted": N, "ids": [ ... ] }` with the count and database IDs of persisted findings.
 
-## Reasoning (local LLM)
+## Reasoning (local LLM) and risk tiers
 
 - **URL:** `POST http://localhost:8000/api/v1/reasoning`
 - **Body:** `{ "clusters": [ ... ] }` (list of VulnerabilityCluster) or `{ "use_db": true }` to use current clusters from the database.
-- **Response:** `{ "summary": "...", "cluster_notes": [ { "vulnerability_id", "priority", "reasoning" }, ... ] }` from the local LLM (Ollama / Llama 3). Requires Ollama running and the model pulled (e.g. `ollama pull llama3.2`).
+- **Response:** `{ "summary": "...", "cluster_notes": [ { "vulnerability_id", "priority", "reasoning", "assigned_tier", "override_applied" }, ... ] }`. The LLM (Ollama / Llama 3) provides `priority` and `reasoning`; **assigned risk tiers** (Tier 1/2/3) are computed deterministically by the backend (e.g. CVSS > 9 → Tier 1 unless dev-only). Final tier is AI-assisted, not AI-dependent. Requires Ollama running and the model pulled (e.g. `ollama pull llama3.2`).

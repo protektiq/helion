@@ -18,10 +18,16 @@ from app.schemas.exploitability import (
     ExploitabilityOutput,
     ExploitabilityRequest,
 )
+from app.schemas.risk_tier import (
+    ClusterRiskTierResult,
+    RiskTier,
+    RiskTierAssignmentInput,
+)
 
 __all__ = [
     "AdjustedRiskTier",
     "ClusterNote",
+    "ClusterRiskTierResult",
     "ExploitabilityOutput",
     "ExploitabilityRequest",
     "HealthResponse",
@@ -29,6 +35,8 @@ __all__ = [
     "RawFinding",
     "ReasoningRequest",
     "ReasoningResponse",
+    "RiskTier",
+    "RiskTierAssignmentInput",
     "SeverityLevel",
     "UploadResponse",
     "VulnerabilityCluster",
