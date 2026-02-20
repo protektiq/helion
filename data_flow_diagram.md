@@ -1,0 +1,26 @@
+# Helion data flow
+
+High-level flow of vulnerability finding data from scanners into normalized and clustered representations.
+
+## Finding schemas flow
+
+```mermaid
+flowchart LR
+  ScannerA[Scanner A]
+  ScannerB[Scanner B]
+  Raw[RawFinding]
+  Norm[NormalizedFinding]
+  Cluster[VulnerabilityCluster]
+  ScannerA --> Raw
+  ScannerB --> Raw
+  Raw --> Norm
+  Norm --> Cluster
+```
+
+- **RawFinding**: Scanner-agnostic ingestion; all fields optional so different scanners can be accepted. Optional `scanner_source` and `raw_payload` for traceability.
+- **NormalizedFinding**: Unified internal representation; same seven fields with strict types and validation regardless of scanner.
+- **VulnerabilityCluster**: One logical vulnerability (e.g. one CVE) grouped across multiple occurrences; canonical fields plus `finding_ids` referencing normalized findings.
+
+## Shared field set
+
+All three schemas use the same core fields: `vulnerability_id`, `severity`, `repo`, `file_path`, `dependency`, `cvss_score`, `description`.
