@@ -55,6 +55,8 @@ class Settings(BaseSettings):
     JWT_SECRET: SecretStr = SecretStr("change-me-in-production")
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRE_MINUTES: int = 60
+    # When False, get_current_user returns a synthetic user (no JWT required). Set to True in production.
+    AUTH_ENABLED: bool = False
 
     @field_validator("DATABASE_URL")
     @classmethod

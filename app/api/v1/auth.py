@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.security import (
     USERNAME_MAX_LEN,
@@ -73,11 +74,17 @@ def login(
     return TokenResponse(access_token=token, token_type="bearer")
 
 
+# Synthetic user used when AUTH_ENABLED is False (e.g. dev).
+_DEV_USER = CurrentUser(id=0, username="dev", role="admin")
+
+
 def get_current_user(
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)],
     db: Annotated[Session, Depends(get_db)],
 ) -> CurrentUser:
-    """Dependency: require valid Bearer JWT and return the current user. Raises 401 if missing or invalid."""
+    """Dependency: require valid Bearer JWT and return the current user. Raises 401 if missing or invalid. When AUTH_ENABLED is False, returns a synthetic dev user."""
+    if not settings.AUTH_ENABLED:
+        return _DEV_USER
     if credentials is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { getApiBaseUrl } from "@/lib/api";
+import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
 
 const SEVERITY_ORDER: readonly string[] = [
   "critical",
@@ -102,7 +102,9 @@ export default function ResultsSummaryPage() {
     setLoadStatus("loading");
     setLoadError(null);
     try {
-      const res = await fetch(`${baseUrl}/api/v1/clusters`);
+      const res = await fetch(`${baseUrl}/api/v1/clusters`, {
+        headers: getAuthHeaders(),
+      });
       if (!res.ok) {
         const contentType = res.headers.get("content-type") ?? "";
         let detail = res.statusText;
@@ -175,7 +177,7 @@ export default function ResultsSummaryPage() {
     try {
       const res = await fetch(`${baseUrl}/api/v1/jira/export`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
       const data: unknown = await res.json().catch(() => ({}));

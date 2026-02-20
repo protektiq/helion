@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { getApiBaseUrl } from "@/lib/api";
+import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
@@ -53,6 +53,7 @@ export default function UploadPage() {
       try {
         const res = await fetch(`${baseUrl}/api/v1/upload`, {
           method: "POST",
+          headers: getAuthHeaders(),
           body: formData,
         });
 
