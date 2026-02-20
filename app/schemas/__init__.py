@@ -23,6 +23,7 @@ from app.schemas.risk_tier import (
     RiskTier,
     RiskTierAssignmentInput,
 )
+from app.schemas.ticket import DevTicketPayload, TicketsRequest, TicketsResponse
 
 __all__ = [
     "AdjustedRiskTier",
@@ -37,7 +38,10 @@ __all__ = [
     "ReasoningResponse",
     "RiskTier",
     "RiskTierAssignmentInput",
+    "DevTicketPayload",
     "SeverityLevel",
+    "TicketsRequest",
+    "TicketsResponse",
     "UploadResponse",
     "VulnerabilityCluster",
 ]

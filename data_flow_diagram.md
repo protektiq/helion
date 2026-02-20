@@ -130,3 +130,23 @@ flowchart LR
 
 - **POST /api/v1/exploitability**: Accepts **ExploitabilityRequest** (vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags). The service builds a structured prompt from the template in `app.services.exploitability`, sends it to Ollama with `format: "json"`, parses and normalises the response (e.g. adjusted_risk_tier), validates it against **ExploitabilityOutput**, and returns `adjusted_risk_tier`, `reasoning`, and `recommended_action`. Deterministic output is encouraged via explicit schema in the prompt, Ollama JSON mode, and Pydantic validation (with optional normalisation of tier strings).
 - **Backend usage**: Call `run_exploitability_reasoning(vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags, settings)` from `app.services.exploitability` to get structured exploitability reasoning without using the HTTP endpoint.
+
+## Ticket generation flow
+
+```mermaid
+flowchart LR
+  Clusters[VulnerabilityClusters]
+  Reason[ReasoningResponse]
+  Tier[ClusterRiskTierResult list]
+  DB[(findings by finding_ids)]
+  Gen[Ticket generator]
+  Payloads[DevTicketPayload list]
+  Clusters --> Gen
+  Reason --> Gen
+  Tier --> Gen
+  DB -->|"affected_services when repo=multiple"| Gen
+  Gen --> Payloads
+```
+
+- **POST /api/v1/tickets**: Accepts **TicketsRequest** (`clusters`, `use_db`, `use_reasoning`). When `use_db` is true, clusters are loaded from the database (same as GET /clusters). When `use_reasoning` is true, the reasoning service and risk tier assignment run so each ticket gets LLM remediation and tier label. The **ticket generator** (`app.services.ticket_generator`) converts each cluster into a **DevTicketPayload** with title, description, affected_services, acceptance_criteria, recommended_remediation, and risk_tier_label. For clusters with `repo == "multiple"`, distinct repos are resolved from the findings table by `finding_ids` and passed as affected_services. Response is **TicketsResponse** (`tickets`: list of DevTicketPayload), Jira-ready for manual creation or downstream integration.
+- **Backend usage**: Call `cluster_to_ticket_payload(cluster, ...)` for a single cluster, or `clusters_to_ticket_payloads(clusters, notes_by_id=..., tier_by_id=..., affected_services_by_id=...)` for batch. Use `resolve_affected_services(session, finding_ids)` when `repo == "multiple"` to get distinct repo names from the DB.
