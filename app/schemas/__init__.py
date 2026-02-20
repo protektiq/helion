@@ -13,9 +13,17 @@ from app.schemas.reasoning import (
     ReasoningResponse,
 )
 from app.schemas.upload import UploadResponse
+from app.schemas.exploitability import (
+    AdjustedRiskTier,
+    ExploitabilityOutput,
+    ExploitabilityRequest,
+)
 
 __all__ = [
+    "AdjustedRiskTier",
     "ClusterNote",
+    "ExploitabilityOutput",
+    "ExploitabilityRequest",
     "HealthResponse",
     "NormalizedFinding",
     "RawFinding",

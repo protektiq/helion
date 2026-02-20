@@ -101,3 +101,28 @@ flowchart LR
 
 - **POST /api/v1/reasoning**: Input is a list of `VulnerabilityCluster` in the request body, or `use_db: true` to load current clusters from the database (same as GET /clusters). The **ReasoningService** builds a prompt with the cluster data, sends it to the local LLM (Ollama with Llama 3) via `POST {OLLAMA_BASE_URL}/api/generate` with `format: "json"`. The model returns a single JSON object; the service parses it into **ReasoningResponse** (summary + cluster_notes with vulnerability_id, priority, reasoning) and returns it to the client.
 - **Backend usage**: Other code can call `run_reasoning(clusters, settings)` from `app.services.reasoning` with a list of `VulnerabilityCluster` and the app settings to get structured reasoning without going through the HTTP endpoint.
+
+## Exploitability flow
+
+```mermaid
+flowchart LR
+  Client[Client]
+  POST[POST /api/v1/exploitability]
+  Req[ExploitabilityRequest]
+  Tmpl[Build prompt from template]
+  Ollama[Ollama format json]
+  Parse[Parse JSON]
+  Validate[ExploitabilityOutput]
+  Out[JSON response]
+  Client -->|"vulnerability_summary cvss_score repo_context dependency_type exposure_flags"| POST
+  POST --> Req
+  Req --> Tmpl
+  Tmpl --> Ollama
+  Ollama --> Parse
+  Parse --> Validate
+  Validate --> Out
+  Out --> Client
+```
+
+- **POST /api/v1/exploitability**: Accepts **ExploitabilityRequest** (vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags). The service builds a structured prompt from the template in `app.services.exploitability`, sends it to Ollama with `format: "json"`, parses and normalises the response (e.g. adjusted_risk_tier), validates it against **ExploitabilityOutput**, and returns `adjusted_risk_tier`, `reasoning`, and `recommended_action`. Deterministic output is encouraged via explicit schema in the prompt, Ollama JSON mode, and Pydantic validation (with optional normalisation of tier strings).
+- **Backend usage**: Call `run_exploitability_reasoning(vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags, settings)` from `app.services.exploitability` to get structured exploitability reasoning without using the HTTP endpoint.
