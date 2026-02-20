@@ -1,0 +1,22 @@
+[
+  {
+    "vulnerability_id":"CVE-2024-1111",
+    "severity":"critical",
+    "repo":"api",
+    "file_path":"src/main.py",
+    "dependency":"flask",
+    "cvss_score":9.8,
+    "description":"Critical example",
+    "scanner_source":"demo"
+  },
+  {
+    "vulnerability_id":"CVE-2024-2222",
+    "severity":"low",
+    "repo":"web",
+    "file_path":"src/ui.tsx",
+    "dependency":"react",
+    "cvss_score":3.1,
+    "description":"Low example",
+    "scanner_source":"demo"
+  }
+]

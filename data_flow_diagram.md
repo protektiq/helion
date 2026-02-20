@@ -2,6 +2,23 @@
 
 High-level flow of vulnerability finding data from scanners into normalized and clustered representations.
 
+## Upload flow
+
+```mermaid
+flowchart LR
+  Client[Client]
+  Upload[POST /api/v1/upload]
+  Validate[Validate RawFinding]
+  Normalize[Normalize to NormalizedFinding]
+  DB[(Postgres findings)]
+  Client -->|"JSON body or file"| Upload
+  Upload --> Validate
+  Validate --> Normalize
+  Normalize --> DB
+```
+
+- **POST /api/v1/upload**: Accepts SAST/SCA findings as `application/json` (single object or array) or as `multipart/form-data` with a `.json` file. Validates each item as RawFinding, normalizes to NormalizedFinding, and persists rows to the `findings` table.
+
 ## Finding schemas flow
 
 ```mermaid

@@ -6,6 +6,14 @@ from typing import Literal
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+# Allowed URL schemes for DATABASE_URL (module-level so validators can use it).
+VALID_DATABASE_URL_PREFIXES = (
+    "postgresql://",
+    "postgresql+psycopg2://",
+    "postgres://",
+    "postgres+psycopg2://",
+)
+
 
 class Settings(BaseSettings):
     """Validated application settings from env and optional .env file."""
@@ -29,8 +37,10 @@ class Settings(BaseSettings):
     def validate_database_url(cls, v: str) -> str:
         if not v or not v.strip():
             raise ValueError("DATABASE_URL must be set and non-empty")
-        if not v.startswith("postgresql://") and not v.startswith("postgres://"):
-            raise ValueError("DATABASE_URL must be a postgresql:// URL")
+        if not any(v.startswith(prefix) for prefix in VALID_DATABASE_URL_PREFIXES):
+            raise ValueError(
+                "DATABASE_URL must be a PostgreSQL URL (e.g. postgresql:// or postgresql+psycopg2://)"
+            )
         return v.strip()
 
 

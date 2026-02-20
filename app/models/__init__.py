@@ -1,1 +1,6 @@
-"""SQLAlchemy ORM models. Add Base and models here when needed."""
+"""SQLAlchemy ORM models."""
+
+from app.models.base import Base
+from app.models.finding import Finding
+
+__all__ = ["Base", "Finding"]
