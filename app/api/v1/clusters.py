@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models import Finding
-from app.schemas.findings import ClustersResponse, CompressionMetrics, VulnerabilityCluster
+from app.schemas.findings import ClustersResponse, CompressionMetrics
 from app.services.clustering import build_clusters
 
 router = APIRouter()
@@ -20,11 +20,8 @@ def get_clusters(
     """
     Return distinct vulnerability clusters plus compression metrics.
 
-    Clusters: SCA grouped by CVE ID, SAST by rule ID + file path pattern. Each cluster includes
-    finding_ids, affected_services_count (distinct repos), and finding_count.
-
-    Metrics: raw_finding_count (total DB findings), cluster_count (number of clusters), and
-    compression_ratio (raw_finding_count / cluster_count) for instant visibility of compression.
+    Clusters and metrics are from current DB findings only. SCA grouped by CVE ID,
+    SAST by rule ID + file path pattern.
     """
     findings = db.query(Finding).all()
     clusters = build_clusters(findings)

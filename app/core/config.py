@@ -47,6 +47,10 @@ class Settings(BaseSettings):
     JIRA_EPIC_ISSUE_TYPE: str = "Epic"
     JIRA_REQUEST_TIMEOUT_SEC: float = 30.0
 
+    # Data retention: delete findings older than RETENTION_HOURS (run via cron or CLI)
+    RETENTION_ENABLED: bool = True
+    RETENTION_HOURS: int = 48
+
     @field_validator("DATABASE_URL")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
@@ -97,6 +101,15 @@ class Settings(BaseSettings):
         if v <= 0 or v > 120:
             raise ValueError(
                 "JIRA_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 120"
+            )
+        return v
+
+    @field_validator("RETENTION_HOURS")
+    @classmethod
+    def validate_retention_hours(cls, v: int) -> int:
+        if v < 1 or v > 8760:
+            raise ValueError(
+                "RETENTION_HOURS must be between 1 and 8760 (1 hour to 1 year)"
             )
         return v
 
