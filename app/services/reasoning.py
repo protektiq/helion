@@ -1,6 +1,8 @@
 """Reasoning service: send vulnerability cluster data to a local LLM (Ollama) and return structured JSON."""
 
 import json
+import logging
+import time
 from typing import TYPE_CHECKING
 
 import httpx
@@ -10,6 +12,8 @@ from app.schemas.reasoning import ReasoningResponse
 
 if TYPE_CHECKING:
     from app.core.config import Settings
+
+logger = logging.getLogger(__name__)
 
 
 class ReasoningServiceError(Exception):
@@ -79,21 +83,53 @@ async def run_reasoning(
         "format": "json",
     }
     timeout = httpx.Timeout(settings.OLLAMA_REQUEST_TIMEOUT_SEC)
+    start = time.perf_counter()
 
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
             response = await client.post(url, json=payload)
+        elapsed = time.perf_counter() - start
     except httpx.ConnectError as e:
+        elapsed = time.perf_counter() - start
+        logger.info(
+            "LLM reasoning request failed",
+            extra={
+                "llm_latency_seconds": elapsed,
+                "cluster_count": len(clusters),
+                "model": settings.OLLAMA_MODEL,
+                "status": "error",
+            },
+        )
         raise ReasoningServiceError(
             "Ollama is unreachable. Ensure Ollama is running and OLLAMA_BASE_URL is correct.",
             cause=e,
         ) from e
     except httpx.TimeoutException as e:
+        elapsed = time.perf_counter() - start
+        logger.info(
+            "LLM reasoning request failed",
+            extra={
+                "llm_latency_seconds": elapsed,
+                "cluster_count": len(clusters),
+                "model": settings.OLLAMA_MODEL,
+                "status": "error",
+            },
+        )
         raise ReasoningServiceError(
             "Ollama request timed out. Try increasing OLLAMA_REQUEST_TIMEOUT_SEC or reducing cluster count.",
             cause=e,
         ) from e
     except httpx.HTTPError as e:
+        elapsed = time.perf_counter() - start
+        logger.info(
+            "LLM reasoning request failed",
+            extra={
+                "llm_latency_seconds": elapsed,
+                "cluster_count": len(clusters),
+                "model": settings.OLLAMA_MODEL,
+                "status": "error",
+            },
+        )
         raise ReasoningServiceError(
             "Ollama request failed.",
             cause=e,
@@ -111,6 +147,16 @@ async def run_reasoning(
             "Ollama response body is not valid JSON.",
             cause=e,
         ) from e
+
+    eval_duration_ns = body.get("eval_duration")
+    log_extra: dict[str, float | int | str | None] = {
+        "llm_latency_seconds": elapsed,
+        "cluster_count": len(clusters),
+        "model": settings.OLLAMA_MODEL,
+    }
+    if eval_duration_ns is not None:
+        log_extra["eval_duration_nanoseconds"] = eval_duration_ns
+    logger.info("LLM reasoning request completed", extra=log_extra)
 
     raw_response = body.get("response")
     if raw_response is None:

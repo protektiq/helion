@@ -1,5 +1,7 @@
 """Cluster findings by CVE (SCA) or Rule ID + file path pattern (SAST), with affected services count."""
 
+import logging
+import time
 from collections import defaultdict
 from typing import TYPE_CHECKING
 
@@ -8,6 +10,8 @@ from app.services.normalize import _is_cve_or_ghsa_like
 
 if TYPE_CHECKING:
     from app.models.finding import Finding
+
+logger = logging.getLogger(__name__)
 
 # Severity order for choosing "worst" in a cluster (higher index = more severe).
 _SEVERITY_ORDER: tuple[SeverityLevel, ...] = (
@@ -79,7 +83,17 @@ def build_clusters(findings: list["Finding"]) -> list[VulnerabilityCluster]:
     Group findings by SCA (CVE ID) or SAST (rule ID + file path pattern).
     Returns distinct vulnerability clusters with canonical fields and affected_services_count.
     """
+    start = time.perf_counter()
     if not findings:
+        elapsed = time.perf_counter() - start
+        logger.info(
+            "Cluster generation completed",
+            extra={
+                "cluster_generation_seconds": elapsed,
+                "finding_count": 0,
+                "cluster_count": 0,
+            },
+        )
         return []
 
     groups: defaultdict[str, list["Finding"]] = defaultdict(list)
@@ -112,4 +126,13 @@ def build_clusters(findings: list["Finding"]) -> list[VulnerabilityCluster]:
             )
         )
 
+    elapsed = time.perf_counter() - start
+    logger.info(
+        "Cluster generation completed",
+        extra={
+            "cluster_generation_seconds": elapsed,
+            "finding_count": len(findings),
+            "cluster_count": len(clusters),
+        },
+    )
     return clusters

@@ -1,5 +1,6 @@
 """Jira export endpoint: one-click export of vulnerability tickets to Jira (epics by risk tier + issues)."""
 
+import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -23,6 +24,7 @@ from app.services.ticket_generator import (
     resolve_affected_services,
 )
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -92,9 +94,41 @@ async def post_jira_export(
         return JiraExportResponse(epics={}, issues=[], errors=[])
 
     try:
-        return await export_tickets_to_jira(tickets, get_settings())
+        result = await export_tickets_to_jira(tickets, get_settings())
     except JiraNotConfiguredError as e:
+        logger.error(
+            "Jira export failed",
+            extra={
+                "export_status": "failure",
+                "epic_count": 0,
+                "issue_count": 0,
+                "error_count": 1,
+                "reason": (e.message or str(e))[:500],
+            },
+        )
         raise HTTPException(status_code=503, detail=e.message) from e
     except JiraApiError as e:
+        logger.error(
+            "Jira export failed",
+            extra={
+                "export_status": "failure",
+                "epic_count": 0,
+                "issue_count": 0,
+                "error_count": 1,
+                "reason": (e.message or str(e))[:500],
+            },
+        )
         status = 502 if (e.status_code or 500) >= 500 else 400
         raise HTTPException(status_code=status, detail=e.message) from e
+
+    export_status = "success" if len(result.errors) == 0 else "partial"
+    log_extra: dict[str, str | int] = {
+        "export_status": export_status,
+        "epic_count": len(result.epics),
+        "issue_count": len(result.issues),
+        "error_count": len(result.errors),
+    }
+    if result.errors:
+        log_extra["first_error"] = result.errors[0][:200]
+    logger.info("Jira export completed", extra=log_extra)
+    return result
