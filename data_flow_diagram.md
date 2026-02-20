@@ -150,3 +150,25 @@ flowchart LR
 
 - **POST /api/v1/tickets**: Accepts **TicketsRequest** (`clusters`, `use_db`, `use_reasoning`). When `use_db` is true, clusters are loaded from the database (same as GET /clusters). When `use_reasoning` is true, the reasoning service and risk tier assignment run so each ticket gets LLM remediation and tier label. The **ticket generator** (`app.services.ticket_generator`) converts each cluster into a **DevTicketPayload** with title, description, affected_services, acceptance_criteria, recommended_remediation, and risk_tier_label. For clusters with `repo == "multiple"`, distinct repos are resolved from the findings table by `finding_ids` and passed as affected_services. Response is **TicketsResponse** (`tickets`: list of DevTicketPayload), Jira-ready for manual creation or downstream integration.
 - **Backend usage**: Call `cluster_to_ticket_payload(cluster, ...)` for a single cluster, or `clusters_to_ticket_payloads(clusters, notes_by_id=..., tier_by_id=..., affected_services_by_id=...)` for batch. Use `resolve_affected_services(session, finding_ids)` when `repo == "multiple"` to get distinct repo names from the DB.
+
+## Jira export flow
+
+```mermaid
+flowchart LR
+  Client[Client]
+  Export[POST /api/v1/jira/export]
+  Tickets[Tickets pipeline]
+  JiraSvc[Jira service]
+  JiraAPI[Jira Cloud API]
+  Client -->|"use_db use_reasoning"| Export
+  Export --> Tickets
+  Tickets -->|"list of DevTicketPayload"| JiraSvc
+  JiraSvc -->|"Basic auth create epics"| JiraAPI
+  JiraSvc -->|"create issues under epics"| JiraAPI
+  JiraAPI --> JiraSvc
+  JiraSvc --> Export
+  Export --> Client
+```
+
+- **POST /api/v1/jira/export**: Accepts **TicketsRequest** (same as POST /tickets: `clusters`, `use_db`, `use_reasoning`). The server runs the same cluster and ticket pipeline as POST /tickets to produce a list of **DevTicketPayload**. The **Jira service** (`app.services.jira_export`) then creates one Jira epic per risk tier (Tier 1, Tier 2, Tier 3) in the configured project, and one Jira issue per ticket under the epic that matches the ticket’s `risk_tier_label`. Authentication uses Jira Cloud Basic auth (email + API token). Response is **JiraExportResponse** (`epics`: tier label → epic key, `issues`: created issue keys and titles, `errors`: any per-issue or epic errors for partial success). Requires JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT_KEY; optional JIRA_EPIC_LINK_FIELD_ID for classic/company-managed projects (Epic Link custom field).
+- **Backend usage**: Call `export_tickets_to_jira(tickets, settings)` from `app.services.jira_export` with a list of **DevTicketPayload** and app settings. Raises **JiraNotConfiguredError** if required Jira env is missing, **JiraApiError** on auth or API failures.

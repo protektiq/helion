@@ -3,7 +3,7 @@
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import field_validator
+from pydantic import SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Allowed URL schemes for DATABASE_URL (module-level so validators can use it).
@@ -37,6 +37,16 @@ class Settings(BaseSettings):
     OLLAMA_MODEL: str = "llama3.2"
     OLLAMA_REQUEST_TIMEOUT_SEC: float = 120.0
 
+    # Jira Cloud (optional; required only for POST /api/v1/jira/export)
+    JIRA_BASE_URL: str | None = None
+    JIRA_EMAIL: str | None = None
+    JIRA_API_TOKEN: SecretStr | None = None
+    JIRA_PROJECT_KEY: str | None = None
+    JIRA_EPIC_LINK_FIELD_ID: str | None = None
+    JIRA_ISSUE_TYPE: str = "Task"
+    JIRA_EPIC_ISSUE_TYPE: str = "Epic"
+    JIRA_REQUEST_TIMEOUT_SEC: float = 30.0
+
     @field_validator("DATABASE_URL")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
@@ -66,6 +76,27 @@ class Settings(BaseSettings):
         if v <= 0 or v > 300:
             raise ValueError(
                 "OLLAMA_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 300"
+            )
+        return v
+
+    @field_validator("JIRA_BASE_URL")
+    @classmethod
+    def validate_jira_base_url(cls, v: str | None) -> str | None:
+        if v is None or not v.strip():
+            return None
+        s = v.strip().rstrip("/").lower()
+        if not (s.startswith("http://") or s.startswith("https://")):
+            raise ValueError(
+                "JIRA_BASE_URL must use http or https (e.g. https://your-domain.atlassian.net)"
+            )
+        return v.strip().rstrip("/")
+
+    @field_validator("JIRA_REQUEST_TIMEOUT_SEC")
+    @classmethod
+    def validate_jira_timeout(cls, v: float) -> float:
+        if v <= 0 or v > 120:
+            raise ValueError(
+                "JIRA_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 120"
             )
         return v
 
