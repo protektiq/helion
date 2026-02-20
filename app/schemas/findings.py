@@ -172,3 +172,36 @@ class VulnerabilityCluster(BaseModel):
         ge=1,
         description="Number of findings in this cluster (len(finding_ids)).",
     )
+
+
+class CompressionMetrics(BaseModel):
+    """Metrics for clustering compression: raw finding count vs cluster count."""
+
+    raw_finding_count: int = Field(
+        ...,
+        ge=0,
+        description="Total number of findings (DB rows) before clustering.",
+    )
+    cluster_count: int = Field(
+        ...,
+        ge=0,
+        description="Number of distinct vulnerability clusters.",
+    )
+    compression_ratio: float = Field(
+        ...,
+        ge=0,
+        description="Raw findings per cluster (raw_finding_count / cluster_count); 0 when cluster_count is 0.",
+    )
+
+
+class ClustersResponse(BaseModel):
+    """Response for GET /api/v1/clusters: clusters plus compression metrics."""
+
+    clusters: list[VulnerabilityCluster] = Field(
+        ...,
+        description="Distinct vulnerability clusters (SCA by CVE+dependency, SAST by rule+path).",
+    )
+    metrics: CompressionMetrics = Field(
+        ...,
+        description="Compression metrics: raw_finding_count, cluster_count, compression_ratio.",
+    )

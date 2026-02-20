@@ -53,7 +53,9 @@ flowchart LR
   Group[Group by key]
   Canon[Canonical fields]
   Count[affected_services_count]
-  Out[VulnerabilityCluster list]
+  Clusters[clusters list]
+  Metrics[CompressionMetrics]
+  Response[ClustersResponse]
   DB --> Classify
   Classify --> KeySCA
   Classify --> KeySAST
@@ -61,10 +63,14 @@ flowchart LR
   KeySAST --> Group
   Group --> Canon
   Canon --> Count
-  Count --> Out
+  Count --> Clusters
+  DB --> Metrics
+  Clusters --> Metrics
+  Clusters --> Response
+  Metrics --> Response
 ```
 
-- **GET /api/v1/clusters**: Reads all rows from the `findings` table, runs the **clustering engine** (see below), and returns a list of `VulnerabilityCluster`. No persistence of clusters; computed at read time.
+- **GET /api/v1/clusters**: Reads all rows from the `findings` table, runs the **clustering engine** (see below), and returns a **ClustersResponse** containing `clusters` (list of `VulnerabilityCluster`) and `metrics` (CompressionMetrics). No persistence of clusters; computed at read time. Metrics are derived from `len(findings)` and `len(clusters)`: `raw_finding_count`, `cluster_count`, and `compression_ratio` (raw_finding_count / cluster_count, or 0 when there are no clusters).
 - **Cluster keys**: Findings are classified by `vulnerability_id`. If it matches CVE or GHSA (regex), the finding is **SCA** and the cluster key is `(vulnerability_id, dependency)` so the same CVE in different packages (e.g. lodash vs openssl) are separate clusters. Otherwise the finding is **SAST** and the cluster key is `(vulnerability_id, file_path_pattern)` where the path pattern is the normalized relative path (repo prefix stripped, slashes normalized).
 - **Canonical repo**: When a cluster spans more than one repository, `repo` is set to `"multiple"` to avoid implying a single repo; when `affected_services_count` is 1, `repo` is that repository.
 - **affected_services_count**: For each cluster, the number of distinct repositories (repos) that have at least one finding in that cluster. There is no separate “service” entity; repo is the service/repository dimension.
