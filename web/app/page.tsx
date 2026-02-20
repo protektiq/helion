@@ -2,8 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-
-const DEFAULT_API_URL = "http://localhost:8000";
+import { getApiBaseUrl } from "@/lib/api";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
@@ -11,14 +10,6 @@ type SuccessPayload = {
   accepted: number;
   ids: number[];
 };
-
-function getApiBaseUrl(): string {
-  if (typeof process.env.NEXT_PUBLIC_API_URL !== "string") {
-    return DEFAULT_API_URL;
-  }
-  const url = process.env.NEXT_PUBLIC_API_URL.trim();
-  return url.length > 0 ? url.replace(/\/+$/, "") : DEFAULT_API_URL;
-}
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);

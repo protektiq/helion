@@ -5,9 +5,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.models import Finding
+from app.schemas.auth import CurrentUser
 from app.schemas.jira import JiraExportResponse
 from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
@@ -28,6 +30,7 @@ router = APIRouter()
 async def post_jira_export(
     body: TicketsRequest,
     db: Annotated[Session, Depends(get_db)],
+    _user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> JiraExportResponse:
     """
     One-click export: create Jira epics (one per risk tier) and issues under them.

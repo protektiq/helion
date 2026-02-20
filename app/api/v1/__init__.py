@@ -2,10 +2,11 @@
 
 from fastapi import APIRouter
 
-from app.api.v1 import clusters, exploitability, health, jira, reasoning, tickets, upload
+from app.api.v1 import auth, clusters, exploitability, health, jira, reasoning, tickets, upload
 
 router = APIRouter()
 router.include_router(health.router, prefix="/health", tags=["health"])
+router.include_router(auth.router, prefix="/auth", tags=["auth"])
 router.include_router(upload.router, prefix="/upload", tags=["upload"])
 router.include_router(clusters.router, prefix="/clusters", tags=["clusters"])
 router.include_router(reasoning.router, prefix="/reasoning", tags=["reasoning"])

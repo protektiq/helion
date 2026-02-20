@@ -14,7 +14,7 @@ from app.core.config import settings
 from app.models import Base
 
 # Import all models so that Base.metadata contains every table.
-from app.models import Finding  # noqa: F401
+from app.models import Finding, User  # noqa: F401
 
 config = context.config
 # Load logging from alembic.ini only if it defines [formatters], [handlers], [loggers].

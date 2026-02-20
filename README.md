@@ -48,7 +48,17 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
    alembic upgrade head
    ```
 
-6. **Local LLM (optional)**  
+6. **Create the first user**  
+   There is no registration UI. Create an admin (or normal user) via the CLI:
+
+   ```bash
+   python -m app.scripts.create_user admin your-secure-password admin
+   # Or a normal user: python -m app.scripts.create_user alice secret123 user
+   ```
+
+   Then log in at **POST /api/v1/auth** with `{"username":"admin","password":"your-secure-password"}` to get a JWT. Use `Authorization: Bearer <access_token>` on all protected endpoints (e.g. curl or Postman for API-first auth).
+
+7. **Local LLM (optional)**  
    For the reasoning endpoint (POST /api/v1/reasoning), install [Ollama](https://ollama.com) and pull Llama 3:
 
    ```bash
@@ -57,6 +67,11 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
    ```
 
    Ensure the Ollama API is available (default: `http://localhost:11434`). Configure via `.env`: `OLLAMA_BASE_URL`, `OLLAMA_MODEL`, `OLLAMA_REQUEST_TIMEOUT_SEC` (see `.env.example`).
+
+## Authentication and access control
+
+- **Login**: **POST /api/v1/auth** with JSON `{"username","password"}` returns `{"access_token","token_type":"bearer"}`. All protected API routes require the header `Authorization: Bearer <access_token>`.
+- **Roles**: Users have `admin` or `user`. **GET /api/v1/auth/users** (list users) is admin-only; other protected routes allow any authenticated user.
 
 ## Run the server
 

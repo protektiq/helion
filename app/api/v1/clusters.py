@@ -5,8 +5,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.api.v1.auth import get_current_user
 from app.core.database import get_db
 from app.models import Finding
+from app.schemas.auth import CurrentUser
 from app.schemas.findings import ClustersResponse, CompressionMetrics
 from app.services.clustering import build_clusters
 
@@ -16,6 +18,7 @@ router = APIRouter()
 @router.get("", response_model=ClustersResponse)
 def get_clusters(
     db: Annotated[Session, Depends(get_db)],
+    _user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> ClustersResponse:
     """
     Return distinct vulnerability clusters plus compression metrics.

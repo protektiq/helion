@@ -7,8 +7,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
+from app.api.v1.auth import get_current_user
 from app.core.database import get_db
 from app.models import Finding
+from app.schemas.auth import CurrentUser
 from app.schemas.findings import RawFinding
 from app.schemas.upload import UploadResponse
 from app.services.normalize import deduplicate_finding_pairs, normalize_finding
@@ -76,7 +78,6 @@ async def _get_findings_from_request(request: Request) -> list[RawFinding]:
         form = await request.form()
         file = form.get("file")
         if file is None or not _is_upload_file(file):
-            # Some clients send the file under another name; use first file-like part.
             file = next(
                 (v for v in form.values() if _is_upload_file(v)),
                 None,
@@ -115,9 +116,10 @@ async def _get_findings_from_request(request: Request) -> list[RawFinding]:
 async def upload_findings(
     request: Request,
     db: Annotated[Session, Depends(get_db)],
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> UploadResponse:
     """
-    Accept SAST/SCA findings as JSON and persist them.
+    Accept SAST/SCA findings as JSON and persist them. Requires authentication.
 
     - **JSON body**: Send `Content-Type: application/json` with either a single
       finding object or an array of finding objects.

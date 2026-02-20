@@ -51,6 +51,11 @@ class Settings(BaseSettings):
     RETENTION_ENABLED: bool = True
     RETENTION_HOURS: int = 48
 
+    # JWT authentication
+    JWT_SECRET: SecretStr = SecretStr("change-me-in-production")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 60
+
     @field_validator("DATABASE_URL")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
@@ -110,6 +115,29 @@ class Settings(BaseSettings):
         if v < 1 or v > 8760:
             raise ValueError(
                 "RETENTION_HOURS must be between 1 and 8760 (1 hour to 1 year)"
+            )
+        return v
+
+    @field_validator("JWT_SECRET")
+    @classmethod
+    def validate_jwt_secret(cls, v: SecretStr) -> SecretStr:
+        if not v.get_secret_value() or not v.get_secret_value().strip():
+            raise ValueError("JWT_SECRET must be set and non-empty")
+        return v
+
+    @field_validator("JWT_ALGORITHM")
+    @classmethod
+    def validate_jwt_algorithm(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("JWT_ALGORITHM must be set and non-empty")
+        return v.strip()
+
+    @field_validator("JWT_EXPIRE_MINUTES")
+    @classmethod
+    def validate_jwt_expire_minutes(cls, v: int) -> int:
+        if v < 1 or v > 10080:
+            raise ValueError(
+                "JWT_EXPIRE_MINUTES must be between 1 and 10080 (1 min to 7 days)"
             )
         return v
 

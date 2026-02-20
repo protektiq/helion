@@ -2,26 +2,46 @@
 
 High-level flow of vulnerability finding data from scanners into normalized and clustered representations.
 
+## Authentication and access control
+
+```mermaid
+flowchart LR
+  Client[Client]
+  Login[POST /api/v1/auth]
+  JWT[JWT access token]
+  Protected[Protected routes]
+  Client -->|username password| Login
+  Login --> JWT
+  Client -->|"Bearer token"| Protected
+```
+
+- **POST /api/v1/auth**: Login with `username` and `password`. Returns a JWT **access_token**. Client must send `Authorization: Bearer <access_token>` on all protected endpoints.
+- **Protected routes**: All v1 routes except **GET /api/v1/health** require a valid JWT. **get_current_user** dependency decodes the token and loads the user from the `users` table; missing or invalid token returns 401.
+- **Role-based access**: Users have a **role** (`admin` or `user`). **require_admin** dependency restricts selected endpoints (e.g. **GET /api/v1/auth/users**) to `role === admin`; others get 403.
+- **User creation**: No registration UI; create users via CLI or one-off script (see .env.example). Passwords are stored as bcrypt hashes only.
+
 ## Upload flow
 
 ```mermaid
 flowchart LR
   Client[Client]
   Upload[POST /api/v1/upload]
+  Auth[require_user]
   Map[Map scanner shape]
   Validate[Validate RawFinding]
   Normalize[Normalize to NormalizedFinding]
   Dedupe[Deduplicate]
   DB[(Postgres findings)]
-  Client -->|"JSON body or file"| Upload
-  Upload --> Map
+  Client -->|"Bearer + JSON or file"| Upload
+  Upload --> Auth
+  Auth --> Map
   Map --> Validate
   Validate --> Normalize
   Normalize --> Dedupe
   Dedupe --> DB
 ```
 
-- **POST /api/v1/upload**: Accepts SAST/SCA findings as `application/json` (single object or array) or as `multipart/form-data` with a `.json` file. The **client** may be any HTTP client; when using the repo’s frontend, it is the **web upload page** (Next.js in `web/`, typically at http://localhost:3000), which sends the file via `multipart/form-data`. Each item is first run through a **scanner mapper** (Trivy/Snyk/Semgrep heuristics or generic aliases) so that different field names map to RawFinding. Items are then validated as RawFinding, **normalized** to NormalizedFinding (severity standardized via aliases/numeric/CVSS; CVE/GHSA extracted from id, description, or payload when not already present), **deduplicated** per request by canonical key `(vulnerability_id, repo, file_path, dependency)`, and persisted to the `findings` table.
+- **POST /api/v1/upload**: Requires authentication. Accepts SAST/SCA findings as `application/json` (single object or array) or as `multipart/form-data` with a `.json` file. The **client** may be any HTTP client; when using the repo’s frontend, it is the **web upload page** (Next.js in `web/`, typically at http://localhost:3000), which sends the file via `multipart/form-data`. Each item is first run through a **scanner mapper** (Trivy/Snyk/Semgrep heuristics or generic aliases) so that different field names map to RawFinding. Items are then validated as RawFinding, **normalized** to NormalizedFinding (severity standardized via aliases/numeric/CVSS; CVE/GHSA extracted from id, description, or payload when not already present), **deduplicated** per request by canonical key `(vulnerability_id, repo, file_path, dependency)`, and persisted to the `findings` table.
 
 ## Finding schemas flow
 

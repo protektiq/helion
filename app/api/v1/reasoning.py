@@ -5,9 +5,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.models import Finding
+from app.schemas.auth import CurrentUser
 from app.schemas.reasoning import ClusterNote, ReasoningRequest, ReasoningResponse
 from app.services.clustering import build_clusters
 from app.services.reasoning import ReasoningServiceError, run_reasoning
@@ -20,6 +22,7 @@ router = APIRouter()
 async def post_reasoning(
     body: ReasoningRequest,
     db: Annotated[Session, Depends(get_db)],
+    _user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> ReasoningResponse:
     """
     Run reasoning on vulnerability clusters via the local LLM (Ollama / Llama 3).

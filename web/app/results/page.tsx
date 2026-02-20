@@ -2,8 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-
-const DEFAULT_API_URL = "http://localhost:8000";
+import { getApiBaseUrl } from "@/lib/api";
 
 const SEVERITY_ORDER: readonly string[] = [
   "critical",
@@ -45,14 +44,6 @@ type JiraExportResponse = {
   issues?: Array<{ title: string; key: string; tier: string }>;
   errors?: string[];
 };
-
-function getApiBaseUrl(): string {
-  if (typeof process.env.NEXT_PUBLIC_API_URL !== "string") {
-    return DEFAULT_API_URL;
-  }
-  const url = process.env.NEXT_PUBLIC_API_URL.trim();
-  return url.length > 0 ? url.replace(/\/+$/, "") : DEFAULT_API_URL;
-}
 
 function severityBreakdown(clusters: Array<{ severity: string }>): Record<string, number> {
   const counts: Record<string, number> = {
