@@ -136,7 +136,7 @@ class VulnerabilityCluster(BaseModel):
     repo: str = Field(
         ...,
         min_length=1,
-        description="Primary or canonical repository for this cluster.",
+        description="Single repository when affected_services_count is 1; 'multiple' when the cluster spans more than one repo.",
     )
     file_path: str = Field(
         default="",
@@ -161,4 +161,14 @@ class VulnerabilityCluster(BaseModel):
         ...,
         min_length=1,
         description="IDs of normalized findings that belong to this cluster.",
+    )
+    affected_services_count: int = Field(
+        ...,
+        ge=1,
+        description="Count of distinct repositories (services) affected by this cluster.",
+    )
+    finding_count: int = Field(
+        ...,
+        ge=1,
+        description="Number of findings in this cluster (len(finding_ids)).",
     )

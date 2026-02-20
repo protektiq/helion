@@ -40,7 +40,34 @@ flowchart LR
 
 - **RawFinding**: Scanner-agnostic ingestion; all fields optional so different scanners can be accepted. Optional `scanner_source` and `raw_payload` for traceability. Incoming payloads are mapped to this shape via scanner mappers before validation.
 - **NormalizedFinding**: Unified internal representation; same seven fields with strict types and validation regardless of scanner. The normalizer standardizes severity (aliases, numeric, CVSS fallback) and extracts CVE/GHSA identifiers from text when needed. Deduplication is applied per request before persist.
-- **VulnerabilityCluster**: One logical vulnerability (e.g. one CVE) grouped across multiple occurrences; canonical fields plus `finding_ids` referencing normalized findings.
+- **VulnerabilityCluster**: One logical vulnerability (e.g. one CVE) grouped across multiple occurrences; canonical fields plus `finding_ids`, `affected_services_count` (distinct repos), and `finding_count`.
+
+## Clusters view
+
+```mermaid
+flowchart LR
+  DB[(findings table)]
+  Classify[SCA vs SAST]
+  KeySCA[CVE key]
+  KeySAST[Rule plus path key]
+  Group[Group by key]
+  Canon[Canonical fields]
+  Count[affected_services_count]
+  Out[VulnerabilityCluster list]
+  DB --> Classify
+  Classify --> KeySCA
+  Classify --> KeySAST
+  KeySCA --> Group
+  KeySAST --> Group
+  Group --> Canon
+  Canon --> Count
+  Count --> Out
+```
+
+- **GET /api/v1/clusters**: Reads all rows from the `findings` table, runs the **clustering engine** (see below), and returns a list of `VulnerabilityCluster`. No persistence of clusters; computed at read time.
+- **Cluster keys**: Findings are classified by `vulnerability_id`. If it matches CVE or GHSA (regex), the finding is **SCA** and the cluster key is `(vulnerability_id, dependency)` so the same CVE in different packages (e.g. lodash vs openssl) are separate clusters. Otherwise the finding is **SAST** and the cluster key is `(vulnerability_id, file_path_pattern)` where the path pattern is the normalized relative path (repo prefix stripped, slashes normalized).
+- **Canonical repo**: When a cluster spans more than one repository, `repo` is set to `"multiple"` to avoid implying a single repo; when `affected_services_count` is 1, `repo` is that repository.
+- **affected_services_count**: For each cluster, the number of distinct repositories (repos) that have at least one finding in that cluster. There is no separate “service” entity; repo is the service/repository dimension.
 
 ## Shared field set
 
