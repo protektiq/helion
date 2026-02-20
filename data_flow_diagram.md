@@ -197,9 +197,30 @@ flowchart LR
 - **POST /api/v1/jira/export**: Accepts **TicketsRequest** (same as POST /tickets: `clusters`, `use_db`, `use_reasoning`, optional `tier_overrides`). The server runs the same cluster and ticket pipeline as POST /tickets to produce a list of **DevTicketPayload**; when `tier_overrides` is provided, consultant-overridden tiers are applied before sending to Jira. The **Jira service** (`app.services.jira_export`) then creates one Jira epic per risk tier (Tier 1, Tier 2, Tier 3) in the configured project, and one Jira issue per ticket under the epic that matches the ticket’s `risk_tier_label`. Authentication uses Jira Cloud Basic auth (email + API token). Response is **JiraExportResponse** (`epics`: tier label → epic key, `issues`: created issue keys and titles, `errors`: any per-issue or epic errors for partial success). Requires JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT_KEY; optional JIRA_EPIC_LINK_FIELD_ID for classic/company-managed projects (Epic Link custom field).
 - **Backend usage**: Call `export_tickets_to_jira(tickets, settings)` from `app.services.jira_export` with a list of **DevTicketPayload** and app settings. Raises **JiraNotConfiguredError** if required Jira env is missing, **JiraApiError** on auth or API failures.
 
+## Web UI (Next.js app in `web/`)
+
+The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small set of pages. State is local (React state/hooks); no component libraries. The **shared layout** provides a single **nav** (links to all pages) and **AuthTokenInput** (paste or persist JWT in `localStorage` under `helion_access_token`); token is sent as `Authorization: Bearer <token>` on protected requests via `getAuthHeaders()` from `web/lib/api.ts`.
+
+### Route map (page → endpoint)
+
+| Route | Page | API |
+|-------|------|-----|
+| `/` | Home | — (landing + nav) |
+| `/health` | Health | **GET /api/v1/health/** |
+| `/login` | Login | **POST /api/v1/auth** (stores token on success) |
+| `/upload` | Upload | **POST /api/v1/upload** |
+| `/results` | Results/Clusters | **GET /api/v1/clusters**; **POST /api/v1/jira/export** (Export to Jira button) |
+| `/reasoning` | Reasoning | **POST /api/v1/reasoning** |
+| `/exploitability` | Exploitability | **POST /api/v1/exploitability** |
+| `/tickets` | Tickets preview | **POST /api/v1/tickets** |
+| `/jira-export` | Jira export | **POST /api/v1/jira/export** |
+| `/admin/users` | Admin users | **GET /api/v1/auth/users** (admin only) |
+
+All pages use `getApiBaseUrl()` and, for protected routes, `getAuthHeaders()` from `web/lib/api.ts`. No dashboards or charts; forms and tables only.
+
 ## Results Summary (frontend)
 
-The **Results summary** page (Next.js route `/results`) gives a read-only summary and one-click Jira export:
+The **Results** page (route `/results`) gives a read-only summary and one-click Jira export:
 
 - On load it calls **GET /api/v1/clusters** and displays `metrics.raw_finding_count`, `metrics.cluster_count`, and a **risk tier breakdown** (count of clusters per severity: critical, high, medium, low, info) derived from the `clusters` array. No analytics or charts; a single summary table only.
 - A **Manual tier override** toggle allows the consultant to change each cluster’s risk tier (Tier 1/2/3) before export; when enabled, a per-cluster tier selector is shown and the chosen tiers are sent as `tier_overrides` on export.

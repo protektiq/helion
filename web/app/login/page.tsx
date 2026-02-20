@@ -1,0 +1,165 @@
+"use client";
+
+import { useState, useCallback } from "react";
+import { getApiBaseUrl, AUTH_TOKEN_KEY } from "@/lib/api";
+
+const USERNAME_MAX = 255;
+const PASSWORD_MIN = 8;
+const PASSWORD_MAX = 128;
+
+type TokenResponse = {
+  access_token: string;
+  token_type?: string;
+};
+
+type LoginStatus = "idle" | "submitting" | "success" | "error";
+
+function isValidTokenResponse(data: unknown): data is TokenResponse {
+  if (data === null || typeof data !== "object") return false;
+  const o = data as Record<string, unknown>;
+  return typeof o.access_token === "string" && o.access_token.length > 0;
+}
+
+export default function LoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState<LoginStatus>("idle");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleUsernameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const v = (e.target.value ?? "").slice(0, USERNAME_MAX);
+      setUsername(v);
+    },
+    []
+  );
+
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value ?? "");
+    },
+    []
+  );
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const u = username.trim();
+      const p = password;
+      if (u.length === 0) {
+        setErrorMessage("Username is required.");
+        setStatus("error");
+        return;
+      }
+      if (p.length < PASSWORD_MIN) {
+        setErrorMessage(`Password must be at least ${PASSWORD_MIN} characters.`);
+        setStatus("error");
+        return;
+      }
+      if (p.length > PASSWORD_MAX) {
+        setErrorMessage(`Password must be at most ${PASSWORD_MAX} characters.`);
+        setStatus("error");
+        return;
+      }
+
+      const baseUrl = getApiBaseUrl();
+      setStatus("submitting");
+      setErrorMessage(null);
+      try {
+        const res = await fetch(`${baseUrl}/api/v1/auth`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: u, password: p }),
+        });
+        const body: unknown = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          const detail =
+            body !== null && typeof body === "object" && "detail" in body
+              ? String((body as { detail?: unknown }).detail)
+              : res.statusText;
+          setErrorMessage(detail);
+          setStatus("error");
+          return;
+        }
+        if (!isValidTokenResponse(body)) {
+          setErrorMessage("Invalid token response.");
+          setStatus("error");
+          return;
+        }
+        if (typeof window !== "undefined") {
+          try {
+            localStorage.setItem(AUTH_TOKEN_KEY, body.access_token);
+          } catch {
+            setErrorMessage("Could not save token to browser.");
+            setStatus("error");
+            return;
+          }
+        }
+        setStatus("success");
+      } catch (err) {
+        setErrorMessage(
+          err instanceof Error ? err.message : "Network or request failed."
+        );
+        setStatus("error");
+      }
+    },
+    [username, password]
+  );
+
+  return (
+    <main style={{ padding: "2rem", maxWidth: "28rem", margin: "0 auto" }}>
+      <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="login-username" style={{ display: "block", marginBottom: "0.5rem" }}>
+            Username
+          </label>
+          <input
+            id="login-username"
+            type="text"
+            value={username}
+            onChange={handleUsernameChange}
+            maxLength={USERNAME_MAX}
+            autoComplete="username"
+            aria-label="Username"
+            disabled={status === "submitting"}
+            style={{ width: "100%", maxWidth: "20rem", padding: "0.375rem 0.5rem" }}
+          />
+        </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <label htmlFor="login-password" style={{ display: "block", marginBottom: "0.5rem" }}>
+            Password
+          </label>
+          <input
+            id="login-password"
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            minLength={PASSWORD_MIN}
+            maxLength={PASSWORD_MAX}
+            autoComplete="current-password"
+            aria-label="Password"
+            disabled={status === "submitting"}
+            style={{ width: "100%", maxWidth: "20rem", padding: "0.375rem 0.5rem" }}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={status === "submitting"}
+          aria-busy={status === "submitting"}
+          aria-label={status === "submitting" ? "Logging in" : "Log in"}
+        >
+          {status === "submitting" ? "Logging in…" : "Log in"}
+        </button>
+      </form>
+      <div role="status" aria-live="polite" style={{ marginTop: "1rem", minHeight: "1.5em" }}>
+        {status === "success" && (
+          <p style={{ color: "#166534" }}>Logged in. Token saved. Use the header to paste a token if needed.</p>
+        )}
+        {status === "error" && errorMessage !== null && (
+          <p style={{ color: "#b91c1c" }}>{errorMessage}</p>
+        )}
+      </div>
+    </main>
+  );
+}

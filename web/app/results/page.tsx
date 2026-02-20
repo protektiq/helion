@@ -226,7 +226,7 @@ export default function ResultsSummaryPage() {
 
       <nav style={{ marginBottom: "1.5rem" }}>
         <Link
-          href="/"
+          href="/upload"
           style={{ color: "#2563eb", textDecoration: "underline" }}
           aria-label="Go to upload page"
         >
