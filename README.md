@@ -10,6 +10,7 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
 - `app/models/` – SQLAlchemy models (Base, Finding)
 - `app/schemas/` – Pydantic request/response schemas
 - `app/services/` – business logic (clustering, normalization, reasoning)
+- `web/` – minimal Next.js upload UI (single page: file input, submit, status)
 
 ## Setup
 
@@ -83,6 +84,26 @@ Response includes `status`, `environment`, and `database` (connected/disconnecte
 - **File upload:** Send `Content-Type: multipart/form-data` with a field named `file` containing a `.json` file (same structure; max 50 MB, max 10 000 findings per request).
 
 Response (201): `{ "accepted": N, "ids": [ ... ] }` with the count and database IDs of persisted findings.
+
+### Upload UI (frontend)
+
+A minimal Next.js upload page is in the `web/` folder. It lets you select a `.json` file and submit it to the upload API.
+
+1. **Install dependencies** (from project root):
+
+   ```bash
+   cd web && npm install
+   ```
+
+2. **Environment**: Optionally copy `web/.env.local.example` to `web/.env.local` and set `NEXT_PUBLIC_API_URL` if your API is not at `http://localhost:8000`.
+
+3. **Run the API** first (from project root: `uvicorn app.main:app --reload`), then start the frontend:
+
+   ```bash
+   cd web && npm run dev
+   ```
+
+   Open http://localhost:3000 (or the port Next.js prints). Select a JSON file and click Submit; the page shows uploading state and then the accepted count or any API error.
 
 ## Reasoning (local LLM) and risk tiers
 
