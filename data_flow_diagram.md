@@ -78,3 +78,26 @@ flowchart LR
 ## Shared field set
 
 All three schemas use the same core fields: `vulnerability_id`, `severity`, `repo`, `file_path`, `dependency`, `cvss_score`, `description`.
+
+## Reasoning flow
+
+```mermaid
+flowchart LR
+  Client[Client]
+  POST[POST /api/v1/reasoning]
+  Reason[ReasoningService]
+  Prompt[Build prompt]
+  Ollama[Ollama Llama3]
+  Parse[Parse JSON]
+  Resp[ReasoningResponse]
+  Client -->|"clusters JSON or use_db"| POST
+  POST --> Reason
+  Reason --> Prompt
+  Prompt --> Ollama
+  Ollama --> Parse
+  Parse --> Resp
+  Resp --> Client
+```
+
+- **POST /api/v1/reasoning**: Input is a list of `VulnerabilityCluster` in the request body, or `use_db: true` to load current clusters from the database (same as GET /clusters). The **ReasoningService** builds a prompt with the cluster data, sends it to the local LLM (Ollama with Llama 3) via `POST {OLLAMA_BASE_URL}/api/generate` with `format: "json"`. The model returns a single JSON object; the service parses it into **ReasoningResponse** (summary + cluster_notes with vulnerability_id, priority, reasoning) and returns it to the client.
+- **Backend usage**: Other code can call `run_reasoning(clusters, settings)` from `app.services.reasoning` with a list of `VulnerabilityCluster` and the app settings to get structured reasoning without going through the HTTP endpoint.

@@ -5,11 +5,11 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
 ## Structure
 
 - `app/main.py` – FastAPI app, CORS, router wiring
-- `app/api/` – API route modules (v1: health, upload)
+- `app/api/` – API route modules (v1: health, upload, clusters, reasoning)
 - `app/core/` – config (env loading), database (Postgres session)
 - `app/models/` – SQLAlchemy models (Base, Finding)
 - `app/schemas/` – Pydantic request/response schemas
-- `app/services/` – business logic (placeholder)
+- `app/services/` – business logic (clustering, normalization, reasoning)
 
 ## Setup
 
@@ -47,6 +47,16 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
    alembic upgrade head
    ```
 
+6. **Local LLM (optional)**  
+   For the reasoning endpoint (POST /api/v1/reasoning), install [Ollama](https://ollama.com) and pull Llama 3:
+
+   ```bash
+   # Install Ollama from https://ollama.com for your OS, then:
+   ollama pull llama3.2
+   ```
+
+   Ensure the Ollama API is available (default: `http://localhost:11434`). Configure via `.env`: `OLLAMA_BASE_URL`, `OLLAMA_MODEL`, `OLLAMA_REQUEST_TIMEOUT_SEC` (see `.env.example`).
+
 ## Run the server
 
 From the **project root**:
@@ -73,3 +83,9 @@ Response includes `status`, `environment`, and `database` (connected/disconnecte
 - **File upload:** Send `Content-Type: multipart/form-data` with a field named `file` containing a `.json` file (same structure; max 50 MB, max 10 000 findings per request).
 
 Response (201): `{ "accepted": N, "ids": [ ... ] }` with the count and database IDs of persisted findings.
+
+## Reasoning (local LLM)
+
+- **URL:** `POST http://localhost:8000/api/v1/reasoning`
+- **Body:** `{ "clusters": [ ... ] }` (list of VulnerabilityCluster) or `{ "use_db": true }` to use current clusters from the database.
+- **Response:** `{ "summary": "...", "cluster_notes": [ { "vulnerability_id", "priority", "reasoning" }, ... ] }` from the local LLM (Ollama / Llama 3). Requires Ollama running and the model pulled (e.g. `ollama pull llama3.2`).

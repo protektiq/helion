@@ -32,6 +32,11 @@ class Settings(BaseSettings):
     # Postgres: required in prod; for dev can use a default if you run Postgres locally
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/helion"
 
+    # Ollama (local LLM): optional; app runs without it if reasoning is not used
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
+    OLLAMA_MODEL: str = "llama3.2"
+    OLLAMA_REQUEST_TIMEOUT_SEC: float = 120.0
+
     @field_validator("DATABASE_URL")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
@@ -42,6 +47,27 @@ class Settings(BaseSettings):
                 "DATABASE_URL must be a PostgreSQL URL (e.g. postgresql:// or postgresql+psycopg2://)"
             )
         return v.strip()
+
+    @field_validator("OLLAMA_BASE_URL")
+    @classmethod
+    def validate_ollama_base_url(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("OLLAMA_BASE_URL must be set and non-empty")
+        s = v.strip().lower()
+        if not (s.startswith("http://") or s.startswith("https://")):
+            raise ValueError(
+                "OLLAMA_BASE_URL must use http or https (e.g. http://localhost:11434)"
+            )
+        return v.strip()
+
+    @field_validator("OLLAMA_REQUEST_TIMEOUT_SEC")
+    @classmethod
+    def validate_ollama_timeout(cls, v: float) -> float:
+        if v <= 0 or v > 300:
+            raise ValueError(
+                "OLLAMA_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 300"
+            )
+        return v
 
 
 @lru_cache
