@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { AUTH_TOKEN_KEY } from "@/lib/api";
 import ErrorAlert from "@/app/components/ErrorAlert";
@@ -12,6 +13,7 @@ const PASSWORD_MAX = 128;
 type LoginStatus = "idle" | "submitting" | "success" | "error";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<LoginStatus>("idle");
@@ -68,12 +70,13 @@ export default function LoginPage() {
           }
         }
         setStatus("success");
+        router.push("/");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
         setStatus("error");
       }
     },
-    [username, password]
+    [username, password, router]
   );
 
   return (
@@ -125,11 +128,16 @@ export default function LoginPage() {
       {status === "error" && errorMessage !== null && errorMessage !== "" && (
         <ErrorAlert message={errorMessage} />
       )}
-      <div role="status" aria-live="polite" style={{ marginTop: "1rem", minHeight: "1.5em" }}>
-        {status === "success" && (
-          <p style={{ color: "#166534" }}>Logged in. Token saved. Use the header to paste a token if needed.</p>
-        )}
-      </div>
+      <p
+        aria-live="polite"
+        style={{
+          marginTop: "1rem",
+          fontSize: "0.875rem",
+          color: "#6b7280",
+        }}
+      >
+        The token is stored locally in this browser only.
+      </p>
     </main>
   );
 }
