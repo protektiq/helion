@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import ErrorAlert from "@/app/components/ErrorAlert";
@@ -17,6 +17,8 @@ const SEVERITY_ORDER: readonly string[] = [
   "low",
   "info",
 ] as const;
+
+const MAX_SEARCH_LENGTH = 200;
 
 const TIER_LABELS = ["Tier 1", "Tier 2", "Tier 3"] as const;
 type TierLabel = (typeof TIER_LABELS)[number];
@@ -58,6 +60,8 @@ export default function ResultsSummaryPage() {
   const [exportMessage, setExportMessage] = useState<string | null>(null);
   const [manualTierOverride, setManualTierOverride] = useState(false);
   const [tierOverrides, setTierOverrides] = useState<Record<string, string>>({});
+  const [severityFilter, setSeverityFilter] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchSummary = useCallback(async () => {
     setLoadStatus("loading");
@@ -130,11 +134,59 @@ export default function ResultsSummaryPage() {
   const breakdown =
     summary !== null ? severityBreakdown(summary.clusters) : null;
 
+  const filteredClusters = useMemo(() => {
+    if (summary === null || !summary.clusters.length) return [];
+    let list = summary.clusters;
+    const sev = severityFilter.trim().toLowerCase();
+    if (sev && SEVERITY_ORDER.includes(sev)) {
+      list = list.filter(
+        (c) => String(c.severity ?? "").toLowerCase().trim() === sev
+      );
+    }
+    const query = searchQuery.trim().slice(0, MAX_SEARCH_LENGTH).toLowerCase();
+    if (!query) return list;
+    return list.filter((c) => {
+      const vid = String(c.vulnerability_id ?? "").toLowerCase();
+      const dep = String(c.dependency ?? "").toLowerCase();
+      const repo = String(c.repo ?? "").toLowerCase();
+      return vid.includes(query) || dep.includes(query) || repo.includes(query);
+    });
+  }, [summary, severityFilter, searchQuery]);
+
+  const handleRefresh = useCallback(() => {
+    fetchSummary();
+  }, [fetchSummary]);
+
+  const handleSeverityFilterChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSeverityFilter(e.target.value);
+    },
+    []
+  );
+
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchQuery(e.target.value);
+    },
+    []
+  );
+
   return (
     <main style={{ padding: "2rem", maxWidth: "40rem", margin: "0 auto" }}>
-      <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>
-        Results summary
-      </h1>
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem", flexWrap: "wrap" }}>
+        <h1 style={{ fontSize: "1.25rem", margin: 0 }}>
+          Results summary
+        </h1>
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={loadStatus === "loading"}
+          aria-busy={loadStatus === "loading"}
+          aria-label={loadStatus === "loading" ? "Refreshing" : "Refresh clusters and metrics"}
+        >
+          {loadStatus === "loading" ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
 
       <nav style={{ marginBottom: "1.5rem" }}>
         <Link
@@ -236,6 +288,27 @@ export default function ResultsSummaryPage() {
                   {summary.metrics.cluster_count}
                 </td>
               </tr>
+              <tr>
+                <td
+                  style={{
+                    padding: "0.5rem 0.75rem",
+                    borderBottom: "1px solid #e5e7eb",
+                  }}
+                >
+                  Compression ratio
+                </td>
+                <td
+                  style={{
+                    padding: "0.5rem 0.75rem",
+                    borderBottom: "1px solid #e5e7eb",
+                    textAlign: "right",
+                  }}
+                >
+                  {typeof summary.metrics.compression_ratio === "number"
+                    ? summary.metrics.compression_ratio.toFixed(2)
+                    : summary.metrics.compression_ratio}
+                </td>
+              </tr>
               {breakdown !== null &&
                 SEVERITY_ORDER.map((sev) => (
                   <tr key={sev}>
@@ -260,6 +333,106 @@ export default function ResultsSummaryPage() {
                 ))}
             </tbody>
           </table>
+
+          <section style={{ marginBottom: "1.5rem" }} aria-label="Cluster list and filters">
+            <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Clusters</h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem 1rem", marginBottom: "0.75rem", alignItems: "center" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ whiteSpace: "nowrap" }}>Severity</span>
+                <select
+                  value={severityFilter}
+                  onChange={handleSeverityFilterChange}
+                  aria-label="Filter clusters by severity"
+                  style={{ minWidth: "8rem" }}
+                >
+                  <option value="">All</option>
+                  {SEVERITY_ORDER.map((s) => (
+                    <option key={s} value={s}>
+                      {capitalizeSeverity(s)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", flex: "1 1 12rem", minWidth: 0 }}>
+                <span style={{ whiteSpace: "nowrap" }}>Search</span>
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  placeholder="vulnerability_id, dependency, repo…"
+                  aria-label="Search clusters by vulnerability ID, dependency, or repo"
+                  maxLength={MAX_SEARCH_LENGTH}
+                  style={{ flex: 1, minWidth: 0 }}
+                />
+              </label>
+            </div>
+            <div
+              style={{
+                border: "1px solid #e5e7eb",
+                borderRadius: "4px",
+                overflow: "auto",
+                maxHeight: "24rem",
+              }}
+              role="region"
+              aria-label="Cluster list"
+            >
+              <table
+                style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}
+                aria-label="Cluster list: vulnerability ID, severity, repo, dependency, file path, finding count, affected services"
+              >
+                <thead>
+                  <tr style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#f9fafb" }}>
+                    <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Vulnerability ID
+                    </th>
+                    <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Severity
+                    </th>
+                    <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Repo
+                    </th>
+                    <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Dependency
+                    </th>
+                    <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      File path
+                    </th>
+                    <th scope="col" style={{ textAlign: "right", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Finding count
+                    </th>
+                    <th scope="col" style={{ textAlign: "right", padding: "0.5rem 0.75rem", whiteSpace: "nowrap" }}>
+                      Affected services
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredClusters.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} style={{ padding: "0.75rem" }}>
+                        {summary.clusters.length === 0
+                          ? "No clusters."
+                          : "No clusters match the current filters."}
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredClusters.map((cluster) => (
+                      <tr key={cluster.vulnerability_id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                        <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }} title={cluster.vulnerability_id}>
+                          {cluster.vulnerability_id}
+                        </td>
+                        <td style={{ padding: "0.5rem 0.75rem" }}>{capitalizeSeverity(cluster.severity)}</td>
+                        <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }}>{cluster.repo}</td>
+                        <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }}>{cluster.dependency ?? "—"}</td>
+                        <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }}>{cluster.file_path ?? "—"}</td>
+                        <td style={{ padding: "0.5rem 0.75rem", textAlign: "right" }}>{cluster.finding_count}</td>
+                        <td style={{ padding: "0.5rem 0.75rem", textAlign: "right" }}>{cluster.affected_services_count}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </section>
 
           <div style={{ marginBottom: "1rem" }}>
             <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: manualTierOverride ? "0.75rem" : 0 }}>

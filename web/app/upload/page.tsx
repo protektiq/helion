@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import type { UploadResponse } from "@/lib/types";
+import type { UploadResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
@@ -14,6 +15,9 @@ export default function UploadPage() {
     null
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [validationDetails, setValidationDetails] = useState<
+    ValidationError[] | null
+  >(null);
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,6 +26,7 @@ export default function UploadPage() {
       setStatus("idle");
       setSuccessPayload(null);
       setErrorMessage(null);
+      setValidationDetails(null);
     },
     []
   );
@@ -44,6 +49,7 @@ export default function UploadPage() {
       setStatus("uploading");
       setSuccessPayload(null);
       setErrorMessage(null);
+      setValidationDetails(null);
 
       try {
         const client = createApiClient();
@@ -51,7 +57,17 @@ export default function UploadPage() {
         setSuccessPayload(data);
         setStatus("success");
       } catch (err) {
-        setErrorMessage(getErrorMessage(err));
+        const apiErr = err as { detail?: ValidationError[] };
+        if (
+          Array.isArray(apiErr?.detail) &&
+          apiErr.detail.length > 0
+        ) {
+          setValidationDetails(apiErr.detail);
+          setErrorMessage(null);
+        } else {
+          setValidationDetails(null);
+          setErrorMessage(getErrorMessage(err));
+        }
         setStatus("error");
       }
     },
@@ -88,7 +104,19 @@ export default function UploadPage() {
         </button>
       </form>
 
-      {status === "error" && errorMessage !== null && errorMessage !== "" && (
+      {status === "error" && validationDetails !== null && validationDetails.length > 0 && (
+        <div role="alert" style={{ marginTop: "1rem", marginBottom: "1rem", color: "#b91c1c" }}>
+          <p style={{ margin: "0 0 0.5rem 0" }}>Validation errors:</p>
+          <ul style={{ margin: 0, paddingLeft: "1.25rem" }}>
+            {validationDetails.map((v, i) => (
+              <li key={i} style={{ marginBottom: "0.25rem" }}>
+                {v.loc?.length ? `${v.loc.join(" → ")}: ` : ""}{v.msg}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {status === "error" && (errorMessage !== null && errorMessage !== "") && validationDetails === null && (
         <ErrorAlert message={errorMessage} />
       )}
       <div
@@ -101,7 +129,23 @@ export default function UploadPage() {
         )}
         {status === "uploading" && <p>Uploading…</p>}
         {status === "success" && successPayload !== null && (
-          <p>Done. Accepted: {successPayload.accepted}</p>
+          <div>
+            <p>
+              Done. Accepted: {successPayload.accepted}
+              {successPayload.ids && successPayload.ids.length > 0
+                ? `. IDs: ${successPayload.ids.length}`
+                : ""}
+            </p>
+            <p style={{ marginTop: "0.5rem" }}>
+              <Link
+                href="/results"
+                style={{ color: "#2563eb", textDecoration: "underline" }}
+                aria-label="View results"
+              >
+                View results
+              </Link>
+            </p>
+          </div>
         )}
       </div>
     </main>
