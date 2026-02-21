@@ -3,6 +3,7 @@
 from pydantic import BaseModel, Field, field_validator
 
 from app.schemas.findings import VulnerabilityCluster
+from app.schemas.reasoning import ReasoningResponse
 
 # Allowed risk tier labels for manual override (case-sensitive, match jira_export and ticket_generator).
 TIER_OVERRIDE_VALUES: frozenset[str] = frozenset({"Tier 1", "Tier 2", "Tier 3"})
@@ -80,6 +81,10 @@ class TicketsRequest(BaseModel):
     tier_overrides: dict[str, str] | None = Field(
         default=None,
         description="Optional consultant override: vulnerability_id -> Tier 1 | Tier 2 | Tier 3.",
+    )
+    reasoning_response: ReasoningResponse | None = Field(
+        default=None,
+        description="Optional pre-computed reasoning from POST /reasoning; when set, used instead of use_reasoning.",
     )
 
     @field_validator("tier_overrides")

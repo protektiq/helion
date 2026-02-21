@@ -59,7 +59,17 @@ async def post_jira_export(
     tier_by_id: dict[str, ClusterRiskTierResult] = {}
     affected_services_by_id: dict[str, list[str]] = {}
 
-    if body.use_reasoning and clusters:
+    if body.reasoning_response is not None:
+        for note in body.reasoning_response.cluster_notes:
+            notes_by_id[note.vulnerability_id] = note
+            if note.assigned_tier is not None and note.assigned_tier in (1, 2, 3):
+                tier_by_id[note.vulnerability_id] = ClusterRiskTierResult(
+                    vulnerability_id=note.vulnerability_id,
+                    assigned_tier=note.assigned_tier,
+                    llm_reasoning=note.reasoning or None,
+                    override_applied=note.override_applied,
+                )
+    elif body.use_reasoning and clusters:
         settings = get_settings()
         try:
             result = await run_reasoning(clusters, settings)
