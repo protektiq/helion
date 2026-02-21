@@ -36,6 +36,11 @@ class Settings(BaseSettings):
     OLLAMA_BASE_URL: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "llama3.2"
     OLLAMA_REQUEST_TIMEOUT_SEC: float = 120.0
+    # Deterministic generation (optional; defaults give reproducible outputs)
+    OLLAMA_TEMPERATURE: float = 0.0
+    OLLAMA_TOP_P: float = 1.0
+    OLLAMA_REPEAT_PENALTY: float = 1.0
+    OLLAMA_SEED: int = 42
 
     # Jira Cloud (optional; required only for POST /api/v1/jira/export)
     JIRA_BASE_URL: str | None = None
@@ -87,6 +92,36 @@ class Settings(BaseSettings):
         if v <= 0 or v > 300:
             raise ValueError(
                 "OLLAMA_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 300"
+            )
+        return v
+
+    @field_validator("OLLAMA_TEMPERATURE")
+    @classmethod
+    def validate_ollama_temperature(cls, v: float) -> float:
+        if v < 0 or v > 2:
+            raise ValueError("OLLAMA_TEMPERATURE must be between 0 and 2")
+        return v
+
+    @field_validator("OLLAMA_TOP_P")
+    @classmethod
+    def validate_ollama_top_p(cls, v: float) -> float:
+        if v < 0 or v > 1:
+            raise ValueError("OLLAMA_TOP_P must be between 0 and 1")
+        return v
+
+    @field_validator("OLLAMA_REPEAT_PENALTY")
+    @classmethod
+    def validate_ollama_repeat_penalty(cls, v: float) -> float:
+        if v < 0.5 or v > 2:
+            raise ValueError("OLLAMA_REPEAT_PENALTY must be between 0.5 and 2")
+        return v
+
+    @field_validator("OLLAMA_SEED")
+    @classmethod
+    def validate_ollama_seed(cls, v: int) -> int:
+        if v < 0 or v > 2147483647:
+            raise ValueError(
+                "OLLAMA_SEED must be between 0 and 2147483647 (2^31-1)"
             )
         return v
 
