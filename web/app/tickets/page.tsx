@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { parsePastedClusters } from "@/lib/clusterValidation";
 import {
@@ -8,6 +9,7 @@ import {
   parseStoredReasoningResponse,
   clearStoredReasoningResponse,
 } from "@/lib/reasoningStorage";
+import { setStoredTierOverrides } from "@/lib/tierOverridesStorage";
 import type {
   ClustersResponse,
   ReasoningResponse,
@@ -181,9 +183,25 @@ export default function TicketsPage() {
     ]
   );
 
+  const flowNavStyle = { color: "#2563eb", textDecoration: "underline" as const };
+
   return (
     <main style={{ padding: "2rem", maxWidth: "56rem", margin: "0 auto" }}>
       <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>Tickets preview</h1>
+      <nav style={{ marginBottom: "1.5rem" }}>
+        <Link href="/results" style={flowNavStyle} aria-label="Go to Results">
+          Results
+        </Link>
+        {" · "}
+        <Link
+          href="/jira"
+          style={flowNavStyle}
+          aria-label="Go to Jira Export"
+          onClick={() => setStoredTierOverrides(tierOverrides)}
+        >
+          Jira Export
+        </Link>
+      </nav>
       {storedReasoning !== null && (
         <div
           style={{

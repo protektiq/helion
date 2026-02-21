@@ -8,6 +8,7 @@ import {
   parseStoredReasoningResponse,
   clearStoredReasoningResponse,
 } from "@/lib/reasoningStorage";
+import { getStoredTierOverrides } from "@/lib/tierOverridesStorage";
 import type {
   ClustersResponse,
   ReasoningResponse,
@@ -39,6 +40,7 @@ export default function JiraExportPage() {
   const [parsedClusters, setParsedClusters] = useState<VulnerabilityCluster[] | null>(null);
   const [clustersParseError, setClustersParseError] = useState<string | null>(null);
   const [tierOverrides, setTierOverrides] = useState<Record<string, string>>({});
+  const [tierOverridesRestored, setTierOverridesRestored] = useState(false);
 
   const clustersForTierTable = useMemo(() => {
     if (useDb && clustersFromDb?.clusters?.length) return clustersFromDb.clusters;
@@ -56,6 +58,15 @@ export default function JiraExportPage() {
     } catch {
       setStoredReasoning(null);
       setUseStoredNotes(false);
+    }
+    try {
+      const stored = getStoredTierOverrides();
+      if (stored !== null && Object.keys(stored).length > 0) {
+        setTierOverrides(stored);
+        setTierOverridesRestored(true);
+      }
+    } catch {
+      // ignore
     }
   }, []);
 
@@ -199,6 +210,33 @@ export default function JiraExportPage() {
             aria-label="Clear stored reasoning notes"
           >
             Clear stored notes
+          </button>
+        </div>
+      )}
+      {tierOverridesRestored && (
+        <div
+          style={{
+            marginBottom: "1rem",
+            padding: "0.75rem 1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #bfdbfe",
+            borderRadius: "4px",
+          }}
+          role="status"
+          aria-live="polite"
+        >
+          <span>Using tier overrides from Tickets page.</span>
+          <button
+            type="button"
+            onClick={() => setTierOverridesRestored(false)}
+            style={{
+              marginLeft: "0.75rem",
+              padding: "0.25rem 0.5rem",
+              fontSize: "0.875rem",
+            }}
+            aria-label="Dismiss banner"
+          >
+            Dismiss
           </button>
         </div>
       )}

@@ -196,6 +196,22 @@ export default function ResultsSummaryPage() {
         >
           Upload
         </Link>
+        {" · "}
+        <Link
+          href="/tickets"
+          style={{ color: "#2563eb", textDecoration: "underline" }}
+          aria-label="Go to Tickets"
+        >
+          Tickets
+        </Link>
+        {" · "}
+        <Link
+          href="/jira"
+          style={{ color: "#2563eb", textDecoration: "underline" }}
+          aria-label="Go to Jira Export"
+        >
+          Jira Export
+        </Link>
       </nav>
 
       {loadStatus === "loading" && (
