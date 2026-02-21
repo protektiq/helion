@@ -66,7 +66,7 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
    ollama pull llama3.2
    ```
 
-   Ensure the Ollama API is available (default: `http://localhost:11434`). Configure via `.env`: `OLLAMA_BASE_URL`, `OLLAMA_MODEL`, `OLLAMA_REQUEST_TIMEOUT_SEC` (see `.env.example`).
+   Ensure the Ollama API is available (default: `http://localhost:11434`). Configure via `.env`: `OLLAMA_BASE_URL`, `OLLAMA_MODEL`, `OLLAMA_REQUEST_TIMEOUT_SEC` (see `.env.example`). LLM calls are **deterministic by default** (temperature 0 and a fixed seed) for reproducible reasoning and exploitability outputs. To get more creative or varied reasoning, you can override these optional env vars: `OLLAMA_TEMPERATURE`, `OLLAMA_TOP_P`, `OLLAMA_REPEAT_PENALTY`, `OLLAMA_SEED` (see `.env.example` for names and example values).
 
 ## Authentication and access control
 
@@ -127,4 +127,4 @@ A minimal Next.js app in the `web/` folder provides:
 
 - **URL:** `POST http://localhost:8000/api/v1/reasoning`
 - **Body:** `{ "clusters": [ ... ] }` (list of VulnerabilityCluster) or `{ "use_db": true }` to use current clusters from the database.
-- **Response:** `{ "summary": "...", "cluster_notes": [ { "vulnerability_id", "priority", "reasoning", "assigned_tier", "override_applied" }, ... ] }`. The LLM (Ollama / Llama 3) provides `priority` and `reasoning`; **assigned risk tiers** (Tier 1/2/3) are computed deterministically by the backend (e.g. CVSS > 9 → Tier 1 unless dev-only). Final tier is AI-assisted, not AI-dependent. Requires Ollama running and the model pulled (e.g. `ollama pull llama3.2`).
+- **Response:** `{ "summary": "...", "cluster_notes": [ { "vulnerability_id", "priority", "reasoning", "assigned_tier", "override_applied" }, ... ] }`. The LLM (Ollama / Llama 3) provides `priority` and `reasoning`; **assigned risk tiers** (Tier 1/2/3) are computed deterministically by the backend (e.g. CVSS > 9 → Tier 1 unless dev-only). Final tier is AI-assisted, not AI-dependent. The reasoning and exploitability endpoints use the same deterministic LLM settings by default; the optional env vars above allow overriding for more creative behavior. Requires Ollama running and the model pulled (e.g. `ollama pull llama3.2`).
