@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import { getStoredToken } from "@/lib/api";
 import ErrorAlert from "@/app/components/ErrorAlert";
 import type {
   ClustersResponse,
@@ -64,7 +63,7 @@ export default function ResultsSummaryPage() {
     setLoadStatus("loading");
     setLoadError(null);
     try {
-      const client = createApiClient({ token: getStoredToken() });
+      const client = createApiClient();
       const data = await client.getClusters();
       setSummary(data);
       setLoadStatus("success");
@@ -108,7 +107,7 @@ export default function ResultsSummaryPage() {
         : {}),
     };
     try {
-      const client = createApiClient({ token: getStoredToken() });
+      const client = createApiClient();
       const jira: JiraExportResponse = await client.postJiraExport(body);
       const errors = Array.isArray(jira.errors) ? jira.errors : [];
       const issueCount = Array.isArray(jira.issues) ? jira.issues.length : 0;

@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import { getStoredToken } from "@/lib/api";
 import type { UsersListResponse } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
@@ -20,7 +19,7 @@ export default function AdminUsersPage() {
     setErrorMessage(null);
     setData(null);
     try {
-      const client = createApiClient({ token: getStoredToken() });
+      const client = createApiClient();
       const body = await client.listUsers();
       setData(body);
       setStatus("success");

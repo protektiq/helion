@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import { getStoredToken } from "@/lib/api";
 import type { UploadResponse } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
@@ -47,7 +46,7 @@ export default function UploadPage() {
       setErrorMessage(null);
 
       try {
-        const client = createApiClient({ token: getStoredToken() });
+        const client = createApiClient();
         const data = await client.uploadFindings(formData);
         setSuccessPayload(data);
         setStatus("success");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { AUTH_TOKEN_KEY } from "@/lib/api";
+import { clearToken, getToken, setToken as setStoredToken } from "@/lib/auth";
 
 const TOKEN_MAX_LENGTH = 4096;
 
@@ -10,30 +10,23 @@ export default function AuthTokenInput() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      const stored = localStorage.getItem(AUTH_TOKEN_KEY);
-      setToken(typeof stored === "string" ? stored : "");
-    } catch {
-      setToken("");
-    }
+    const stored = getToken();
+    setToken(typeof stored === "string" ? stored : "");
   }, []);
 
   const handleSave = useCallback(() => {
-    if (typeof window === "undefined") return;
     const trimmed = typeof token === "string" ? token.trim() : "";
-    try {
-      if (trimmed.length === 0) {
-        localStorage.removeItem(AUTH_TOKEN_KEY);
-      } else {
-        const toStore = trimmed.length > TOKEN_MAX_LENGTH ? trimmed.slice(0, TOKEN_MAX_LENGTH) : trimmed;
-        localStorage.setItem(AUTH_TOKEN_KEY, toStore);
-      }
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    } catch {
-      setSaved(false);
+    if (trimmed.length === 0) {
+      clearToken();
+    } else {
+      const toStore =
+        trimmed.length > TOKEN_MAX_LENGTH
+          ? trimmed.slice(0, TOKEN_MAX_LENGTH)
+          : trimmed;
+      setStoredToken(toStore);
     }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   }, [token]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

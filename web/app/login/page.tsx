@@ -2,8 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { setToken } from "@/lib/auth";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import { AUTH_TOKEN_KEY } from "@/lib/api";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 const USERNAME_MAX = 255;
@@ -60,15 +60,7 @@ export default function LoginPage() {
       try {
         const client = createApiClient();
         const data = await client.login({ username: u, password: p });
-        if (typeof window !== "undefined") {
-          try {
-            localStorage.setItem(AUTH_TOKEN_KEY, data.access_token);
-          } catch {
-            setErrorMessage("Could not save token to browser.");
-            setStatus("error");
-            return;
-          }
-        }
+        setToken(data.access_token);
         setStatus("success");
         router.push("/");
       } catch (err) {

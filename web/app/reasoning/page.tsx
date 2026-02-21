@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import { getStoredToken } from "@/lib/api";
 import type { ReasoningResponse } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
@@ -25,7 +24,7 @@ export default function ReasoningPage() {
       setResponse(null);
       setErrorMessage(null);
       try {
-        const client = createApiClient({ token: getStoredToken() });
+        const client = createApiClient();
         const body = await client.postReasoning({ clusters: [], use_db: useDb });
         setResponse(body);
         setStatus("success");
