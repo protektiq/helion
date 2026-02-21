@@ -81,6 +81,12 @@ async def run_reasoning(
         "prompt": _build_prompt(clusters),
         "stream": False,
         "format": "json",
+        "options": {
+            "temperature": settings.OLLAMA_TEMPERATURE,
+            "top_p": settings.OLLAMA_TOP_P,
+            "repeat_penalty": settings.OLLAMA_REPEAT_PENALTY,
+            "seed": settings.OLLAMA_SEED,
+        },
     }
     timeout = httpx.Timeout(settings.OLLAMA_REQUEST_TIMEOUT_SEC)
     start = time.perf_counter()
