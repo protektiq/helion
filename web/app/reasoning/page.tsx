@@ -4,8 +4,12 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import { setStoredReasoningResponse } from "@/lib/reasoningStorage";
-import { parsePastedClusters, MAX_CLUSTERS } from "@/lib/clusterValidation";
-import type { ReasoningResponse, ValidationError, VulnerabilityCluster } from "@/lib/types";
+import {
+  parsePastedClusters,
+  rankClusters,
+  MAX_CLUSTERS,
+} from "@/lib/clusterValidation";
+import type { ReasoningResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
@@ -18,6 +22,10 @@ export default function ReasoningPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
   const [storedConfirm, setStoredConfirm] = useState(false);
+  const [dbSliceInfo, setDbSliceInfo] = useState<{
+    total: number;
+    sending: number;
+  } | null>(null);
 
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUseDb(e.target.checked);
@@ -34,6 +42,7 @@ export default function ReasoningPage() {
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setStoredConfirm(false);
+      setDbSliceInfo(null);
       if (!useDb) {
         const [clusters, parseError] = parsePastedClusters(clustersJson);
         if (parseError !== null || clusters === null) {
@@ -66,9 +75,24 @@ export default function ReasoningPage() {
       setResponse(null);
       setErrorMessage(null);
       setErrorDetail(null);
+      const client = createApiClient();
       try {
-        const client = createApiClient();
-        const body = await client.postReasoning({ clusters: [], use_db: true });
+        const clustersResponse = await client.getClusters();
+        const ranked = rankClusters(clustersResponse.clusters);
+        const clustersToSend =
+          ranked.length > MAX_CLUSTERS
+            ? ranked.slice(0, MAX_CLUSTERS)
+            : ranked;
+        if (ranked.length > MAX_CLUSTERS) {
+          setDbSliceInfo({
+            total: ranked.length,
+            sending: clustersToSend.length,
+          });
+        }
+        const body = await client.postReasoning({
+          clusters: clustersToSend,
+          use_db: false,
+        });
         setResponse(body);
         setStatus("success");
       } catch (err) {
@@ -151,6 +175,29 @@ export default function ReasoningPage() {
           {status === "submitting" ? "Running…" : "Run reasoning"}
         </button>
       </form>
+      {dbSliceInfo !== null && (
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
+            marginBottom: "1rem",
+            padding: "0.75rem 1rem",
+            backgroundColor: "#eff6ff",
+            border: "1px solid #bfdbfe",
+            borderRadius: "4px",
+            fontSize: "0.875rem",
+            color: "#1e40af",
+          }}
+        >
+          <div>
+            {dbSliceInfo.total} clusters found. Running reasoning on top 100 by
+            severity/CVSS.
+          </div>
+          <div style={{ marginTop: "0.25rem" }}>
+            Sending {dbSliceInfo.sending} / {dbSliceInfo.total} clusters.
+          </div>
+        </div>
+      )}
       {status === "error" &&
         errorMessage !== null &&
         errorMessage !== "" && (
