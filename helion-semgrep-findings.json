@@ -1,0 +1,2644 @@
+[
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/dbSchemaChallenge_1.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (data/static/codefixes/dbSchemaChallenge_1.ts:5)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "data/static/codefixes/dbSchemaChallenge_1.ts",
+      "start": {
+        "line": 5,
+        "col": 28,
+        "offset": 284
+      },
+      "end": {
+        "line": 5,
+        "col": 162,
+        "offset": 418
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/dbSchemaChallenge_3.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (data/static/codefixes/dbSchemaChallenge_3.ts:11)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "data/static/codefixes/dbSchemaChallenge_3.ts",
+      "start": {
+        "line": 11,
+        "col": 28,
+        "offset": 419
+      },
+      "end": {
+        "line": 11,
+        "col": 159,
+        "offset": 550
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+    "severity": "low",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/restfulXssChallenge_2.ts",
+    "dependency": "",
+    "description": "Detected a call to `replaceAll()` in an attempt to HTML escape the string `tableData[i].description`. Manually sanitizing input through a manually built list can be circumvented in many situations, and it's better to use a well known sanitization library such as `sanitize-html` or `DOMPurify`. (data/static/codefixes/restfulXssChallenge_2.ts:62)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+      "path": "data/static/codefixes/restfulXssChallenge_2.ts",
+      "start": {
+        "line": 62,
+        "col": 34,
+        "offset": 2159
+      },
+      "end": {
+        "line": 62,
+        "col": 82,
+        "offset": 2207
+      },
+      "extra": {
+        "message": "Detected a call to `replaceAll()` in an attempt to HTML escape the string `tableData[i].description`. Manually sanitizing input through a manually built list can be circumvented in many situations, and it's better to use a well known sanitization library such as `sanitize-html` or `DOMPurify`.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "javascript",
+            "typescript"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/dompurify",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+          "shortlink": "https://sg.run/AzoB"
+        },
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+    "severity": "low",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/restfulXssChallenge_2.ts",
+    "dependency": "",
+    "description": "Detected a call to `replaceAll()` in an attempt to HTML escape the string `tableData[i].description.replaceAll('<', '&lt;')`. Manually sanitizing input through a manually built list can be circumvented in many situations, and it's better to use a well known sanitization library such as `sanitize-html` or `DOMPurify`. (data/static/codefixes/restfulXssChallenge_2.ts:62)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+      "path": "data/static/codefixes/restfulXssChallenge_2.ts",
+      "start": {
+        "line": 62,
+        "col": 34,
+        "offset": 2159
+      },
+      "end": {
+        "line": 62,
+        "col": 106,
+        "offset": 2231
+      },
+      "extra": {
+        "message": "Detected a call to `replaceAll()` in an attempt to HTML escape the string `tableData[i].description.replaceAll('<', '&lt;')`. Manually sanitizing input through a manually built list can be circumvented in many situations, and it's better to use a well known sanitization library such as `sanitize-html` or `DOMPurify`.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "javascript",
+            "typescript"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/dompurify",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.audit.detect-replaceall-sanitization.detect-replaceall-sanitization",
+          "shortlink": "https://sg.run/AzoB"
+        },
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/unionSqlInjectionChallenge_1.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (data/static/codefixes/unionSqlInjectionChallenge_1.ts:6)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "data/static/codefixes/unionSqlInjectionChallenge_1.ts",
+      "start": {
+        "line": 6,
+        "col": 28,
+        "offset": 326
+      },
+      "end": {
+        "line": 6,
+        "col": 159,
+        "offset": 457
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/codefixes/unionSqlInjectionChallenge_3.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (data/static/codefixes/unionSqlInjectionChallenge_3.ts:10)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "data/static/codefixes/unionSqlInjectionChallenge_3.ts",
+      "start": {
+        "line": 10,
+        "col": 28,
+        "offset": 458
+      },
+      "end": {
+        "line": 10,
+        "col": 159,
+        "offset": 589
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "data/static/users.yml",
+    "dependency": "",
+    "description": "Generic Secret detected (data/static/users.yml:150)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "generic.secrets.security.detected-generic-secret.detected-generic-secret",
+      "path": "data/static/users.yml",
+      "start": {
+        "line": 150,
+        "col": 7,
+        "offset": 3500
+      },
+      "end": {
+        "line": 150,
+        "col": 47,
+        "offset": 3540
+      },
+      "extra": {
+        "message": "Generic Secret detected",
+        "metadata": {
+          "cwe": [
+            "CWE-798: Use of Hard-coded Credentials"
+          ],
+          "source-rule-url": "https://github.com/dxa4481/truffleHogRegexes/blob/master/truffleHogRegexes/regexes.json",
+          "category": "security",
+          "technology": [
+            "secrets"
+          ],
+          "confidence": "LOW",
+          "owasp": [
+            "A07:2021 - Identification and Authentication Failures",
+            "A07:2025 - Authentication Failures"
+          ],
+          "references": [
+            "https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Hard-coded Secrets"
+          ],
+          "source": "https://semgrep.dev/r/generic.secrets.security.detected-generic-secret.detected-generic-secret",
+          "shortlink": "https://sg.run/l2o5"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/app/app.guard.spec.ts",
+    "dependency": "",
+    "description": "JWT token detected (frontend/src/app/app.guard.spec.ts:38)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+      "path": "frontend/src/app/app.guard.spec.ts",
+      "start": {
+        "line": 38,
+        "col": 36,
+        "offset": 1466
+      },
+      "end": {
+        "line": 38,
+        "col": 148,
+        "offset": 1578
+      },
+      "extra": {
+        "message": "JWT token detected",
+        "metadata": {
+          "source-rule-url": "https://github.com/Yelp/detect-secrets/blob/master/detect_secrets/plugins/jwt.py",
+          "category": "security",
+          "technology": [
+            "secrets",
+            "jwt"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://semgrep.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/"
+          ],
+          "cwe": [
+            "CWE-321: Use of Hard-coded Cryptographic Key"
+          ],
+          "owasp": [
+            "A02:2021 - Cryptographic Failures",
+            "A04:2025 - Cryptographic Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/generic.secrets.security.detected-jwt-token.detected-jwt-token",
+          "shortlink": "https://sg.run/05N5"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/app/last-login-ip/last-login-ip.component.spec.ts",
+    "dependency": "",
+    "description": "JWT token detected (frontend/src/app/last-login-ip/last-login-ip.component.spec.ts:61)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+      "path": "frontend/src/app/last-login-ip/last-login-ip.component.spec.ts",
+      "start": {
+        "line": 61,
+        "col": 36,
+        "offset": 2220
+      },
+      "end": {
+        "line": 61,
+        "col": 120,
+        "offset": 2304
+      },
+      "extra": {
+        "message": "JWT token detected",
+        "metadata": {
+          "source-rule-url": "https://github.com/Yelp/detect-secrets/blob/master/detect_secrets/plugins/jwt.py",
+          "category": "security",
+          "technology": [
+            "secrets",
+            "jwt"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://semgrep.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/"
+          ],
+          "cwe": [
+            "CWE-321: Use of Hard-coded Cryptographic Key"
+          ],
+          "owasp": [
+            "A02:2021 - Cryptographic Failures",
+            "A04:2025 - Cryptographic Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/generic.secrets.security.detected-jwt-token.detected-jwt-token",
+          "shortlink": "https://sg.run/05N5"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/app/last-login-ip/last-login-ip.component.spec.ts",
+    "dependency": "",
+    "description": "JWT token detected (frontend/src/app/last-login-ip/last-login-ip.component.spec.ts:67)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "generic.secrets.security.detected-jwt-token.detected-jwt-token",
+      "path": "frontend/src/app/last-login-ip/last-login-ip.component.spec.ts",
+      "start": {
+        "line": 67,
+        "col": 36,
+        "offset": 2661
+      },
+      "end": {
+        "line": 67,
+        "col": 89,
+        "offset": 2714
+      },
+      "extra": {
+        "message": "JWT token detected",
+        "metadata": {
+          "source-rule-url": "https://github.com/Yelp/detect-secrets/blob/master/detect_secrets/plugins/jwt.py",
+          "category": "security",
+          "technology": [
+            "secrets",
+            "jwt"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://semgrep.dev/blog/2020/hardcoded-secrets-unverified-tokens-and-other-common-jwt-mistakes/"
+          ],
+          "cwe": [
+            "CWE-321: Use of Hard-coded Cryptographic Key"
+          ],
+          "owasp": [
+            "A02:2021 - Cryptographic Failures",
+            "A04:2025 - Cryptographic Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/generic.secrets.security.detected-jwt-token.detected-jwt-token",
+          "shortlink": "https://sg.run/05N5"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/assets/private/three.js",
+    "dependency": "",
+    "description": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities (frontend/src/assets/private/three.js:11375)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+      "path": "frontend/src/assets/private/three.js",
+      "start": {
+        "line": 11375,
+        "col": 3,
+        "offset": 225410
+      },
+      "end": {
+        "line": 11375,
+        "col": 45,
+        "offset": 225452
+      },
+      "extra": {
+        "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "category": "security",
+          "technology": [
+            "browser"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A03_2021-Injection"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.browser.security.insecure-document-method.insecure-document-method",
+          "shortlink": "https://sg.run/LwA9"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/hacking-instructor/helpers/helpers.ts",
+    "dependency": "",
+    "description": "Possibility of prototype polluting function detected. By adding or modifying attributes of an object prototype, it is possible to create attributes that exist on every object, or replace critical attributes with malicious ones. This can be problematic if the software depends on existence or non-existence of certain attributes, or uses pre-defined attributes of object prototype (such as hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, using an object without prototypes (via Object.create(null) ), blocking modifications of attributes that resolve to object prototype, using Map instead of object. (frontend/src/hacking-instructor/helpers/helpers.ts:38)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop",
+      "path": "frontend/src/hacking-instructor/helpers/helpers.ts",
+      "start": {
+        "line": 38,
+        "col": 9,
+        "offset": 1027
+      },
+      "end": {
+        "line": 38,
+        "col": 54,
+        "offset": 1072
+      },
+      "extra": {
+        "message": "Possibility of prototype polluting function detected. By adding or modifying attributes of an object prototype, it is possible to create attributes that exist on every object, or replace critical attributes with malicious ones. This can be problematic if the software depends on existence or non-existence of certain attributes, or uses pre-defined attributes of object prototype (such as hasOwnProperty, toString or valueOf). Possible mitigations might be: freezing the object prototype, using an object without prototypes (via Object.create(null) ), blocking modifications of attributes that resolve to object prototype, using Map instead of object.",
+        "metadata": {
+          "cwe": [
+            "CWE-915: Improperly Controlled Modification of Dynamically-Determined Object Attributes"
+          ],
+          "category": "security",
+          "references": [
+            "https://github.com/HoLyVieR/prototype-pollution-nsec18/blob/master/paper/JavaScript_prototype_pollution_attack_in_NodeJS.pdf"
+          ],
+          "technology": [
+            "typescript"
+          ],
+          "owasp": [
+            "A08:2021 - Software and Data Integrity Failures",
+            "A08:2025 - Software or Data Integrity Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mass Assignment"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.prototype-pollution.prototype-pollution-loop.prototype-pollution-loop",
+          "shortlink": "https://sg.run/w1DB"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/hacking-instructor/index.ts",
+    "dependency": "",
+    "description": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities (frontend/src/hacking-instructor/index.ts:122)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.browser.security.insecure-document-method.insecure-document-method",
+      "path": "frontend/src/hacking-instructor/index.ts",
+      "start": {
+        "line": 122,
+        "col": 3,
+        "offset": 3888
+      },
+      "end": {
+        "line": 122,
+        "col": 43,
+        "offset": 3928
+      },
+      "extra": {
+        "message": "User controlled data in methods like `innerHTML`, `outerHTML` or `document.write` is an anti-pattern that can lead to XSS vulnerabilities",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "category": "security",
+          "technology": [
+            "browser"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A03_2021-Injection"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.browser.security.insecure-document-method.insecure-document-method",
+          "shortlink": "https://sg.run/LwA9"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "html.security.audit.missing-integrity.missing-integrity",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/index.html",
+    "dependency": "",
+    "description": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files. (frontend/src/index.html:14)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "html.security.audit.missing-integrity.missing-integrity",
+      "path": "frontend/src/index.html",
+      "start": {
+        "line": 14,
+        "col": 3,
+        "offset": 494
+      },
+      "end": {
+        "line": 14,
+        "col": 127,
+        "offset": 618
+      },
+      "extra": {
+        "message": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-353: Missing Support for Integrity Check"
+          ],
+          "owasp": [
+            "A08:2021 - Software and Data Integrity Failures",
+            "A08:2025 - Software or Data Integrity Failures"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/html.security.audit.missing-integrity.missing-integrity",
+          "shortlink": "https://sg.run/krXA"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "html.security.audit.missing-integrity.missing-integrity",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/index.html",
+    "dependency": "",
+    "description": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files. (frontend/src/index.html:15)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "html.security.audit.missing-integrity.missing-integrity",
+      "path": "frontend/src/index.html",
+      "start": {
+        "line": 15,
+        "col": 3,
+        "offset": 621
+      },
+      "end": {
+        "line": 15,
+        "col": 101,
+        "offset": 719
+      },
+      "extra": {
+        "message": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-353: Missing Support for Integrity Check"
+          ],
+          "owasp": [
+            "A08:2021 - Software and Data Integrity Failures",
+            "A08:2025 - Software or Data Integrity Failures"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/html.security.audit.missing-integrity.missing-integrity",
+          "shortlink": "https://sg.run/krXA"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "html.security.audit.missing-integrity.missing-integrity",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "frontend/src/index.html",
+    "dependency": "",
+    "description": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files. (frontend/src/index.html:16)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "html.security.audit.missing-integrity.missing-integrity",
+      "path": "frontend/src/index.html",
+      "start": {
+        "line": 16,
+        "col": 3,
+        "offset": 722
+      },
+      "end": {
+        "line": 16,
+        "col": 86,
+        "offset": 805
+      },
+      "extra": {
+        "message": "This tag is missing an 'integrity' subresource integrity attribute. The 'integrity' attribute allows for the browser to verify that externally hosted files (for example from a CDN) are delivered without unexpected manipulation. Without this attribute, if an attacker can modify the externally hosted resource, this could lead to XSS and other types of attacks. To prevent this, include the base64-encoded cryptographic hash of the resource (file) you’re telling the browser to fetch in the 'integrity' attribute for all externally hosted files.",
+        "metadata": {
+          "category": "security",
+          "technology": [
+            "html"
+          ],
+          "cwe": [
+            "CWE-353: Missing Support for Integrity Check"
+          ],
+          "owasp": [
+            "A08:2021 - Software and Data Integrity Failures",
+            "A08:2025 - Software or Data Integrity Failures"
+          ],
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cryptographic Issues"
+          ],
+          "source": "https://semgrep.dev/r/html.security.audit.missing-integrity.missing-integrity",
+          "shortlink": "https://sg.run/krXA"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "lib/codingChallenges.ts",
+    "dependency": "",
+    "description": "RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on user-controlled input, consider performing input validation or use a regex checking/sanitization library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear vulnerable to ReDoS. (lib/codingChallenges.ts:76)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+      "path": "lib/codingChallenges.ts",
+      "start": {
+        "line": 76,
+        "col": 9,
+        "offset": 2985
+      },
+      "end": {
+        "line": 76,
+        "col": 67,
+        "offset": 3043
+      },
+      "extra": {
+        "message": "RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on user-controlled input, consider performing input validation or use a regex checking/sanitization library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear vulnerable to ReDoS.",
+        "metadata": {
+          "owasp": [
+            "A05:2021 - Security Misconfiguration",
+            "A06:2017 - Security Misconfiguration",
+            "A02:2025 - Security Misconfiguration"
+          ],
+          "cwe": [
+            "CWE-1333: Inefficient Regular Expression Complexity"
+          ],
+          "references": [
+            "https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS"
+          ],
+          "source-rule-url": "https://github.com/nodesecurity/eslint-plugin-security/blob/master/rules/detect-non-literal-regexp.js",
+          "category": "security",
+          "technology": [
+            "javascript"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Denial-of-Service (DoS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+          "shortlink": "https://sg.run/gr65"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "lib/codingChallenges.ts",
+    "dependency": "",
+    "description": "RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on user-controlled input, consider performing input validation or use a regex checking/sanitization library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear vulnerable to ReDoS. (lib/codingChallenges.ts:78)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+      "path": "lib/codingChallenges.ts",
+      "start": {
+        "line": 78,
+        "col": 16,
+        "offset": 3113
+      },
+      "end": {
+        "line": 78,
+        "col": 77,
+        "offset": 3174
+      },
+      "extra": {
+        "message": "RegExp() called with a `challengeKey` function argument, this might allow an attacker to cause a Regular Expression Denial-of-Service (ReDoS) within your application as RegExP blocks the main thread. For this reason, it is recommended to use hardcoded regexes instead. If your regex is run on user-controlled input, consider performing input validation or use a regex checking/sanitization library such as https://www.npmjs.com/package/recheck to verify that the regex does not appear vulnerable to ReDoS.",
+        "metadata": {
+          "owasp": [
+            "A05:2021 - Security Misconfiguration",
+            "A06:2017 - Security Misconfiguration",
+            "A02:2025 - Security Misconfiguration"
+          ],
+          "cwe": [
+            "CWE-1333: Inefficient Regular Expression Complexity"
+          ],
+          "references": [
+            "https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS"
+          ],
+          "source-rule-url": "https://github.com/nodesecurity/eslint-plugin-security/blob/master/rules/detect-non-literal-regexp.js",
+          "category": "security",
+          "technology": [
+            "javascript"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Denial-of-Service (DoS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.detect-non-literal-regexp.detect-non-literal-regexp",
+          "shortlink": "https://sg.run/gr65"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "lib/insecurity.ts",
+    "dependency": "",
+    "description": "Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such as reading the secret from a config file or using an environment variable. (lib/insecurity.ts:44)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+      "path": "lib/insecurity.ts",
+      "start": {
+        "line": 44,
+        "col": 39,
+        "offset": 2342
+      },
+      "end": {
+        "line": 44,
+        "col": 94,
+        "offset": 2397
+      },
+      "extra": {
+        "message": "Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such as reading the secret from a config file or using an environment variable.",
+        "metadata": {
+          "interfile": true,
+          "category": "security",
+          "technology": [
+            "crypto",
+            "hmac"
+          ],
+          "references": [
+            "https://rules.sonarsource.com/javascript/RSPEC-2068",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#key-management"
+          ],
+          "owasp": [
+            "A07:2021 - Identification and Authentication Failures",
+            "A07:2025 - Authentication Failures"
+          ],
+          "cwe": [
+            "CWE-798: Use of Hard-coded Credentials"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Hard-coded Secrets"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+          "shortlink": "https://sg.run/K9bn"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "lib/insecurity.ts",
+    "dependency": "",
+    "description": "A hard-coded credential was detected. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module). (lib/insecurity.ts:56)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+      "path": "lib/insecurity.ts",
+      "start": {
+        "line": 56,
+        "col": 56,
+        "offset": 2827
+      },
+      "end": {
+        "line": 56,
+        "col": 66,
+        "offset": 2837
+      },
+      "extra": {
+        "message": "A hard-coded credential was detected. It is not recommended to store credentials in source-code, as this risks secrets being leaked and used by either an internal or external malicious adversary. It is recommended to use environment variables to securely provide credentials or retrieve credentials from a secure vault or HSM (Hardware Security Module).",
+        "metadata": {
+          "cwe": [
+            "CWE-798: Use of Hard-coded Credentials"
+          ],
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html"
+          ],
+          "owasp": [
+            "A07:2021 - Identification and Authentication Failures",
+            "A07:2025 - Authentication Failures"
+          ],
+          "asvs": {
+            "control_id": "3.5.2 Static API keys or secret",
+            "control_url": "https://github.com/OWASP/ASVS/blob/master/4.0/en/0x12-V3-Session-management.md#v35-token-based-session-management",
+            "section": "V3: Session Management Verification Requirements",
+            "version": "4"
+          },
+          "category": "security",
+          "technology": [
+            "jwt",
+            "javascript",
+            "secrets"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Hard-coded Secrets"
+          ],
+          "source": "https://semgrep.dev/r/javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+          "shortlink": "https://sg.run/4xN9"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "lib/insecurity.ts",
+    "dependency": "",
+    "description": "Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such as reading the secret from a config file or using an environment variable. (lib/insecurity.ts:152)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+      "path": "lib/insecurity.ts",
+      "start": {
+        "line": 152,
+        "col": 16,
+        "offset": 6281
+      },
+      "end": {
+        "line": 152,
+        "col": 55,
+        "offset": 6320
+      },
+      "extra": {
+        "message": "Detected a hardcoded hmac key. Avoid hardcoding secrets and consider using an alternate option such as reading the secret from a config file or using an environment variable.",
+        "metadata": {
+          "interfile": true,
+          "category": "security",
+          "technology": [
+            "crypto",
+            "hmac"
+          ],
+          "references": [
+            "https://rules.sonarsource.com/javascript/RSPEC-2068",
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#key-management"
+          ],
+          "owasp": [
+            "A07:2021 - Identification and Authentication Failures",
+            "A07:2025 - Authentication Failures"
+          ],
+          "cwe": [
+            "CWE-798: Use of Hard-coded Credentials"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Hard-coded Secrets"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.hardcoded-hmac-key.hardcoded-hmac-key",
+          "shortlink": "https://sg.run/K9bn"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-detect-notevil-usage.express-detect-notevil-usage",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/b2bOrder.ts",
+    "dependency": "",
+    "description": "Detected usage of the `notevil` package, which is unmaintained and has vulnerabilities. Using any sort of `eval()` functionality can be very dangerous, but if you must, the `eval` package is an up to date alternative. Be sure that only trusted input reaches an `eval()` function. (routes/b2bOrder.ts:23)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-detect-notevil-usage.express-detect-notevil-usage",
+      "path": "routes/b2bOrder.ts",
+      "start": {
+        "line": 23,
+        "col": 9,
+        "offset": 907
+      },
+      "end": {
+        "line": 23,
+        "col": 80,
+        "offset": 978
+      },
+      "extra": {
+        "message": "Detected usage of the `notevil` package, which is unmaintained and has vulnerabilities. Using any sort of `eval()` functionality can be very dangerous, but if you must, the `eval` package is an up to date alternative. Be sure that only trusted input reaches an `eval()` function.",
+        "metadata": {
+          "category": "security",
+          "references": [
+            "https://github.com/mmckegg/notevil"
+          ],
+          "cwe": [
+            "CWE-1104: Use of Unmaintained Third Party Components"
+          ],
+          "owasp": [
+            "A06:2021 - Vulnerable and Outdated Components",
+            "A03:2025 - Software Supply Chain Failures"
+          ],
+          "technology": [
+            "javascript",
+            "typescript"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "HIGH",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Other"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-detect-notevil-usage.express-detect-notevil-usage",
+          "shortlink": "https://sg.run/W70E"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.browser.security.eval-detected.eval-detected",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/captcha.ts",
+    "dependency": "",
+    "description": "Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this content can be input from outside the program, this may be a code injection vulnerability. Ensure evaluated content is not definable by external sources. (routes/captcha.ts:23)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.browser.security.eval-detected.eval-detected",
+      "path": "routes/captcha.ts",
+      "start": {
+        "line": 23,
+        "col": 20,
+        "offset": 919
+      },
+      "end": {
+        "line": 23,
+        "col": 36,
+        "offset": 935
+      },
+      "extra": {
+        "message": "Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this content can be input from outside the program, this may be a code injection vulnerability. Ensure evaluated content is not definable by external sources.",
+        "metadata": {
+          "cwe": [
+            "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+          ],
+          "owasp": [
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "asvs": {
+            "control_id": "5.2.4 Dynamic Code Execution Features",
+            "control_url": "https://github.com/OWASP/ASVS/blob/master/4.0/en/0x13-V5-Validation-Sanitization-Encoding.md#v52-sanitization-and-sandboxing",
+            "section": "V5 Validation, Sanitization and Encoding",
+            "version": "4"
+          },
+          "category": "security",
+          "technology": [
+            "browser"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A03_2021-Injection"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Code Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.browser.security.eval-detected.eval-detected",
+          "shortlink": "https://sg.run/7ope"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.injection.raw-html-format.raw-html-format",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/chatbot.ts",
+    "dependency": "",
+    "description": "User data flows into the host portion of this manually-constructed HTML. This can introduce a Cross-Site-Scripting (XSS) vulnerability if this comes from user-provided input. Consider using a sanitization library such as DOMPurify to sanitize the HTML within. (routes/chatbot.ts:197)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.injection.raw-html-format.raw-html-format",
+      "path": "routes/chatbot.ts",
+      "start": {
+        "line": 197,
+        "col": 46,
+        "offset": 6083
+      },
+      "end": {
+        "line": 197,
+        "col": 56,
+        "offset": 6093
+      },
+      "extra": {
+        "message": "User data flows into the host portion of this manually-constructed HTML. This can introduce a Cross-Site-Scripting (XSS) vulnerability if this comes from user-provided input. Consider using a sanitization library such as DOMPurify to sanitize the HTML within.",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.injection.raw-html-format.raw-html-format",
+          "shortlink": "https://sg.run/5DO3"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/fileServer.ts",
+    "dependency": "",
+    "description": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing. (routes/fileServer.ts:33)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+      "path": "routes/fileServer.ts",
+      "start": {
+        "line": 33,
+        "col": 20,
+        "offset": 1142
+      },
+      "end": {
+        "line": 33,
+        "col": 46,
+        "offset": 1168
+      },
+      "extra": {
+        "message": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing.",
+        "metadata": {
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ],
+          "technology": [
+            "express"
+          ],
+          "category": "security",
+          "cwe": [
+            "CWE-73: External Control of File Name or Path"
+          ],
+          "owasp": [
+            "A04:2021 - Insecure Design",
+            "A06:2025 - Insecure Design"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Path Traversal"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+          "shortlink": "https://sg.run/7DJk"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-libxml-vm-noent.express-libxml-vm-noent",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/fileUpload.ts",
+    "dependency": "",
+    "description": "Detected use of parseXml() function with the `noent` field set to `true`. This can lead to an XML External Entities (XXE) attack if untrusted data is passed into it. (routes/fileUpload.ts:83)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-libxml-vm-noent.express-libxml-vm-noent",
+      "path": "routes/fileUpload.ts",
+      "start": {
+        "line": 83,
+        "col": 24,
+        "offset": 3359
+      },
+      "end": {
+        "line": 83,
+        "col": 140,
+        "offset": 3475
+      },
+      "extra": {
+        "message": "Detected use of parseXml() function with the `noent` field set to `true`. This can lead to an XML External Entities (XXE) attack if untrusted data is passed into it.",
+        "metadata": {
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html"
+          ],
+          "owasp": [
+            "A04:2017 - XML External Entities (XXE)",
+            "A05:2021 - Security Misconfiguration",
+            "A02:2025 - Security Misconfiguration"
+          ],
+          "cwe": [
+            "CWE-611: Improper Restriction of XML External Entity Reference"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "HIGH",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "XML Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-libxml-vm-noent.express-libxml-vm-noent",
+          "shortlink": "https://sg.run/n8Ag"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/keyServer.ts",
+    "dependency": "",
+    "description": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing. (routes/keyServer.ts:14)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+      "path": "routes/keyServer.ts",
+      "start": {
+        "line": 14,
+        "col": 20,
+        "offset": 410
+      },
+      "end": {
+        "line": 14,
+        "col": 57,
+        "offset": 447
+      },
+      "extra": {
+        "message": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing.",
+        "metadata": {
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ],
+          "technology": [
+            "express"
+          ],
+          "category": "security",
+          "cwe": [
+            "CWE-73: External Control of File Name or Path"
+          ],
+          "owasp": [
+            "A04:2021 - Insecure Design",
+            "A06:2025 - Insecure Design"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Path Traversal"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+          "shortlink": "https://sg.run/7DJk"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/logfileServer.ts",
+    "dependency": "",
+    "description": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing. (routes/logfileServer.ts:14)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+      "path": "routes/logfileServer.ts",
+      "start": {
+        "line": 14,
+        "col": 20,
+        "offset": 410
+      },
+      "end": {
+        "line": 14,
+        "col": 47,
+        "offset": 437
+      },
+      "extra": {
+        "message": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing.",
+        "metadata": {
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ],
+          "technology": [
+            "express"
+          ],
+          "category": "security",
+          "cwe": [
+            "CWE-73: External Control of File Name or Path"
+          ],
+          "owasp": [
+            "A04:2021 - Insecure Design",
+            "A06:2025 - Insecure Design"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Path Traversal"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+          "shortlink": "https://sg.run/7DJk"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/login.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (routes/login.ts:34)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "routes/login.ts",
+      "start": {
+        "line": 34,
+        "col": 28,
+        "offset": 1459
+      },
+      "end": {
+        "line": 34,
+        "col": 169,
+        "offset": 1600
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/quarantineServer.ts",
+    "dependency": "",
+    "description": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing. (routes/quarantineServer.ts:14)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+      "path": "routes/quarantineServer.ts",
+      "start": {
+        "line": 14,
+        "col": 20,
+        "offset": 424
+      },
+      "end": {
+        "line": 14,
+        "col": 57,
+        "offset": 461
+      },
+      "extra": {
+        "message": "The application processes user-input, this is passed to res.sendFile which can allow an attacker to arbitrarily read files on the system through path traversal. It is recommended to perform input validation in addition to canonicalizing the path. This allows you to validate the path against the intended directory it should be accessing.",
+        "metadata": {
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html"
+          ],
+          "technology": [
+            "express"
+          ],
+          "category": "security",
+          "cwe": [
+            "CWE-73: External Control of File Name or Path"
+          ],
+          "owasp": [
+            "A04:2021 - Insecure Design",
+            "A06:2025 - Insecure Design"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Path Traversal"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+          "shortlink": "https://sg.run/7DJk"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-open-redirect.express-open-redirect",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/redirect.ts",
+    "dependency": "",
+    "description": "The application redirects to a URL specified by user-supplied input `query` that is not validated. This could redirect users to malicious locations. Consider using an allow-list approach to validate URLs, or warn users they are being redirected to a third-party website. (routes/redirect.ts:19)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-open-redirect.express-open-redirect",
+      "path": "routes/redirect.ts",
+      "start": {
+        "line": 19,
+        "col": 20,
+        "offset": 1045
+      },
+      "end": {
+        "line": 19,
+        "col": 25,
+        "offset": 1050
+      },
+      "extra": {
+        "message": "The application redirects to a URL specified by user-supplied input `query` that is not validated. This could redirect users to malicious locations. Consider using an allow-list approach to validate URLs, or warn users they are being redirected to a third-party website.",
+        "metadata": {
+          "technology": [
+            "express"
+          ],
+          "references": [
+            "https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html"
+          ],
+          "cwe": [
+            "CWE-601: URL Redirection to Untrusted Site ('Open Redirect')"
+          ],
+          "category": "security",
+          "owasp": [
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Open Redirect"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-open-redirect.express-open-redirect",
+          "shortlink": "https://sg.run/EpoP"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/search.ts",
+    "dependency": "",
+    "description": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements. (routes/search.ts:23)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+      "path": "routes/search.ts",
+      "start": {
+        "line": 23,
+        "col": 28,
+        "offset": 847
+      },
+      "end": {
+        "line": 23,
+        "col": 159,
+        "offset": 978
+      },
+      "extra": {
+        "message": "Detected a sequelize statement that is tainted by user-input. This could lead to SQL injection if the variable is user-controlled and is not properly sanitized. In order to prevent SQL injection, it is recommended to use parameterized queries or prepared statements.",
+        "metadata": {
+          "interfile": true,
+          "references": [
+            "https://sequelize.org/docs/v6/core-concepts/raw-queries/#replacements"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe": [
+            "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          ],
+          "owasp": [
+            "A01:2017 - Injection",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "HIGH",
+          "confidence": "HIGH",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "SQL Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+          "shortlink": "https://sg.run/gjoe"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.browser.security.eval-detected.eval-detected",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/userProfile.ts",
+    "dependency": "",
+    "description": "Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this content can be input from outside the program, this may be a code injection vulnerability. Ensure evaluated content is not definable by external sources. (routes/userProfile.ts:62)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.browser.security.eval-detected.eval-detected",
+      "path": "routes/userProfile.ts",
+      "start": {
+        "line": 62,
+        "col": 20,
+        "offset": 1855
+      },
+      "end": {
+        "line": 62,
+        "col": 30,
+        "offset": 1865
+      },
+      "extra": {
+        "message": "Detected the use of eval(). eval() can be dangerous if used to evaluate dynamic content. If this content can be input from outside the program, this may be a code injection vulnerability. Ensure evaluated content is not definable by external sources.",
+        "metadata": {
+          "cwe": [
+            "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+          ],
+          "owasp": [
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "asvs": {
+            "control_id": "5.2.4 Dynamic Code Execution Features",
+            "control_url": "https://github.com/OWASP/ASVS/blob/master/4.0/en/0x13-V5-Validation-Sanitization-Encoding.md#v52-sanitization-and-sandboxing",
+            "section": "V5 Validation, Sanitization and Encoding",
+            "version": "4"
+          },
+          "category": "security",
+          "technology": [
+            "browser"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "references": [
+            "https://owasp.org/Top10/A03_2021-Injection"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Code Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.browser.security.eval-detected.eval-detected",
+          "shortlink": "https://sg.run/7ope"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "severity": "high",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/userProfile.ts",
+    "dependency": "",
+    "description": "Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable this can lead to execution of arbitrary system commands in the context of your application process. Avoid `eval` whenever possible. (routes/userProfile.ts:62)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+      "path": "routes/userProfile.ts",
+      "start": {
+        "line": 62,
+        "col": 20,
+        "offset": 1855
+      },
+      "end": {
+        "line": 62,
+        "col": 30,
+        "offset": 1865
+      },
+      "extra": {
+        "message": "Found data from an Express or Next web request flowing to `eval`. If this data is user-controllable this can lead to execution of arbitrary system commands in the context of your application process. Avoid `eval` whenever possible.",
+        "metadata": {
+          "interfile": true,
+          "confidence": "HIGH",
+          "owasp": [
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe": [
+            "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+          ],
+          "references": [
+            "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval",
+            "https://nodejs.org/api/child_process.html#child_processexeccommand-options-callback",
+            "https://www.stackhawk.com/blog/nodejs-command-injection-examples-and-prevention/",
+            "https://ckarande.gitbooks.io/owasp-nodegoat-tutorial/content/tutorial/a1_-_server_side_js_injection.html"
+          ],
+          "category": "security",
+          "technology": [
+            "node.js",
+            "Express",
+            "Next.js"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Code Injection"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.code-string-concat.code-string-concat",
+          "shortlink": "https://sg.run/96Yk"
+        },
+        "severity": "ERROR",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/videoHandler.ts",
+    "dependency": "",
+    "description": "Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data. (routes/videoHandler.ts:58)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+      "path": "routes/videoHandler.ts",
+      "start": {
+        "line": 58,
+        "col": 90,
+        "offset": 1893
+      },
+      "end": {
+        "line": 58,
+        "col": 94,
+        "offset": 1897
+      },
+      "extra": {
+        "message": "Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data.",
+        "metadata": {
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "references": [
+            "https://www.developsec.com/2017/11/09/xss-in-a-script-tag/",
+            "https://github.com/juice-shop/juice-shop/blob/1ceb8751e986dacd3214a618c37e7411be6bc11a/routes/videoHandler.ts#L68"
+          ],
+          "category": "security",
+          "technology": [
+            "javascript"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+          "shortlink": "https://sg.run/1Zy1"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "routes/videoHandler.ts",
+    "dependency": "",
+    "description": "Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data. (routes/videoHandler.ts:71)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+      "path": "routes/videoHandler.ts",
+      "start": {
+        "line": 71,
+        "col": 165,
+        "offset": 2827
+      },
+      "end": {
+        "line": 71,
+        "col": 169,
+        "offset": 2831
+      },
+      "extra": {
+        "message": "Cannot determine what 'subs' is and it is used with a '<script>' tag. This could be susceptible to cross-site scripting (XSS). Ensure 'subs' is not externally controlled, or sanitize this data.",
+        "metadata": {
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "references": [
+            "https://www.developsec.com/2017/11/09/xss-in-a-script-tag/",
+            "https://github.com/juice-shop/juice-shop/blob/1ceb8751e986dacd3214a618c37e7411be6bc11a/routes/videoHandler.ts#L68"
+          ],
+          "category": "security",
+          "technology": [
+            "javascript"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+          "shortlink": "https://sg.run/1Zy1"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring",
+    "severity": "low",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "server.ts",
+    "dependency": "",
+    "description": "Detected string concatenation with a non-literal variable in a util.format / console.log function. If an attacker injects a format specifier in the string, it will forge the log message. Try to use constant values for the format string. (server.ts:155)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring",
+      "path": "server.ts",
+      "start": {
+        "line": 155,
+        "col": 21,
+        "offset": 7505
+      },
+      "end": {
+        "line": 155,
+        "col": 63,
+        "offset": 7547
+      },
+      "extra": {
+        "message": "Detected string concatenation with a non-literal variable in a util.format / console.log function. If an attacker injects a format specifier in the string, it will forge the log message. Try to use constant values for the format string.",
+        "metadata": {
+          "cwe": [
+            "CWE-134: Use of Externally-Controlled Format String"
+          ],
+          "owasp": [
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "category": "security",
+          "technology": [
+            "javascript"
+          ],
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "MEDIUM",
+          "impact": "LOW",
+          "confidence": "LOW",
+          "references": [
+            "https://cwe.mitre.org/data/definitions/134.html"
+          ],
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Improper Validation"
+          ],
+          "source": "https://semgrep.dev/r/javascript.lang.security.audit.unsafe-formatstring.unsafe-formatstring",
+          "shortlink": "https://sg.run/7Y5R"
+        },
+        "severity": "INFO",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "server.ts",
+    "dependency": "",
+    "description": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource. (server.ts:269)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+      "path": "server.ts",
+      "start": {
+        "line": 269,
+        "col": 3,
+        "offset": 12274
+      },
+      "end": {
+        "line": 269,
+        "col": 76,
+        "offset": 12347
+      },
+      "extra": {
+        "message": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource.",
+        "metadata": {
+          "interfile": true,
+          "cwe": [
+            "CWE-548: Exposure of Information Through Directory Listing"
+          ],
+          "owasp": [
+            "A06:2017 - Security Misconfiguration",
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/serve-index",
+            "https://www.acunetix.com/blog/articles/directory-listing-information-disclosure/"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+          "shortlink": "https://sg.run/DX2G"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "server.ts",
+    "dependency": "",
+    "description": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource. (server.ts:273)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+      "path": "server.ts",
+      "start": {
+        "line": 273,
+        "col": 3,
+        "offset": 12643
+      },
+      "end": {
+        "line": 273,
+        "col": 109,
+        "offset": 12749
+      },
+      "extra": {
+        "message": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource.",
+        "metadata": {
+          "interfile": true,
+          "cwe": [
+            "CWE-548: Exposure of Information Through Directory Listing"
+          ],
+          "owasp": [
+            "A06:2017 - Security Misconfiguration",
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/serve-index",
+            "https://www.acunetix.com/blog/articles/directory-listing-information-disclosure/"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+          "shortlink": "https://sg.run/DX2G"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "server.ts",
+    "dependency": "",
+    "description": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource. (server.ts:277)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+      "path": "server.ts",
+      "start": {
+        "line": 277,
+        "col": 3,
+        "offset": 12853
+      },
+      "end": {
+        "line": 277,
+        "col": 115,
+        "offset": 12965
+      },
+      "extra": {
+        "message": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource.",
+        "metadata": {
+          "interfile": true,
+          "cwe": [
+            "CWE-548: Exposure of Information Through Directory Listing"
+          ],
+          "owasp": [
+            "A06:2017 - Security Misconfiguration",
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/serve-index",
+            "https://www.acunetix.com/blog/articles/directory-listing-information-disclosure/"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+          "shortlink": "https://sg.run/DX2G"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "server.ts",
+    "dependency": "",
+    "description": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource. (server.ts:281)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+      "path": "server.ts",
+      "start": {
+        "line": 281,
+        "col": 3,
+        "offset": 13117
+      },
+      "end": {
+        "line": 281,
+        "col": 103,
+        "offset": 13217
+      },
+      "extra": {
+        "message": "Directory listing/indexing is enabled, which may lead to disclosure of sensitive directories and files. It is recommended to disable directory listing unless it is a public resource. If you need directory listing, ensure that sensitive files are inaccessible when querying the resource.",
+        "metadata": {
+          "interfile": true,
+          "cwe": [
+            "CWE-548: Exposure of Information Through Directory Listing"
+          ],
+          "owasp": [
+            "A06:2017 - Security Misconfiguration",
+            "A01:2021 - Broken Access Control",
+            "A01:2025 - Broken Access Control"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "references": [
+            "https://www.npmjs.com/package/serve-index",
+            "https://www.acunetix.com/blog/articles/directory-listing-information-disclosure/"
+          ],
+          "subcategory": [
+            "vuln"
+          ],
+          "likelihood": "HIGH",
+          "impact": "MEDIUM",
+          "confidence": "MEDIUM",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Mishandled Sensitive Information"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+          "shortlink": "https://sg.run/DX2G"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  },
+  {
+    "vulnerability_id": "javascript.express.security.audit.xss.pug.explicit-unescape.template-explicit-unescape",
+    "severity": "medium",
+    "cvss_score": 0,
+    "repo": "juice-shop",
+    "file_path": "views/promotionVideo.pug",
+    "dependency": "",
+    "description": "Detected an explicit unescape in a Pug template, using either '!=' or '!{...}'. If external data can reach these locations, your application is exposed to a cross-site scripting (XSS) vulnerability. If you must do this, ensure no external data can reach this location. (views/promotionVideo.pug:79)",
+    "scanner_source": "semgrep",
+    "raw_payload": {
+      "check_id": "javascript.express.security.audit.xss.pug.explicit-unescape.template-explicit-unescape",
+      "path": "views/promotionVideo.pug",
+      "start": {
+        "line": 79,
+        "col": 13,
+        "offset": 3942
+      },
+      "end": {
+        "line": 79,
+        "col": 40,
+        "offset": 3969
+      },
+      "extra": {
+        "message": "Detected an explicit unescape in a Pug template, using either '!=' or '!{...}'. If external data can reach these locations, your application is exposed to a cross-site scripting (XSS) vulnerability. If you must do this, ensure no external data can reach this location.",
+        "metadata": {
+          "cwe": [
+            "CWE-79: Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          ],
+          "owasp": [
+            "A07:2017 - Cross-Site Scripting (XSS)",
+            "A03:2021 - Injection",
+            "A05:2025 - Injection"
+          ],
+          "references": [
+            "https://pugjs.org/language/code.html#unescaped-buffered-code",
+            "https://pugjs.org/language/attributes.html#unescaped-attributes"
+          ],
+          "category": "security",
+          "technology": [
+            "express"
+          ],
+          "cwe2022-top25": true,
+          "cwe2021-top25": true,
+          "subcategory": [
+            "audit"
+          ],
+          "likelihood": "LOW",
+          "impact": "MEDIUM",
+          "confidence": "LOW",
+          "license": "Semgrep Rules License v1.0. For more details, visit semgrep.dev/legal/rules-license",
+          "vulnerability_class": [
+            "Cross-Site-Scripting (XSS)"
+          ],
+          "source": "https://semgrep.dev/r/javascript.express.security.audit.xss.pug.explicit-unescape.template-explicit-unescape",
+          "shortlink": "https://sg.run/3xbe"
+        },
+        "severity": "WARNING",
+        "fingerprint": "requires login",
+        "lines": "requires login",
+        "validation_state": "NO_VALIDATOR",
+        "engine_kind": "OSS"
+      }
+    }
+  }
+]
