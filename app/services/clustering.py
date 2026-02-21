@@ -78,6 +78,25 @@ def _worst_severity(severities: list[str]) -> SeverityLevel:
     return worst
 
 
+def _severity_rank(severity: str) -> int:
+    """Return index in _SEVERITY_ORDER (higher = more severe). Unknown severity maps to 0 (info)."""
+    if not severity or not isinstance(severity, str):
+        return 0
+    normalized = severity.strip().lower()
+    order_map = {s: i for i, s in enumerate(_SEVERITY_ORDER)}
+    return order_map.get(normalized, 0)
+
+
+def sort_clusters_by_severity_cvss(
+    clusters: list[VulnerabilityCluster],
+) -> list[VulnerabilityCluster]:
+    """Sort clusters worst first: by severity (critical > high > medium > low > info), then by CVSS descending."""
+    return sorted(
+        clusters,
+        key=lambda c: (-_severity_rank(c.severity), -c.cvss_score),
+    )
+
+
 def build_clusters(findings: list["Finding"]) -> list[VulnerabilityCluster]:
     """
     Group findings by SCA (CVE ID) or SAST (rule ID + file path pattern).

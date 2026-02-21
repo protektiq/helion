@@ -11,7 +11,7 @@ from app.core.database import get_db
 from app.models import Finding
 from app.schemas.auth import CurrentUser
 from app.schemas.reasoning import ClusterNote, ReasoningRequest, ReasoningResponse
-from app.services.clustering import build_clusters
+from app.services.clustering import build_clusters, sort_clusters_by_severity_cvss
 from app.services.reasoning import ReasoningServiceError, run_reasoning
 from app.services.risk_tier import assign_risk_tiers
 
@@ -35,18 +35,20 @@ async def post_reasoning(
     """
     settings = get_settings()
 
+    reasoning_limited_note: str | None = None
     if body.use_db:
         findings = db.query(Finding).all()
         clusters = build_clusters(findings)
+        if len(clusters) > 100:
+            clusters = sort_clusters_by_severity_cvss(clusters)[:100]
+            reasoning_limited_note = "Reasoning limited to top 100 clusters."
     else:
         clusters = body.clusters
-
-    # Cap at 100 (schema already has max_length=100; enforce for use_db path)
-    if len(clusters) > 100:
-        raise HTTPException(
-            status_code=422,
-            detail="At most 100 clusters are allowed per request.",
-        )
+        if len(clusters) > 100:
+            raise HTTPException(
+                status_code=422,
+                detail="At most 100 clusters are allowed per request.",
+            )
 
     try:
         result = await run_reasoning(clusters, settings)
@@ -74,4 +76,7 @@ async def post_reasoning(
             )
         )
 
-    return ReasoningResponse(summary=result.summary, cluster_notes=enriched_notes)
+    summary = result.summary
+    if reasoning_limited_note:
+        summary = result.summary + "\n\n" + reasoning_limited_note
+    return ReasoningResponse(summary=summary, cluster_notes=enriched_notes)
