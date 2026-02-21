@@ -2,7 +2,13 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type {
+  ClustersResponse,
+  JiraExportResponse,
+  VulnerabilityCluster,
+} from "@/lib/types";
 
 const SEVERITY_ORDER: readonly string[] = [
   "critical",
@@ -15,44 +21,6 @@ const SEVERITY_ORDER: readonly string[] = [
 const TIER_LABELS = ["Tier 1", "Tier 2", "Tier 3"] as const;
 type TierLabel = (typeof TIER_LABELS)[number];
 
-type ClusterRow = {
-  severity: string;
-  vulnerability_id: string;
-};
-
-type ClustersResponse = {
-  metrics: {
-    raw_finding_count: number;
-    cluster_count: number;
-    compression_ratio: number;
-  };
-  clusters: ClusterRow[];
-};
-
-function isValidClustersResponse(
-  data: unknown
-): data is ClustersResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  if (!o.metrics || typeof o.metrics !== "object") return false;
-  const m = o.metrics as Record<string, unknown>;
-  if (
-    typeof m.raw_finding_count !== "number" ||
-    typeof m.cluster_count !== "number" ||
-    typeof m.compression_ratio !== "number"
-  ) {
-    return false;
-  }
-  if (!Array.isArray(o.clusters)) return false;
-  for (const c of o.clusters) {
-    if (typeof c !== "object" || c === null) return false;
-    const row = c as Record<string, unknown>;
-    if (typeof row.severity !== "string" || typeof row.vulnerability_id !== "string") return false;
-    if (!row.vulnerability_id.trim()) return false;
-  }
-  return true;
-}
-
 function severityToTierLabel(severity: string): TierLabel {
   const s = String(severity ?? "").toLowerCase().trim();
   if (s === "critical") return "Tier 1";
@@ -60,13 +28,7 @@ function severityToTierLabel(severity: string): TierLabel {
   return "Tier 3";
 }
 
-type JiraExportResponse = {
-  epics?: Record<string, string>;
-  issues?: Array<{ title: string; key: string; tier: string }>;
-  errors?: string[];
-};
-
-function severityBreakdown(clusters: ClusterRow[]): Record<string, number> {
+function severityBreakdown(clusters: VulnerabilityCluster[]): Record<string, number> {
   const counts: Record<string, number> = {
     critical: 0,
     high: 0,
@@ -98,38 +60,11 @@ export default function ResultsSummaryPage() {
   const [tierOverrides, setTierOverrides] = useState<Record<string, string>>({});
 
   const fetchSummary = useCallback(async () => {
-    const baseUrl = getApiBaseUrl();
     setLoadStatus("loading");
     setLoadError(null);
     try {
-      const res = await fetch(`${baseUrl}/api/v1/clusters`, {
-        headers: getAuthHeaders(),
-      });
-      if (!res.ok) {
-        const contentType = res.headers.get("content-type") ?? "";
-        let detail = res.statusText;
-        if (contentType.includes("application/json")) {
-          try {
-            const body = (await res.json()) as { detail?: string | string[] };
-            if (Array.isArray(body.detail)) {
-              detail = body.detail.map((d) => String(d)).join("; ");
-            } else if (typeof body.detail === "string") {
-              detail = body.detail;
-            }
-          } catch {
-            // keep detail as statusText
-          }
-        }
-        setLoadError(detail);
-        setLoadStatus("error");
-        return;
-      }
-      const data: unknown = await res.json();
-      if (!isValidClustersResponse(data)) {
-        setLoadError("Invalid response shape from API.");
-        setLoadStatus("error");
-        return;
-      }
+      const client = createApiClient({ token: getStoredToken() });
+      const data = await client.getClusters();
       setSummary(data);
       setLoadStatus("success");
     } catch (err) {
@@ -164,38 +99,19 @@ export default function ResultsSummaryPage() {
   }, []);
 
   const handleExportToJira = useCallback(async () => {
-    const baseUrl = getApiBaseUrl();
     setExportStatus("exporting");
     setExportMessage(null);
-    const body: { use_db: boolean; use_reasoning: boolean; tier_overrides?: Record<string, string> } = {
+    const body = {
       use_db: true,
       use_reasoning: false,
+      ...(manualTierOverride && Object.keys(tierOverrides).length > 0
+        ? { tier_overrides }
+        : {}),
     };
-    if (manualTierOverride && Object.keys(tierOverrides).length > 0) {
-      body.tier_overrides = tierOverrides;
-    }
     try {
-      const res = await fetch(`${baseUrl}/api/v1/jira/export`, {
-        method: "POST",
-        headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data: unknown = await res.json().catch(() => ({}));
-      const jira = data as JiraExportResponse;
+      const client = createApiClient({ token: getStoredToken() });
+      const jira: JiraExportResponse = await client.postJiraExport(body);
       const errors = Array.isArray(jira.errors) ? jira.errors : [];
-
-      if (!res.ok) {
-        let detail = res.statusText;
-        if (data !== null && typeof data === "object" && "detail" in data) {
-          const d = (data as { detail?: string | string[] }).detail;
-          if (typeof d === "string") detail = d;
-          else if (Array.isArray(d)) detail = d.map((x) => String(x)).join("; ");
-        }
-        setExportMessage(errors.length > 0 ? [...errors, detail].join(" ") : detail);
-        setExportStatus("error");
-        return;
-      }
-
       const issueCount = Array.isArray(jira.issues) ? jira.issues.length : 0;
       const epicCount =
         jira.epics && typeof jira.epics === "object"

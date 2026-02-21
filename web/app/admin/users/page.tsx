@@ -1,32 +1,13 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
-
-type UserListItem = {
-  id: number;
-  username: string;
-  role: string;
-};
-
-type UsersListResponse = {
-  users: UserListItem[];
-};
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type { UsersListResponse } from "@/lib/types";
 
 type UsersStatus = "idle" | "loading" | "success" | "error";
 
-function isValidUsersListResponse(data: unknown): data is UsersListResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  if (!Array.isArray(o.users)) return false;
-  for (const u of o.users) {
-    if (typeof u !== "object" || u === null) return false;
-    const user = u as Record<string, unknown>;
-    if (typeof user.id !== "number" || typeof user.username !== "string" || typeof user.role !== "string")
-      return false;
-  }
-  return true;
-}
+type ApiError = Error & { status?: number };
 
 export default function AdminUsersPage() {
   const [status, setStatus] = useState<UsersStatus>("idle");
@@ -34,41 +15,25 @@ export default function AdminUsersPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
-    const baseUrl = getApiBaseUrl();
     setStatus("loading");
     setErrorMessage(null);
     setData(null);
     try {
-      const res = await fetch(`${baseUrl}/api/v1/auth/users`, {
-        headers: getAuthHeaders(),
-      });
-      const body: unknown = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        if (res.status === 401) {
-          setErrorMessage("Unauthorized. Log in or paste a valid token.");
-        } else if (res.status === 403) {
-          setErrorMessage("Forbidden. Admin role required.");
-        } else {
-          const detail =
-            body !== null && typeof body === "object" && "detail" in body
-              ? String((body as { detail?: unknown }).detail)
-              : res.statusText;
-          setErrorMessage(detail);
-        }
-        setStatus("error");
-        return;
-      }
-      if (!isValidUsersListResponse(body)) {
-        setErrorMessage("Invalid users response shape.");
-        setStatus("error");
-        return;
-      }
+      const client = createApiClient({ token: getStoredToken() });
+      const body = await client.listUsers();
       setData(body);
       setStatus("success");
     } catch (err) {
-      setErrorMessage(
-        err instanceof Error ? err.message : "Network or request failed."
-      );
+      const apiErr = err as ApiError;
+      if (apiErr.status === 401) {
+        setErrorMessage("Unauthorized. Log in or paste a valid token.");
+      } else if (apiErr.status === 403) {
+        setErrorMessage("Forbidden. Admin role required.");
+      } else {
+        setErrorMessage(
+          err instanceof Error ? err.message : "Network or request failed."
+        );
+      }
       setStatus("error");
     }
   }, []);

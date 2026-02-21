@@ -1,30 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
-
-type JiraCreatedIssue = {
-  title: string;
-  key: string;
-  tier: string;
-};
-
-type JiraExportResponse = {
-  epics?: Record<string, string>;
-  issues?: JiraCreatedIssue[];
-  errors?: string[];
-};
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type { JiraExportResponse } from "@/lib/types";
 
 type JiraExportStatus = "idle" | "submitting" | "success" | "error";
-
-function isValidJiraExportResponse(data: unknown): data is JiraExportResponse {
-  if (data === null || typeof data !== "object") return true;
-  const o = data as Record<string, unknown>;
-  if (o.epics !== undefined && (typeof o.epics !== "object" || o.epics === null)) return false;
-  if (o.issues !== undefined && !Array.isArray(o.issues)) return false;
-  if (o.errors !== undefined && !Array.isArray(o.errors)) return false;
-  return true;
-}
 
 export default function JiraExportPage() {
   const [useDb, setUseDb] = useState(true);
@@ -43,35 +24,13 @@ export default function JiraExportPage() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const baseUrl = getApiBaseUrl();
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
       try {
-        const res = await fetch(`${baseUrl}/api/v1/jira/export`, {
-          method: "POST",
-          headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
-          body: JSON.stringify({ use_db: useDb, use_reasoning: useReasoning }),
-        });
-        const body: unknown = await res.json().catch(() => ({}));
-        if (!isValidJiraExportResponse(body)) {
-          setErrorMessage("Invalid Jira export response shape.");
-          setStatus("error");
-          return;
-        }
-        const data = body as JiraExportResponse;
-        const errors = Array.isArray(data.errors) ? data.errors : [];
-        if (!res.ok) {
-          const errBody = body as Record<string, unknown>;
-          const detail =
-            errBody !== null && typeof errBody === "object" && "detail" in errBody
-              ? String(errBody.detail)
-              : res.statusText;
-          setErrorMessage(errors.length > 0 ? [...errors, detail].join(" ") : detail);
-          setStatus("error");
-          return;
-        }
-        setResponse(body as JiraExportResponse);
+        const client = createApiClient({ token: getStoredToken() });
+        const data = await client.postJiraExport({ use_db: useDb, use_reasoning: useReasoning });
+        setResponse(data);
         setStatus("success");
       } catch (err) {
         setErrorMessage(

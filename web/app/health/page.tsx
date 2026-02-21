@@ -1,21 +1,10 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { getApiBaseUrl } from "@/lib/api";
-
-type HealthResponse = {
-  status?: string;
-  environment: string;
-  database?: string | null;
-};
+import { createApiClient } from "@/lib/apiClient";
+import type { HealthResponse } from "@/lib/types";
 
 type HealthStatus = "idle" | "loading" | "success" | "error";
-
-function isValidHealthResponse(data: unknown): data is HealthResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  return typeof o.environment === "string";
-}
 
 export default function HealthPage() {
   const [status, setStatus] = useState<HealthStatus>("idle");
@@ -23,27 +12,12 @@ export default function HealthPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const fetchHealth = useCallback(async () => {
-    const baseUrl = getApiBaseUrl();
     setStatus("loading");
     setErrorMessage(null);
     setData(null);
     try {
-      const res = await fetch(`${baseUrl}/api/v1/health/`);
-      const body: unknown = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const detail =
-          body !== null && typeof body === "object" && "detail" in body
-            ? String((body as { detail?: unknown }).detail)
-            : res.statusText;
-        setErrorMessage(detail);
-        setStatus("error");
-        return;
-      }
-      if (!isValidHealthResponse(body)) {
-        setErrorMessage("Invalid health response shape.");
-        setStatus("error");
-        return;
-      }
+      const client = createApiClient();
+      const body = await client.getHealth();
       setData(body);
       setStatus("success");
     } catch (err) {

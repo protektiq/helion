@@ -1,36 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
-
-type ClusterNote = {
-  vulnerability_id: string;
-  priority: string;
-  reasoning: string;
-  assigned_tier?: number | null;
-  override_applied?: string | null;
-};
-
-type ReasoningResponse = {
-  summary: string;
-  cluster_notes: ClusterNote[];
-};
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type { ReasoningResponse } from "@/lib/types";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
-
-function isValidReasoningResponse(data: unknown): data is ReasoningResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  if (typeof o.summary !== "string") return false;
-  if (!Array.isArray(o.cluster_notes)) return false;
-  for (const n of o.cluster_notes) {
-    if (typeof n !== "object" || n === null) return false;
-    const note = n as Record<string, unknown>;
-    if (typeof note.vulnerability_id !== "string" || typeof note.priority !== "string" || typeof note.reasoning !== "string")
-      return false;
-  }
-  return true;
-}
 
 export default function ReasoningPage() {
   const [useDb, setUseDb] = useState(true);
@@ -45,31 +20,12 @@ export default function ReasoningPage() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const baseUrl = getApiBaseUrl();
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
       try {
-        const res = await fetch(`${baseUrl}/api/v1/reasoning`, {
-          method: "POST",
-          headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
-          body: JSON.stringify({ clusters: [], use_db: useDb }),
-        });
-        const body: unknown = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          const detail =
-            body !== null && typeof body === "object" && "detail" in body
-              ? String((body as { detail?: unknown }).detail)
-              : res.statusText;
-          setErrorMessage(detail);
-          setStatus("error");
-          return;
-        }
-        if (!isValidReasoningResponse(body)) {
-          setErrorMessage("Invalid reasoning response shape.");
-          setStatus("error");
-          return;
-        }
+        const client = createApiClient({ token: getStoredToken() });
+        const body = await client.postReasoning({ clusters: [], use_db: useDb });
         setResponse(body);
         setStatus("success");
       } catch (err) {

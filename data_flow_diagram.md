@@ -199,7 +199,9 @@ flowchart LR
 
 ## Web UI (Next.js app in `web/`)
 
-The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small set of pages. State is local (React state/hooks); no component libraries. The **shared layout** provides a single **nav** (links to all pages) and **AuthTokenInput** (paste or persist JWT in `localStorage` under `helion_access_token`); token is sent as `Authorization: Bearer <token>` on protected requests via `getAuthHeaders()` from `web/lib/api.ts`.
+The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small set of pages. State is local (React state/hooks); no component libraries. The **shared layout** provides a single **nav** (links to all pages) and **AuthTokenInput** (paste or persist JWT in `localStorage` under `helion_access_token`). The token is read with **getStoredToken()** from **web/lib/api.ts** and passed into **createApiClient({ token: getStoredToken() })**; the typed client sends `Authorization: Bearer <token>` on every request when a token is provided.
+
+**Typed API client**: A central client layer lives in **web/lib/apiClient.ts**. It wraps `fetch` and exposes one typed function per endpoint (`getHealth`, `login`, `listUsers`, `uploadFindings`, `getClusters`, `postReasoning`, `postExploitability`, `postTickets`, `postJiraExport`). The client is created via `createApiClient({ baseUrl?, token? })`; it uses **getBaseUrl()** (re-export of `getApiBaseUrl()` from **web/lib/api.ts**) for the base URL (NEXT_PUBLIC_API_URL with localhost fallback) and, when `token` is provided, adds the Bearer header to every request. Request and response types are defined in **web/lib/types.ts** and aligned with the OpenAPI schemas; no hand-written fetch calls are required at the client layer.
 
 ### Route map (page → endpoint)
 
@@ -216,7 +218,7 @@ The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small 
 | `/jira-export` | Jira export | **POST /api/v1/jira/export** |
 | `/admin/users` | Admin users | **GET /api/v1/auth/users** (admin only) |
 
-All pages use `getApiBaseUrl()` and, for protected routes, `getAuthHeaders()` from `web/lib/api.ts`. No dashboards or charts; forms and tables only.
+Pages call the API exclusively via the typed client (`createApiClient` from **web/lib/apiClient.ts**), passing an optional token from **getStoredToken()** (**web/lib/api.ts**). There are no direct `fetch`, `getApiBaseUrl`, or `getAuthHeaders` usages in page code. No dashboards or charts; forms and tables only.
 
 ## Results Summary (frontend)
 

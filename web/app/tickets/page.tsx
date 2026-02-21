@@ -1,36 +1,11 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
-
-type DevTicketPayload = {
-  title: string;
-  description: string;
-  affected_services: string[];
-  acceptance_criteria: string[];
-  recommended_remediation: string;
-  risk_tier_label: string;
-};
-
-type TicketsResponse = {
-  tickets: DevTicketPayload[];
-};
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type { TicketsResponse } from "@/lib/types";
 
 type TicketsStatus = "idle" | "submitting" | "success" | "error";
-
-function isValidTicketsResponse(data: unknown): data is TicketsResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  if (!Array.isArray(o.tickets)) return false;
-  for (const t of o.tickets) {
-    if (typeof t !== "object" || t === null) return false;
-    const ticket = t as Record<string, unknown>;
-    if (typeof ticket.title !== "string" || typeof ticket.description !== "string") return false;
-    if (!Array.isArray(ticket.affected_services) || !Array.isArray(ticket.acceptance_criteria)) return false;
-    if (typeof ticket.recommended_remediation !== "string" || typeof ticket.risk_tier_label !== "string") return false;
-  }
-  return true;
-}
 
 export default function TicketsPage() {
   const [useDb, setUseDb] = useState(true);
@@ -49,31 +24,12 @@ export default function TicketsPage() {
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const baseUrl = getApiBaseUrl();
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
       try {
-        const res = await fetch(`${baseUrl}/api/v1/tickets`, {
-          method: "POST",
-          headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
-          body: JSON.stringify({ use_db: useDb, use_reasoning: useReasoning }),
-        });
-        const body: unknown = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          const detail =
-            body !== null && typeof body === "object" && "detail" in body
-              ? String((body as { detail?: unknown }).detail)
-              : res.statusText;
-          setErrorMessage(detail);
-          setStatus("error");
-          return;
-        }
-        if (!isValidTicketsResponse(body)) {
-          setErrorMessage("Invalid tickets response shape.");
-          setStatus("error");
-          return;
-        }
+        const client = createApiClient({ token: getStoredToken() });
+        const body = await client.postTickets({ use_db: useDb, use_reasoning: useReasoning });
         setResponse(body);
         setStatus("success");
       } catch (err) {

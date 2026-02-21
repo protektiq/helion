@@ -1,19 +1,16 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getApiBaseUrl, getAuthHeaders } from "@/lib/api";
+import { createApiClient } from "@/lib/apiClient";
+import { getStoredToken } from "@/lib/api";
+import type { UploadResponse } from "@/lib/types";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
-
-type SuccessPayload = {
-  accepted: number;
-  ids: number[];
-};
 
 export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>("idle");
-  const [successPayload, setSuccessPayload] = useState<SuccessPayload | null>(
+  const [successPayload, setSuccessPayload] = useState<UploadResponse | null>(
     null
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -41,7 +38,6 @@ export default function UploadPage() {
         return;
       }
 
-      const baseUrl = getApiBaseUrl();
       const formData = new FormData();
       formData.append("file", file);
 
@@ -50,39 +46,10 @@ export default function UploadPage() {
       setErrorMessage(null);
 
       try {
-        const res = await fetch(`${baseUrl}/api/v1/upload`, {
-          method: "POST",
-          headers: getAuthHeaders(),
-          body: formData,
-        });
-
-        if (res.ok) {
-          const data = (await res.json()) as SuccessPayload;
-          setSuccessPayload(data);
-          setStatus("success");
-          return;
-        }
-
-        let detail: string;
-        const contentType = res.headers.get("content-type") ?? "";
-        if (contentType.includes("application/json")) {
-          try {
-            const body = (await res.json()) as { detail?: string | string[] };
-            if (Array.isArray(body.detail)) {
-              detail = body.detail.map((d) => String(d)).join("; ");
-            } else if (typeof body.detail === "string") {
-              detail = body.detail;
-            } else {
-              detail = res.statusText || "Upload failed.";
-            }
-          } catch {
-            detail = res.statusText || "Upload failed.";
-          }
-        } else {
-          detail = res.statusText || "Upload failed.";
-        }
-        setErrorMessage(detail);
-        setStatus("error");
+        const client = createApiClient({ token: getStoredToken() });
+        const data = await client.uploadFindings(formData);
+        setSuccessPayload(data);
+        setStatus("success");
       } catch (err) {
         const message =
           err instanceof Error ? err.message : "Network or request failed.";

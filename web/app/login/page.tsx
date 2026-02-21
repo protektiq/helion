@@ -1,24 +1,14 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { getApiBaseUrl, AUTH_TOKEN_KEY } from "@/lib/api";
+import { createApiClient } from "@/lib/apiClient";
+import { AUTH_TOKEN_KEY } from "@/lib/api";
 
 const USERNAME_MAX = 255;
 const PASSWORD_MIN = 8;
 const PASSWORD_MAX = 128;
 
-type TokenResponse = {
-  access_token: string;
-  token_type?: string;
-};
-
 type LoginStatus = "idle" | "submitting" | "success" | "error";
-
-function isValidTokenResponse(data: unknown): data is TokenResponse {
-  if (data === null || typeof data !== "object") return false;
-  const o = data as Record<string, unknown>;
-  return typeof o.access_token === "string" && o.access_token.length > 0;
-}
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -62,33 +52,14 @@ export default function LoginPage() {
         return;
       }
 
-      const baseUrl = getApiBaseUrl();
       setStatus("submitting");
       setErrorMessage(null);
       try {
-        const res = await fetch(`${baseUrl}/api/v1/auth`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: u, password: p }),
-        });
-        const body: unknown = await res.json().catch(() => ({}));
-        if (!res.ok) {
-          const detail =
-            body !== null && typeof body === "object" && "detail" in body
-              ? String((body as { detail?: unknown }).detail)
-              : res.statusText;
-          setErrorMessage(detail);
-          setStatus("error");
-          return;
-        }
-        if (!isValidTokenResponse(body)) {
-          setErrorMessage("Invalid token response.");
-          setStatus("error");
-          return;
-        }
+        const client = createApiClient();
+        const data = await client.login({ username: u, password: p });
         if (typeof window !== "undefined") {
           try {
-            localStorage.setItem(AUTH_TOKEN_KEY, body.access_token);
+            localStorage.setItem(AUTH_TOKEN_KEY, data.access_token);
           } catch {
             setErrorMessage("Could not save token to browser.");
             setStatus("error");
