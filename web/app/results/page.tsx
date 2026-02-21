@@ -107,7 +107,7 @@ export default function ResultsSummaryPage() {
       use_db: true,
       use_reasoning: false,
       ...(manualTierOverride && Object.keys(tierOverrides).length > 0
-        ? { tier_overrides }
+        ? { tier_overrides: tierOverrides }
         : {}),
     };
     try {
