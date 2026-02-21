@@ -226,7 +226,7 @@ The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small 
 | `/upload` | Upload | **POST /api/v1/upload** |
 | `/results` | Results/Clusters | **GET /api/v1/clusters**; **POST /api/v1/jira/export** (Export to Jira button) |
 | `/reasoning` | Reasoning | **POST /api/v1/reasoning** |
-| `/exploitability` | Exploitability | **POST /api/v1/exploitability** |
+| `/exploitability` | Exploitability | **GET /api/v1/clusters** (optional pre-fill); **POST /api/v1/exploitability** |
 | `/tickets` | Tickets preview | **POST /api/v1/tickets** |
 | `/jira-export` | Jira export | **POST /api/v1/jira/export** |
 | `/admin/users` | Admin users | **GET /api/v1/auth/users** (admin only) |
@@ -240,3 +240,7 @@ The **Results** page (route `/results`) gives a read-only summary and one-click 
 - On load it calls **GET /api/v1/clusters** and displays `metrics.raw_finding_count`, `metrics.cluster_count`, and a **risk tier breakdown** (count of clusters per severity: critical, high, medium, low, info) derived from the `clusters` array. No analytics or charts; a single summary table only.
 - A **Manual tier override** toggle allows the consultant to change each cluster’s risk tier (Tier 1/2/3) before export; when enabled, a per-cluster tier selector is shown and the chosen tiers are sent as `tier_overrides` on export.
 - The **Export to Jira** button calls **POST /api/v1/jira/export** with `use_db: true` and `use_reasoning: false` (and optional `tier_overrides` when manual override is used), triggering the same Jira export flow described above (tickets are created with tier labels from severity when reasoning is not used, or from `tier_overrides` when provided). Success and any `errors` from the response are shown to the user.
+
+## Exploitability (frontend)
+
+The **Exploitability** page (route `/exploitability`) provides single-vulnerability exploitability reasoning for demos and ad-hoc assessment. On load it optionally calls **GET /api/v1/clusters** to populate a "Pre-fill from cluster" dropdown. The user can select a cluster and click **Load** to auto-fill vulnerability summary, CVSS score, repo context, and dependency type from that cluster (exposure flags are left empty). The user then submits the form to **POST /api/v1/exploitability** and sees `adjusted_risk_tier`, `reasoning`, and `recommended_action` in the response. If no clusters exist, a short message instructs the user to upload findings or fill the form manually.
