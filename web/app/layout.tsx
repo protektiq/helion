@@ -45,7 +45,7 @@ export default function RootLayout({
               <Link href="/reasoning" style={navLinkStyle} aria-label="Reasoning">Reasoning</Link>
               <Link href="/exploitability" style={navLinkStyle} aria-label="Exploitability">Exploitability</Link>
               <Link href="/tickets" style={navLinkStyle} aria-label="Tickets preview">Tickets</Link>
-              <Link href="/jira-export" style={navLinkStyle} aria-label="Jira export">Jira Export</Link>
+              <Link href="/jira" style={navLinkStyle} aria-label="Jira export">Jira Export</Link>
               <Link href="/admin/users" style={navLinkStyle} aria-label="Admin users">Admin Users</Link>
             </nav>
           </div>

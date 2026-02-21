@@ -17,7 +17,7 @@ export default function HomePage() {
         <Link href="/reasoning" style={{ color: "#2563eb", textDecoration: "underline" }}>Reasoning</Link>
         <Link href="/exploitability" style={{ color: "#2563eb", textDecoration: "underline" }}>Exploitability</Link>
         <Link href="/tickets" style={{ color: "#2563eb", textDecoration: "underline" }}>Tickets</Link>
-        <Link href="/jira-export" style={{ color: "#2563eb", textDecoration: "underline" }}>Jira Export</Link>
+        <Link href="/jira" style={{ color: "#2563eb", textDecoration: "underline" }}>Jira Export</Link>
         <Link href="/admin/users" style={{ color: "#2563eb", textDecoration: "underline" }}>Admin Users</Link>
       </nav>
     </main>
