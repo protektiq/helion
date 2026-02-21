@@ -2,10 +2,10 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import { setStoredReasoningResponse } from "@/lib/reasoningStorage";
 import { parsePastedClusters, MAX_CLUSTERS } from "@/lib/clusterValidation";
-import type { ReasoningResponse, VulnerabilityCluster } from "@/lib/types";
+import type { ReasoningResponse, ValidationError, VulnerabilityCluster } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
@@ -16,6 +16,7 @@ export default function ReasoningPage() {
   const [status, setStatus] = useState<ReasoningStatus>("idle");
   const [response, setResponse] = useState<ReasoningResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
   const [storedConfirm, setStoredConfirm] = useState(false);
 
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +38,7 @@ export default function ReasoningPage() {
         const [clusters, parseError] = parsePastedClusters(clustersJson);
         if (parseError !== null || clusters === null) {
           setErrorMessage(parseError ?? "Failed to parse clusters.");
+          setErrorDetail(null);
           setStatus("error");
           setResponse(null);
           return;
@@ -44,6 +46,7 @@ export default function ReasoningPage() {
         setStatus("submitting");
         setResponse(null);
         setErrorMessage(null);
+        setErrorDetail(null);
         try {
           const client = createApiClient();
           const body = await client.postReasoning({
@@ -54,6 +57,7 @@ export default function ReasoningPage() {
           setStatus("success");
         } catch (err) {
           setErrorMessage(getErrorMessage(err));
+          setErrorDetail(getValidationDetail(err));
           setStatus("error");
         }
         return;
@@ -61,6 +65,7 @@ export default function ReasoningPage() {
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
+      setErrorDetail(null);
       try {
         const client = createApiClient();
         const body = await client.postReasoning({ clusters: [], use_db: true });
@@ -68,6 +73,7 @@ export default function ReasoningPage() {
         setStatus("success");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
+        setErrorDetail(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -148,7 +154,7 @@ export default function ReasoningPage() {
       {status === "error" &&
         errorMessage !== null &&
         errorMessage !== "" && (
-          <ErrorAlert message={errorMessage} />
+          <ErrorAlert message={errorMessage} detail={errorDetail} />
         )}
       {status === "success" && response !== null && (
         <div>

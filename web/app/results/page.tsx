@@ -2,11 +2,12 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import ErrorAlert from "@/app/components/ErrorAlert";
 import type {
   ClustersResponse,
   JiraExportResponse,
+  ValidationError,
   VulnerabilityCluster,
 } from "@/lib/types";
 
@@ -56,8 +57,10 @@ export default function ResultsSummaryPage() {
   const [summary, setSummary] = useState<ClustersResponse | null>(null);
   const [loadStatus, setLoadStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [loadErrorDetail, setLoadErrorDetail] = useState<ValidationError[] | null>(null);
   const [exportStatus, setExportStatus] = useState<"idle" | "exporting" | "success" | "error">("idle");
   const [exportMessage, setExportMessage] = useState<string | null>(null);
+  const [exportDetail, setExportDetail] = useState<ValidationError[] | null>(null);
   const [manualTierOverride, setManualTierOverride] = useState(false);
   const [tierOverrides, setTierOverrides] = useState<Record<string, string>>({});
   const [severityFilter, setSeverityFilter] = useState<string>("");
@@ -66,6 +69,7 @@ export default function ResultsSummaryPage() {
   const fetchSummary = useCallback(async () => {
     setLoadStatus("loading");
     setLoadError(null);
+    setLoadErrorDetail(null);
     try {
       const client = createApiClient();
       const data = await client.getClusters();
@@ -73,6 +77,7 @@ export default function ResultsSummaryPage() {
       setLoadStatus("success");
     } catch (err) {
       setLoadError(getErrorMessage(err));
+      setLoadErrorDetail(getValidationDetail(err));
       setLoadStatus("error");
     }
   }, []);
@@ -103,7 +108,9 @@ export default function ResultsSummaryPage() {
   const handleExportToJira = useCallback(async () => {
     setExportStatus("exporting");
     setExportMessage(null);
+    setExportDetail(null);
     const body = {
+      clusters: [] as VulnerabilityCluster[],
       use_db: true,
       use_reasoning: false,
       ...(manualTierOverride && Object.keys(tierOverrides).length > 0
@@ -127,6 +134,7 @@ export default function ResultsSummaryPage() {
       setExportStatus("success");
     } catch (err) {
       setExportMessage(getErrorMessage(err));
+      setExportDetail(getValidationDetail(err));
       setExportStatus("error");
     }
   }, [manualTierOverride, tierOverrides]);
@@ -223,6 +231,7 @@ export default function ResultsSummaryPage() {
       {loadStatus === "error" && loadError !== null && (
         <ErrorAlert
           message={loadError}
+          detail={loadErrorDetail}
           onRetry={fetchSummary}
           retryLabel="Retry loading summary"
         />
@@ -553,7 +562,7 @@ export default function ResultsSummaryPage() {
               <p style={{ color: "#166534" }}>{exportMessage}</p>
             )}
             {exportStatus === "error" && exportMessage !== null && exportMessage !== "" && (
-              <ErrorAlert message={exportMessage} />
+              <ErrorAlert message={exportMessage} detail={exportDetail} />
             )}
           </div>
         </>

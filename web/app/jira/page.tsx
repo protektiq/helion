@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useMemo } from "react";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import { parsePastedClusters } from "@/lib/clusterValidation";
 import {
   REASONING_STORAGE_KEY,
@@ -11,9 +11,10 @@ import {
 import { getStoredTierOverrides } from "@/lib/tierOverridesStorage";
 import type {
   ClustersResponse,
+  JiraExportResponse,
   ReasoningResponse,
   TicketsRequest,
-  JiraExportResponse,
+  ValidationError,
   VulnerabilityCluster,
 } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
@@ -33,6 +34,7 @@ export default function JiraExportPage() {
   const [status, setStatus] = useState<JiraExportStatus>("idle");
   const [response, setResponse] = useState<JiraExportResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const [clustersFromDb, setClustersFromDb] = useState<ClustersResponse | null>(null);
   const [clustersLoadStatus, setClustersLoadStatus] = useState<ClustersLoadStatus>("idle");
@@ -149,13 +151,14 @@ export default function JiraExportPage() {
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
+      setErrorDetail(null);
       try {
         const useStored = useStoredNotes && storedReasoning !== null;
         const body: TicketsRequest = {
+          clusters: useDb ? [] : (clustersToSend ?? []),
           use_db: useDb,
           use_reasoning: useStored ? false : useReasoning,
           ...(useStored && storedReasoning ? { reasoning_response: storedReasoning } : {}),
-          ...(!useDb && clustersToSend && clustersToSend.length > 0 ? { clusters: clustersToSend } : {}),
           ...(Object.keys(tierOverrides).length > 0 ? { tier_overrides: tierOverrides } : {}),
         };
         const client = createApiClient();
@@ -164,6 +167,7 @@ export default function JiraExportPage() {
         setStatus("success");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
+        setErrorDetail(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -408,7 +412,7 @@ export default function JiraExportPage() {
         </button>
       </form>
       {status === "error" && errorMessage !== null && errorMessage !== "" && (
-        <ErrorAlert message={errorMessage} />
+        <ErrorAlert message={errorMessage} detail={errorDetail} />
       )}
       {status === "success" && response !== null && (
         <div>

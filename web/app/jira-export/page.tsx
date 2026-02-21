@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import type { JiraExportResponse } from "@/lib/types";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import type { JiraExportResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type JiraExportStatus = "idle" | "submitting" | "success" | "error";
@@ -13,6 +13,7 @@ export default function JiraExportPage() {
   const [status, setStatus] = useState<JiraExportStatus>("idle");
   const [response, setResponse] = useState<JiraExportResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUseDb(e.target.checked);
@@ -27,13 +28,19 @@ export default function JiraExportPage() {
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
+      setErrorDetail(null);
       try {
         const client = createApiClient();
-        const data = await client.postJiraExport({ use_db: useDb, use_reasoning: useReasoning });
+        const data = await client.postJiraExport({
+          clusters: [],
+          use_db: useDb,
+          use_reasoning: useReasoning,
+        });
         setResponse(data);
         setStatus("success");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
+        setErrorDetail(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -74,7 +81,7 @@ export default function JiraExportPage() {
         </button>
       </form>
       {status === "error" && errorMessage !== null && errorMessage !== "" && (
-        <ErrorAlert message={errorMessage} />
+        <ErrorAlert message={errorMessage} detail={errorDetail} />
       )}
       {status === "success" && response !== null && (
         <div>

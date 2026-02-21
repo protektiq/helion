@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import type { UsersListResponse } from "@/lib/types";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import type { UsersListResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type UsersStatus = "idle" | "loading" | "success" | "error";
@@ -13,10 +13,12 @@ export default function AdminUsersPage() {
   const [status, setStatus] = useState<UsersStatus>("idle");
   const [data, setData] = useState<UsersListResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const fetchUsers = useCallback(async () => {
     setStatus("loading");
     setErrorMessage(null);
+    setErrorDetail(null);
     setData(null);
     try {
       const client = createApiClient();
@@ -30,6 +32,7 @@ export default function AdminUsersPage() {
       } else {
         setErrorMessage(getErrorMessage(err));
       }
+      setErrorDetail(getValidationDetail(err));
       setStatus("error");
     }
   }, []);
@@ -49,6 +52,7 @@ export default function AdminUsersPage() {
       {status === "error" && errorMessage !== null && (
         <ErrorAlert
           message={errorMessage}
+          detail={errorDetail}
           onRetry={fetchUsers}
           retryLabel="Retry load users"
         />

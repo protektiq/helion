@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import type { UploadResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
@@ -57,17 +57,8 @@ export default function UploadPage() {
         setSuccessPayload(data);
         setStatus("success");
       } catch (err) {
-        const apiErr = err as { detail?: ValidationError[] };
-        if (
-          Array.isArray(apiErr?.detail) &&
-          apiErr.detail.length > 0
-        ) {
-          setValidationDetails(apiErr.detail);
-          setErrorMessage(null);
-        } else {
-          setValidationDetails(null);
-          setErrorMessage(getErrorMessage(err));
-        }
+        setErrorMessage(getErrorMessage(err));
+        setValidationDetails(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -104,20 +95,11 @@ export default function UploadPage() {
         </button>
       </form>
 
-      {status === "error" && validationDetails !== null && validationDetails.length > 0 && (
-        <div role="alert" style={{ marginTop: "1rem", marginBottom: "1rem", color: "#b91c1c" }}>
-          <p style={{ margin: "0 0 0.5rem 0" }}>Validation errors:</p>
-          <ul style={{ margin: 0, paddingLeft: "1.25rem" }}>
-            {validationDetails.map((v, i) => (
-              <li key={i} style={{ marginBottom: "0.25rem" }}>
-                {v.loc?.length ? `${v.loc.join(" → ")}: ` : ""}{v.msg}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {status === "error" && (errorMessage !== null && errorMessage !== "") && validationDetails === null && (
-        <ErrorAlert message={errorMessage} />
+      {status === "error" && (errorMessage !== null || (validationDetails !== null && validationDetails.length > 0)) && (
+        <ErrorAlert
+          message={errorMessage ?? "Validation failed."}
+          detail={validationDetails}
+        />
       )}
       <div
         role="status"

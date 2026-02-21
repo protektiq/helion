@@ -3,7 +3,8 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { setToken } from "@/lib/auth";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import type { ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 const USERNAME_MAX = 255;
@@ -18,6 +19,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<LoginStatus>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const handleUsernameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,6 +59,7 @@ export default function LoginPage() {
 
       setStatus("submitting");
       setErrorMessage(null);
+      setErrorDetail(null);
       try {
         const client = createApiClient();
         const data = await client.login({ username: u, password: p });
@@ -65,6 +68,7 @@ export default function LoginPage() {
         router.push("/");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
+        setErrorDetail(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -118,7 +122,7 @@ export default function LoginPage() {
         </button>
       </form>
       {status === "error" && errorMessage !== null && errorMessage !== "" && (
-        <ErrorAlert message={errorMessage} />
+        <ErrorAlert message={errorMessage} detail={errorDetail} />
       )}
       <p
         aria-live="polite"

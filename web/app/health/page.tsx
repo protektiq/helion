@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
-import type { HealthResponse } from "@/lib/types";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import type { HealthResponse, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type HealthStatus = "idle" | "loading" | "success" | "error";
@@ -11,10 +11,12 @@ export default function HealthPage() {
   const [status, setStatus] = useState<HealthStatus>("idle");
   const [data, setData] = useState<HealthResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const fetchHealth = useCallback(async () => {
     setStatus("loading");
     setErrorMessage(null);
+    setErrorDetail(null);
     setData(null);
     try {
       const client = createApiClient();
@@ -23,6 +25,7 @@ export default function HealthPage() {
       setStatus("success");
     } catch (err) {
       setErrorMessage(getErrorMessage(err));
+      setErrorDetail(getValidationDetail(err));
       setStatus("error");
     }
   }, []);
@@ -42,6 +45,7 @@ export default function HealthPage() {
       {status === "error" && errorMessage !== null && (
         <ErrorAlert
           message={errorMessage}
+          detail={errorDetail}
           onRetry={fetchHealth}
           retryLabel="Retry health check"
         />

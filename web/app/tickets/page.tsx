@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { createApiClient, getErrorMessage } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
 import { parsePastedClusters } from "@/lib/clusterValidation";
 import {
   REASONING_STORAGE_KEY,
@@ -15,6 +15,7 @@ import type {
   ReasoningResponse,
   TicketsRequest,
   TicketsResponse,
+  ValidationError,
   VulnerabilityCluster,
 } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
@@ -34,6 +35,7 @@ export default function TicketsPage() {
   const [status, setStatus] = useState<TicketsStatus>("idle");
   const [response, setResponse] = useState<TicketsResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
 
   const [clustersFromDb, setClustersFromDb] = useState<ClustersResponse | null>(null);
   const [clustersLoadStatus, setClustersLoadStatus] = useState<ClustersLoadStatus>("idle");
@@ -154,13 +156,14 @@ export default function TicketsPage() {
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
+      setErrorDetail(null);
       try {
         const useStored = useStoredNotes && storedReasoning !== null;
         const body: TicketsRequest = {
+          clusters: useDb ? [] : (clustersToSend ?? []),
           use_db: useDb,
           use_reasoning: useStored ? false : useReasoning,
           ...(useStored && storedReasoning ? { reasoning_response: storedReasoning } : {}),
-          ...(!useDb && clustersToSend && clustersToSend.length > 0 ? { clusters: clustersToSend } : {}),
           ...(Object.keys(tierOverrides).length > 0 ? { tier_overrides: tierOverrides } : {}),
         };
         const client = createApiClient();
@@ -170,6 +173,7 @@ export default function TicketsPage() {
         setStatus("success");
       } catch (err) {
         setErrorMessage(getErrorMessage(err));
+        setErrorDetail(getValidationDetail(err));
         setStatus("error");
       }
     },
@@ -399,7 +403,7 @@ export default function TicketsPage() {
       {status === "error" &&
         errorMessage !== null &&
         errorMessage !== "" && (
-          <ErrorAlert message={errorMessage} />
+          <ErrorAlert message={errorMessage} detail={errorDetail} />
         )}
       {status === "success" && response !== null && (
         <div>
