@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import AuthRequiredBanner from "./components/AuthRequiredBanner";
 import AuthTokenInput from "./components/AuthTokenInput";
 import EnvironmentBadge from "./components/EnvironmentBadge";
 
@@ -54,6 +55,7 @@ export default function RootLayout({
             <AuthTokenInput />
           </div>
         </header>
+        <AuthRequiredBanner />
         {children}
       </body>
     </html>

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { clearToken, getToken, setToken as setStoredToken } from "@/lib/auth";
+import { clearAuthBanner } from "@/lib/authBanner";
 
 const TOKEN_MAX_LENGTH = 4096;
 
@@ -24,6 +25,7 @@ export default function AuthTokenInput() {
           ? trimmed.slice(0, TOKEN_MAX_LENGTH)
           : trimmed;
       setStoredToken(toStore);
+      clearAuthBanner();
     }
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);

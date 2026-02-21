@@ -21,6 +21,10 @@ flowchart LR
 - **Role-based access**: Users have a **role** (`admin` or `user`). **require_admin** dependency restricts selected endpoints (e.g. **GET /api/v1/auth/users**) to `role === admin`; others get 403.
 - **User creation**: No registration UI; create users via CLI or one-off script (see .env.example). Passwords are stored as bcrypt hashes only.
 
+## Frontend: auth-required banner (401 / demo mode)
+
+When any API call returns **401**, a global **auth-required banner** is shown on all pages (non-blocking): it displays “Auth required. Go to /login to get a token.” with a link to `/login`. The banner is driven by **web/lib/authBanner.ts** (`notify401`, `subscribeTo401`, `getHasSeen401`, `clearAuthBanner`). The API client (**web/lib/apiClient.ts**) calls `notify401()` on 401 responses; the **AuthRequiredBanner** component subscribes and shows the banner when the app has seen a 401 and the user has no token. The banner clears when the user saves a token in the header (AuthTokenInput calls `clearAuthBanner()`). There is no redirect or UI block; pages continue to handle errors locally (ErrorAlert, retry), and calls fail gracefully when unauthenticated.
+
 ## Frontend: global health badge
 
 The Next.js root layout (`web/app/layout.tsx`) includes a global **environment/health badge** component that calls **GET /api/v1/health/** (unauthenticated) from the client. It displays the current **environment** (e.g. dev, prod) and **database** status (connected/disconnected) on every page as a fast sanity indicator.
