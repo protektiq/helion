@@ -20,6 +20,10 @@ flowchart LR
 - **Role-based access**: Users have a **role** (`admin` or `user`). **require_admin** dependency restricts selected endpoints (e.g. **GET /api/v1/auth/users**) to `role === admin`; others get 403.
 - **User creation**: No registration UI; create users via CLI or one-off script (see .env.example). Passwords are stored as bcrypt hashes only.
 
+## Frontend: global health badge
+
+The Next.js root layout (`web/app/layout.tsx`) includes a global **environment/health badge** component that calls **GET /api/v1/health/** (unauthenticated) from the client. It displays the current **environment** (e.g. dev, prod) and **database** status (connected/disconnected) on every page as a fast sanity indicator.
+
 ## Upload flow
 
 ```mermaid

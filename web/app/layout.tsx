@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import AuthTokenInput from "./components/AuthTokenInput";
+import EnvironmentBadge from "./components/EnvironmentBadge";
 
 export const metadata: Metadata = {
   title: "Helion",
@@ -37,11 +38,8 @@ export default function RootLayout({
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
-            <span style={{ fontSize: "1rem", fontWeight: 600 }}>Helion</span>
+            <Link href="/" style={{ fontSize: "1rem", fontWeight: 600, color: "inherit", textDecoration: "none" }} aria-label="Helion home">Helion</Link>
             <nav aria-label="Main" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.25rem" }}>
-              <Link href="/" style={navLinkStyle} aria-label="Home">Home</Link>
-              <Link href="/health" style={navLinkStyle} aria-label="Health">Health</Link>
-              <Link href="/login" style={navLinkStyle} aria-label="Login">Login</Link>
               <Link href="/upload" style={navLinkStyle} aria-label="Upload">Upload</Link>
               <Link href="/results" style={navLinkStyle} aria-label="Results">Results</Link>
               <Link href="/reasoning" style={navLinkStyle} aria-label="Reasoning">Reasoning</Link>
@@ -51,7 +49,10 @@ export default function RootLayout({
               <Link href="/admin/users" style={navLinkStyle} aria-label="Admin users">Admin Users</Link>
             </nav>
           </div>
-          <AuthTokenInput />
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexShrink: 0 }}>
+            <EnvironmentBadge />
+            <AuthTokenInput />
+          </div>
         </header>
         {children}
       </body>
