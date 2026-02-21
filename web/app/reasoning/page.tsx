@@ -14,8 +14,11 @@ import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
 
+const MAX_CLUSTERS_CAP = 100;
+
 export default function ReasoningPage() {
   const [useDb, setUseDb] = useState(true);
+  const [maxClusters, setMaxClusters] = useState(100);
   const [clustersJson, setClustersJson] = useState("");
   const [status, setStatus] = useState<ReasoningStatus>("idle");
   const [response, setResponse] = useState<ReasoningResponse | null>(null);
@@ -27,6 +30,11 @@ export default function ReasoningPage() {
     sending: number;
   } | null>(null);
 
+  const effectiveMaxClusters = Math.min(
+    MAX_CLUSTERS_CAP,
+    Math.max(1, maxClusters)
+  );
+
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUseDb(e.target.checked);
   }, []);
@@ -36,6 +44,27 @@ export default function ReasoningPage() {
       setClustersJson(e.target.value);
     },
     []
+  );
+
+  const clampMaxClusters = useCallback((value: number): number => {
+    if (Number.isNaN(value)) return MAX_CLUSTERS_CAP;
+    return Math.min(MAX_CLUSTERS_CAP, Math.max(1, Math.floor(value)));
+  }, []);
+
+  const handleMaxClustersChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const next = clampMaxClusters(Number(e.target.value));
+      setMaxClusters(next);
+    },
+    [clampMaxClusters]
+  );
+
+  const handleMaxClustersBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const next = clampMaxClusters(Number(e.target.value));
+      setMaxClusters(next);
+    },
+    [clampMaxClusters]
   );
 
   const handleSubmit = useCallback(
@@ -80,10 +109,10 @@ export default function ReasoningPage() {
         const clustersResponse = await client.getClusters();
         const ranked = rankClusters(clustersResponse.clusters);
         const clustersToSend =
-          ranked.length > MAX_CLUSTERS
-            ? ranked.slice(0, MAX_CLUSTERS)
+          ranked.length > effectiveMaxClusters
+            ? ranked.slice(0, effectiveMaxClusters)
             : ranked;
-        if (ranked.length > MAX_CLUSTERS) {
+        if (ranked.length > effectiveMaxClusters) {
           setDbSliceInfo({
             total: ranked.length,
             sending: clustersToSend.length,
@@ -101,7 +130,7 @@ export default function ReasoningPage() {
         setStatus("error");
       }
     },
-    [useDb, clustersJson]
+    [useDb, clustersJson, effectiveMaxClusters]
   );
 
   const handleUseNotesForTickets = useCallback(() => {
@@ -131,6 +160,41 @@ export default function ReasoningPage() {
           />
           <span>Use current clusters from database</span>
         </label>
+        {useDb && (
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label
+              htmlFor="reasoning-max-clusters"
+              style={{ display: "block", marginBottom: "0.25rem" }}
+            >
+              Max clusters
+            </label>
+            <input
+              id="reasoning-max-clusters"
+              type="number"
+              min={1}
+              max={MAX_CLUSTERS_CAP}
+              value={maxClusters}
+              onChange={handleMaxClustersChange}
+              onBlur={handleMaxClustersBlur}
+              aria-label="Max clusters (1–100; backend allows at most 100)"
+              aria-describedby="reasoning-max-clusters-hint"
+              style={{
+                width: "100%",
+                maxWidth: "6rem",
+                padding: "0.375rem 0.5rem",
+                fontSize: "0.875rem",
+                border: "1px solid #d1d5db",
+                borderRadius: "4px",
+              }}
+            />
+            <span
+              id="reasoning-max-clusters-hint"
+              style={{ fontSize: "0.75rem", color: "#6b7280", display: "block", marginTop: "0.25rem" }}
+            >
+              1–100; backend allows at most 100.
+            </span>
+          </div>
+        )}
         {!useDb && (
           <div style={{ marginBottom: "0.75rem" }}>
             <label
@@ -190,8 +254,8 @@ export default function ReasoningPage() {
           }}
         >
           <div>
-            {dbSliceInfo.total} clusters found. Running reasoning on top 100 by
-            severity/CVSS.
+            {dbSliceInfo.total} clusters found. Running reasoning on top{" "}
+            {dbSliceInfo.sending} by severity/CVSS.
           </div>
           <div style={{ marginTop: "0.25rem" }}>
             Sending {dbSliceInfo.sending} / {dbSliceInfo.total} clusters.
