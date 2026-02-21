@@ -25,10 +25,8 @@ export default function AdminUsersPage() {
       setStatus("success");
     } catch (err) {
       const apiErr = err as ApiError;
-      if (apiErr.status === 401) {
-        setErrorMessage("Unauthorized. Log in or paste a valid token.");
-      } else if (apiErr.status === 403) {
-        setErrorMessage("Forbidden. Admin role required.");
+      if (apiErr.status === 401 || apiErr.status === 403) {
+        setErrorMessage("Admin only");
       } else {
         setErrorMessage(getErrorMessage(err));
       }
