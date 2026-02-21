@@ -203,6 +203,10 @@ The Helion web app is a minimal UI that wires every OpenAPI endpoint to a small 
 
 **Typed API client**: A central client layer lives in **web/lib/apiClient.ts**. It wraps `fetch` and exposes one typed function per endpoint (`getHealth`, `login`, `listUsers`, `uploadFindings`, `getClusters`, `postReasoning`, `postExploitability`, `postTickets`, `postJiraExport`). The client is created via `createApiClient({ baseUrl?, token? })`; it uses **getBaseUrl()** (re-export of `getApiBaseUrl()` from **web/lib/api.ts**) for the base URL (NEXT_PUBLIC_API_URL with localhost fallback) and, when `token` is provided, adds the Bearer header to every request. Request and response types are defined in **web/lib/types.ts** and aligned with the OpenAPI schemas; no hand-written fetch calls are required at the client layer.
 
+**API error handling**: When a response is not ok (`!res.ok`), the client parses the body as JSON when `Content-Type` is `application/json`; if the JSON has a `detail` field (string or array of validation errors), that is used as the error message, otherwise `res.statusText` is used. The client then throws an **Error** whose `message` is that string (and attaches `status` for pages that need it). Pages use **getErrorMessage(err)** from **web/lib/apiClient.ts** in catch blocks to obtain a consistent user-facing string (Error message or `"Network or request failed."`).
+
+**UI error display**: All user-facing API and validation errors are shown via the shared **ErrorAlert** component (**web/app/components/ErrorAlert.tsx**), which renders a single `<div role="alert">` with consistent styling (error color, spacing) and an optional retry button. Every page that displays errors (upload, login, health, results, admin/users, jira-export, tickets, reasoning, exploitability) uses this component so the error surface is consistent across the app.
+
 ### Route map (page → endpoint)
 
 | Route | Page | API |

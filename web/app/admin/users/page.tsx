@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { getStoredToken } from "@/lib/api";
 import type { UsersListResponse } from "@/lib/types";
+import ErrorAlert from "@/app/components/ErrorAlert";
 
 type UsersStatus = "idle" | "loading" | "success" | "error";
 
@@ -30,9 +31,7 @@ export default function AdminUsersPage() {
       } else if (apiErr.status === 403) {
         setErrorMessage("Forbidden. Admin role required.");
       } else {
-        setErrorMessage(
-          err instanceof Error ? err.message : "Network or request failed."
-        );
+        setErrorMessage(getErrorMessage(err));
       }
       setStatus("error");
     }
@@ -50,13 +49,12 @@ export default function AdminUsersPage() {
           Loading…
         </p>
       )}
-      {status === "error" && (
-        <div role="alert" style={{ marginBottom: "1rem", color: "#b91c1c" }}>
-          <p>{errorMessage}</p>
-          <button type="button" onClick={fetchUsers} aria-label="Retry load users">
-            Retry
-          </button>
-        </div>
+      {status === "error" && errorMessage !== null && (
+        <ErrorAlert
+          message={errorMessage}
+          onRetry={fetchUsers}
+          retryLabel="Retry load users"
+        />
       )}
       {status === "success" && data !== null && (
         <table

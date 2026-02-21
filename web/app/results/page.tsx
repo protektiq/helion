@@ -2,8 +2,9 @@
 
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { getStoredToken } from "@/lib/api";
+import ErrorAlert from "@/app/components/ErrorAlert";
 import type {
   ClustersResponse,
   JiraExportResponse,
@@ -68,9 +69,7 @@ export default function ResultsSummaryPage() {
       setSummary(data);
       setLoadStatus("success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Network or request failed.";
-      setLoadError(message);
+      setLoadError(getErrorMessage(err));
       setLoadStatus("error");
     }
   }, []);
@@ -124,9 +123,7 @@ export default function ResultsSummaryPage() {
       setExportMessage(msg);
       setExportStatus("success");
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Network or request failed.";
-      setExportMessage(message);
+      setExportMessage(getErrorMessage(err));
       setExportStatus("error");
     }
   }, [manualTierOverride, tierOverrides]);
@@ -157,19 +154,11 @@ export default function ResultsSummaryPage() {
       )}
 
       {loadStatus === "error" && loadError !== null && (
-        <div
-          role="alert"
-          style={{ marginBottom: "1rem", color: "#b91c1c" }}
-        >
-          <p>{loadError}</p>
-          <button
-            type="button"
-            onClick={fetchSummary}
-            aria-label="Retry loading summary"
-          >
-            Retry
-          </button>
-        </div>
+        <ErrorAlert
+          message={loadError}
+          onRetry={fetchSummary}
+          retryLabel="Retry loading summary"
+        />
       )}
 
       {loadStatus === "success" && summary !== null && (
@@ -375,8 +364,8 @@ export default function ResultsSummaryPage() {
             {exportStatus === "success" && exportMessage !== null && (
               <p style={{ color: "#166534" }}>{exportMessage}</p>
             )}
-            {exportStatus === "error" && exportMessage !== null && (
-              <p style={{ color: "#b91c1c" }}>{exportMessage}</p>
+            {exportStatus === "error" && exportMessage !== null && exportMessage !== "" && (
+              <ErrorAlert message={exportMessage} />
             )}
           </div>
         </>

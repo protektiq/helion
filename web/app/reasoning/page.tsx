@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { getStoredToken } from "@/lib/api";
 import type { ReasoningResponse } from "@/lib/types";
+import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
 
@@ -29,9 +30,7 @@ export default function ReasoningPage() {
         setResponse(body);
         setStatus("success");
       } catch (err) {
-        setErrorMessage(
-          err instanceof Error ? err.message : "Network or request failed."
-        );
+        setErrorMessage(getErrorMessage(err));
         setStatus("error");
       }
     },
@@ -61,10 +60,8 @@ export default function ReasoningPage() {
           {status === "submitting" ? "Running…" : "Run reasoning"}
         </button>
       </form>
-      {status === "error" && errorMessage !== null && (
-        <p role="alert" style={{ color: "#b91c1c", marginBottom: "1rem" }}>
-          {errorMessage}
-        </p>
+      {status === "error" && errorMessage !== null && errorMessage !== "" && (
+        <ErrorAlert message={errorMessage} />
       )}
       {status === "success" && response !== null && (
         <div>

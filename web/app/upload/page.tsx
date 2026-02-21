@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { getStoredToken } from "@/lib/api";
 import type { UploadResponse } from "@/lib/types";
+import ErrorAlert from "@/app/components/ErrorAlert";
 
 type UploadStatus = "idle" | "uploading" | "success" | "error";
 
@@ -51,9 +52,7 @@ export default function UploadPage() {
         setSuccessPayload(data);
         setStatus("success");
       } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Network or request failed.";
-        setErrorMessage(message);
+        setErrorMessage(getErrorMessage(err));
         setStatus("error");
       }
     },
@@ -90,6 +89,9 @@ export default function UploadPage() {
         </button>
       </form>
 
+      {status === "error" && errorMessage !== null && errorMessage !== "" && (
+        <ErrorAlert message={errorMessage} />
+      )}
       <div
         role="status"
         aria-live="polite"
@@ -101,9 +103,6 @@ export default function UploadPage() {
         {status === "uploading" && <p>Uploading…</p>}
         {status === "success" && successPayload !== null && (
           <p>Done. Accepted: {successPayload.accepted}</p>
-        )}
-        {status === "error" && errorMessage !== null && (
-          <p style={{ color: "#c00" }}>{errorMessage}</p>
         )}
       </div>
     </main>

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import type { HealthResponse } from "@/lib/types";
+import ErrorAlert from "@/app/components/ErrorAlert";
 
 type HealthStatus = "idle" | "loading" | "success" | "error";
 
@@ -21,9 +22,7 @@ export default function HealthPage() {
       setData(body);
       setStatus("success");
     } catch (err) {
-      setErrorMessage(
-        err instanceof Error ? err.message : "Network or request failed."
-      );
+      setErrorMessage(getErrorMessage(err));
       setStatus("error");
     }
   }, []);
@@ -40,13 +39,12 @@ export default function HealthPage() {
           Loading…
         </p>
       )}
-      {status === "error" && (
-        <div role="alert" style={{ marginBottom: "1rem", color: "#b91c1c" }}>
-          <p>{errorMessage}</p>
-          <button type="button" onClick={fetchHealth} aria-label="Retry health check">
-            Retry
-          </button>
-        </div>
+      {status === "error" && errorMessage !== null && (
+        <ErrorAlert
+          message={errorMessage}
+          onRetry={fetchHealth}
+          retryLabel="Retry health check"
+        />
       )}
       {status === "success" && data !== null && (
         <dl style={{ margin: 0 }}>

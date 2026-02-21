@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { createApiClient } from "@/lib/apiClient";
+import { createApiClient, getErrorMessage } from "@/lib/apiClient";
 import { AUTH_TOKEN_KEY } from "@/lib/api";
+import ErrorAlert from "@/app/components/ErrorAlert";
 
 const USERNAME_MAX = 255;
 const PASSWORD_MIN = 8;
@@ -68,9 +69,7 @@ export default function LoginPage() {
         }
         setStatus("success");
       } catch (err) {
-        setErrorMessage(
-          err instanceof Error ? err.message : "Network or request failed."
-        );
+        setErrorMessage(getErrorMessage(err));
         setStatus("error");
       }
     },
@@ -123,12 +122,12 @@ export default function LoginPage() {
           {status === "submitting" ? "Logging in…" : "Log in"}
         </button>
       </form>
+      {status === "error" && errorMessage !== null && errorMessage !== "" && (
+        <ErrorAlert message={errorMessage} />
+      )}
       <div role="status" aria-live="polite" style={{ marginTop: "1rem", minHeight: "1.5em" }}>
         {status === "success" && (
           <p style={{ color: "#166534" }}>Logged in. Token saved. Use the header to paste a token if needed.</p>
-        )}
-        {status === "error" && errorMessage !== null && (
-          <p style={{ color: "#b91c1c" }}>{errorMessage}</p>
         )}
       </div>
     </main>
