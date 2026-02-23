@@ -78,38 +78,35 @@ flowchart LR
 ```mermaid
 flowchart LR
   DB[(findings table)]
-  Classify[SCA vs SAST]
-  KeySCA[CVE key]
-  KeySAST[Rule plus path key]
-  Group[Group by key]
-  Canon[Canonical fields]
-  Count[affected_services_count]
-  Clusters[clusters list]
-  Metrics[CompressionMetrics]
+  Load[get_findings_for_user_job]
+  Sig[cluster_signature]
+  LayerA[Layer A deterministic key]
+  LayerB[Layer B optional semantic]
+  Rust[Rust cluster_engine]
+  Persist[save_clusters_for_job]
+  ClustersTable[(clusters table)]
   Response[ClustersResponse]
-  DB --> Classify
-  Classify --> KeySCA
-  Classify --> KeySAST
-  KeySCA --> Group
-  KeySAST --> Group
-  Group --> Canon
-  Canon --> Count
-  Count --> Clusters
-  DB --> Metrics
-  Clusters --> Metrics
-  Clusters --> Response
-  Metrics --> Response
+  DB --> Load
+  Load --> Sig
+  Sig --> LayerA
+  LayerB --> Rust
+  LayerA --> Rust
+  Rust --> Persist
+  Persist --> ClustersTable
+  Persist --> Response
 ```
 
-- **GET /api/v1/clusters**: Optional query **job_id** scopes to that upload job (and current user). When the user has **more than one** upload job, **job_id** is required; if omitted, the API returns 422. When the user has 0 or 1 job, job_id may be omitted. Loads only those findings, runs the **clustering engine** (Rust when available, else Python), and returns **ClustersResponse** (clusters + CompressionMetrics). The UI persists the selected job (e.g. in sessionStorage) and sends it so results stay stable across tabs and new uploads.
-- **Cluster keys**: Findings are classified by `vulnerability_id`. If it matches CVE or GHSA (regex), the finding is **SCA** and the cluster key is `(vulnerability_id, dependency)` so the same CVE in different packages (e.g. lodash vs openssl) are separate clusters. Otherwise the finding is **SAST** and the cluster key is `(vulnerability_id, file_path_pattern)` where the path pattern is the normalized relative path (repo prefix stripped, slashes normalized).
-- **Clustering engine**: Implemented in **app/services/clustering.py**. When the optional **Rust** extension (`cluster_engine`, built with maturin/pyo3) is installed, clustering runs in Rust for performance; otherwise the Python implementation (same semantics) is used. The Rust crate lives in **cluster_engine/** (serde_json in/out, CVE/GHSA detection, file_path_pattern, group-by key, metrics).
+- **GET /api/v1/clusters**: Optional query **job_id** scopes to that upload job (and current user). When the user has **more than one** upload job, **job_id** is required; if omitted, the API returns 422. Uses **get_or_build_clusters_for_job**: loads findings for the job, runs the clustering pipeline (Layer A + optional Layer B), **persists** results to the **clusters** table, and returns **ClustersResponse** (clusters + CompressionMetrics). The UI persists the selected job (e.g. in sessionStorage) so results stay stable across tabs and new uploads.
+- **Persistence**: Cluster results are stored per **upload_job_id** in the **clusters** table. **Tickets**, **Reasoning**, and **Jira export** when **use_db=true** call **load_clusters_for_job** so they operate on the same snapshot the user saw on the Results page. If no rows exist for that job (e.g. legacy job), endpoints fall back to building clusters and persisting them.
+- **Layer A (deterministic keys)**: **app/services/cluster_signature.py** produces a **deterministic_signature** per finding. **SCA**: key is `(vulnerability_id, ecosystem, package_name)`; ecosystem and package name are normalized from `raw_payload` when available (e.g. Trivy PURL, DataSource.ID), so transitive trees collapse by same vuln + same package. **SAST**: key is `(rule_id, normalized_signature)` where the signature is derived from rule message + CWE from `raw_payload` (Semgrep-style); when `raw_payload` has no message/CWE, fallback is `(rule_id, file_path_pattern)`.
+- **Layer B (optional semantic)**: When **CLUSTER_USE_SEMANTIC** and **QDRANT_URL** are set, **app/services/embeddings.py** and **app/services/qdrant_client.py** build text per finding (description + rule message + CWE), embed (optional sentence-transformers), upsert to Qdrant, and **search_similar_pairs** returns merge pairs; **app/services/semantic_merge.py** wires this into **build_clusters_v2**. Merge pairs are applied via union-find so findings above **CLUSTER_SIMILARITY_THRESHOLD** (and within **CLUSTER_TOP_K**) join the same cluster.
+- **Clustering engine**: **app/services/clustering.py** exposes **build_clusters** (wrapper) and **build_clusters_v2** (Layer A + optional Layer B). When the optional **Rust** extension (`cluster_engine`) is installed, grouping runs in Rust; each finding is passed with optional **deterministic_signature** so the engine uses Layer A keys. Otherwise the Python implementation groups by the same signatures.
 - **Canonical repo**: When a cluster spans more than one repository, `repo` is set to `"multiple"` to avoid implying a single repo; when `affected_services_count` is 1, `repo` is that repository.
 - **affected_services_count**: For each cluster, the number of distinct repositories (repos) that have at least one finding in that cluster. There is no separate “service” entity; repo is the service/repository dimension.
 
 ## Data retention
 
-- **Retention job** (run via `python -m app.retention` or manually): When **RETENTION_ENABLED** is true, deletes findings with `created_at < now() - RETENTION_HOURS` (default 48h). Logs how many were deleted. No cluster summary persistence; GET /clusters and metrics reflect current DB findings only.
+- **Retention job** (run via `python -m app.retention` or manually): When **RETENTION_ENABLED** is true, deletes findings with `created_at < now() - RETENTION_HOURS` (default 48h). Logs how many were deleted. Cluster rows are tied to **upload_job_id** (CASCADE on job delete); GET /clusters recomputes and persists for the selected job when called.
 
 ## Shared field set
 
@@ -151,7 +148,7 @@ flowchart LR
   Response --> Client
 ```
 
-- **POST /api/v1/reasoning**: Loads clusters (request body or DB with optional **job_id**). For **each cluster** the **exploitability agent** runs: **Enrich** (KEV, EPSS, OSV) → **Assess** (rules-first suggested tier) → **LLM finalize** (Ollama with grounded prompt) → **Validator** (tier bounds: e.g. Tier 1 only with KEV or EPSS ≥ 0.1). Enrichment is persisted to **cluster_enrichments**. Responses are aggregated into **ReasoningResponse** (summary + cluster_notes with priority, reasoning, assigned_tier, and optional **kev**, **epss**, **fixed_in_versions**, **package_ecosystem**, **evidence**). Final tier is evidence-aware and defensible.
+- **POST /api/v1/reasoning**: Loads clusters (request body or DB with optional **job_id**). When use_db is true, clusters are loaded from the **clusters** table via **load_clusters_for_job** (same snapshot as Results); if none exist, they are built and persisted. For **each cluster** the **exploitability agent** runs: **Enrich** (KEV, EPSS, OSV) → **Assess** (rules-first suggested tier) → **LLM finalize** (Ollama with grounded prompt) → **Validator** (tier bounds: e.g. Tier 1 only with KEV or EPSS ≥ 0.1). Enrichment is persisted to **cluster_enrichments**. Responses are aggregated into **ReasoningResponse** (summary + cluster_notes with priority, reasoning, assigned_tier, and optional **kev**, **epss**, **fixed_in_versions**, **package_ecosystem**, **evidence**). Final tier is evidence-aware and defensible.
 - **Backend usage**: Call `run_exploitability_agent(cluster, settings, session=..., upload_job_id=...)` from `app.services.agent` for a single cluster; the reasoning endpoint runs the agent per cluster and aggregates.
 - **Reasoning page (web)**: Same as before: use_db or pasted clusters, notes table, "Use these notes for Tickets" stores **ReasoningResponse** in sessionStorage. Notes may now include grounded evidence fields when enrichment ran.
 

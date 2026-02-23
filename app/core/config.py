@@ -70,6 +70,13 @@ class Settings(BaseSettings):
     # When False, get_current_user returns a synthetic user (no JWT required). Set to True in production.
     AUTH_ENABLED: bool = False
 
+    # Layer B clustering: optional semantic merge via embeddings + Qdrant
+    CLUSTER_USE_SEMANTIC: bool = False
+    QDRANT_URL: str | None = None
+    QDRANT_COLLECTION_PREFIX: str = "helion_findings"
+    CLUSTER_SIMILARITY_THRESHOLD: float = 0.85
+    CLUSTER_TOP_K: int = 10
+
     @field_validator("DATABASE_URL")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
@@ -201,6 +208,20 @@ class Settings(BaseSettings):
             raise ValueError(
                 "JWT_EXPIRE_MINUTES must be between 1 and 10080 (1 min to 7 days)"
             )
+        return v
+
+    @field_validator("CLUSTER_SIMILARITY_THRESHOLD")
+    @classmethod
+    def validate_similarity_threshold(cls, v: float) -> float:
+        if v < 0 or v > 1:
+            raise ValueError("CLUSTER_SIMILARITY_THRESHOLD must be between 0 and 1")
+        return v
+
+    @field_validator("CLUSTER_TOP_K")
+    @classmethod
+    def validate_cluster_top_k(cls, v: int) -> int:
+        if v < 1 or v > 100:
+            raise ValueError("CLUSTER_TOP_K must be between 1 and 100")
         return v
 
 

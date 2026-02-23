@@ -6,11 +6,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.api.v1.auth import get_current_user
+from app.core.config import get_settings
 from app.core.database import get_db
 from app.schemas.auth import CurrentUser
 from app.schemas.findings import ClustersResponse, CompressionMetrics
-from app.services.clustering import build_clusters
-from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+from app.services.cluster_persistence import get_or_build_clusters_for_job
+from app.services.job_findings import get_user_upload_job_count
 
 router = APIRouter()
 
@@ -35,9 +36,10 @@ def get_clusters(
             status_code=422,
             detail="Multiple upload jobs exist; specify job_id to scope clusters (e.g. ?job_id=123).",
         )
-    findings = get_findings_for_user_job(db, current_user.id, job_id)
-    clusters = build_clusters(findings)
-    raw_finding_count = len(findings)
+    settings = get_settings()
+    clusters, raw_finding_count = get_or_build_clusters_for_job(
+        db, current_user.id, job_id, use_semantic=settings.CLUSTER_USE_SEMANTIC
+    )
     cluster_count = len(clusters)
     compression_ratio = (
         raw_finding_count / cluster_count if cluster_count else 0.0

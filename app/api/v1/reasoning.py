@@ -13,7 +13,8 @@ from app.schemas.auth import CurrentUser
 from app.schemas.exploitability import ExploitabilityOutput
 from app.schemas.reasoning import ClusterNote, ReasoningRequest, ReasoningResponse
 from app.services.agent import run_exploitability_agent
-from app.services.clustering import build_clusters, sort_clusters_by_severity_cvss
+from app.services.cluster_persistence import get_or_build_clusters_for_job, load_clusters_for_job
+from app.services.clustering import sort_clusters_by_severity_cvss
 from app.services.reasoning import ReasoningServiceError
 
 logger = logging.getLogger(__name__)
@@ -65,15 +66,16 @@ async def post_reasoning(
 
     reasoning_limited_note: str | None = None
     if body.use_db:
-        from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+        from app.services.job_findings import get_user_upload_job_count
 
         if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
             raise HTTPException(
                 status_code=422,
                 detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
             )
-        findings = get_findings_for_user_job(db, current_user.id, body.job_id)
-        clusters = build_clusters(findings)
+        clusters = load_clusters_for_job(db, current_user.id, body.job_id)
+        if not clusters:
+            clusters, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
         if len(clusters) > 100:
             clusters = sort_clusters_by_severity_cvss(clusters)[:100]
             reasoning_limited_note = "Reasoning limited to top 100 clusters."

@@ -21,6 +21,7 @@ def _mock_finding(
     dependency: str = "pkg",
     cvss_score: float = 7.0,
     description: str = "Test",
+    raw_payload: dict | None = None,
 ) -> object:
     """Minimal Finding-like object for clustering tests."""
     return SimpleNamespace(
@@ -32,6 +33,7 @@ def _mock_finding(
         dependency=dependency,
         cvss_score=cvss_score,
         description=description,
+        raw_payload=raw_payload,
     )
 
 

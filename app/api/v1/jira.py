@@ -14,7 +14,7 @@ from app.schemas.jira import JiraExportResponse
 from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
 from app.schemas.ticket import TicketsRequest
-from app.services.clustering import build_clusters
+from app.services.cluster_persistence import get_or_build_clusters_for_job, load_clusters_for_job
 from app.services.jira_export import JiraApiError, JiraNotConfiguredError, export_tickets_to_jira
 from app.services.reasoning import ReasoningServiceError, run_reasoning
 from app.services.risk_tier import assign_risk_tiers
@@ -45,15 +45,16 @@ async def post_jira_export(
     JIRA_PROJECT_KEY to be set.
     """
     if body.use_db:
-        from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+        from app.services.job_findings import get_user_upload_job_count
 
         if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
             raise HTTPException(
                 status_code=422,
                 detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
             )
-        findings = get_findings_for_user_job(db, current_user.id, body.job_id)
-        clusters = build_clusters(findings)
+        clusters = load_clusters_for_job(db, current_user.id, body.job_id)
+        if not clusters:
+            clusters, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
     else:
         clusters = body.clusters
 

@@ -9,6 +9,8 @@ use regex::Regex;
 use serde::{Deserialize, Serialize};
 
 /// Input finding: same shape as NormalizedFinding plus required `id` for finding_ids.
+/// When `deterministic_signature` is present (Layer A from Python), it is used as the cluster key;
+/// otherwise the engine computes the key from vulnerability_id/dependency/file_path (legacy).
 #[derive(Debug, Clone, Deserialize)]
 pub struct NormalizedFindingInput {
     pub id: FindingId,
@@ -21,6 +23,9 @@ pub struct NormalizedFindingInput {
     pub dependency: String,
     pub cvss_score: f64,
     pub description: String,
+    /// Optional precomputed cluster key (e.g. from cluster_signature); when set, used for grouping.
+    #[serde(default)]
+    pub deterministic_signature: Option<String>,
 }
 
 /// Accept id as string or number from JSON.
@@ -150,10 +155,15 @@ pub fn cluster_findings(findings: &[NormalizedFindingInput]) -> ClustersOutput {
         };
     }
 
-    // Single-threaded grouping: same semantics as Python defaultdict.
+    // Single-threaded grouping: use precomputed deterministic_signature when present, else legacy key.
     let mut groups: HashMap<String, Vec<&NormalizedFindingInput>> = HashMap::new();
     for f in findings {
-        let key = cluster_key(f);
+        let key: String = f
+            .deterministic_signature
+            .as_ref()
+            .filter(|s| !s.is_empty())
+            .cloned()
+            .unwrap_or_else(|| cluster_key(f));
         groups.entry(key).or_default().push(f);
     }
 
@@ -261,6 +271,7 @@ mod tests {
             dependency: dep.to_string(),
             cvss_score: 7.0,
             description: "Test".to_string(),
+            deterministic_signature: None,
         }
     }
 
@@ -310,5 +321,17 @@ mod tests {
         assert_eq!(out.metrics.raw_finding_count, 1);
         assert_eq!(out.metrics.cluster_count, 1);
         assert_eq!(out.clusters[0].finding_ids, ["1"]);
+    }
+
+    #[test]
+    fn test_deterministic_signature_used_as_key() {
+        let mut a = finding(1, "CVE-2024-9999", "pkg-a", "r1", "", "high");
+        let mut b = finding(2, "CVE-2024-9999", "pkg-b", "r1", "", "low");
+        a.deterministic_signature = Some("same-cluster-key".to_string());
+        b.deterministic_signature = Some("same-cluster-key".to_string());
+        let out = cluster_findings(&[a, b]);
+        assert_eq!(out.metrics.raw_finding_count, 2);
+        assert_eq!(out.metrics.cluster_count, 1);
+        assert_eq!(out.clusters[0].finding_count, 2);
     }
 }

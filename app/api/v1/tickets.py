@@ -14,7 +14,7 @@ from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
 from app.schemas.ticket import DevTicketPayload, TicketsRequest, TicketsResponse
 from app.services.agent import run_exploitability_agent
-from app.services.clustering import build_clusters
+from app.services.cluster_persistence import get_or_build_clusters_for_job, load_clusters_for_job
 from app.services.reasoning import ReasoningServiceError
 from app.services.ticket_generator import (
     apply_tier_overrides,
@@ -45,15 +45,16 @@ async def post_tickets(
     may be omitted.
     """
     if body.use_db:
-        from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+        from app.services.job_findings import get_user_upload_job_count
 
         if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
             raise HTTPException(
                 status_code=422,
                 detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
             )
-        findings = get_findings_for_user_job(db, current_user.id, body.job_id)
-        clusters = build_clusters(findings)
+        clusters = load_clusters_for_job(db, current_user.id, body.job_id)
+        if not clusters:
+            clusters, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
     else:
         clusters = body.clusters
 
