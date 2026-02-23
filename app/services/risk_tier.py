@@ -2,6 +2,7 @@
 
 Final tier is always determined by this module (AI-assisted, not AI-dependent). LLM provides
 priority and reasoning; override rules (e.g. CVSS > 9 → Tier 1 unless dev-only) take precedence.
+Enrichment-aware assess and validate support grounded exploitability agent.
 """
 
 from app.schemas.findings import SEVERITY_VALUES, VulnerabilityCluster
@@ -11,11 +12,14 @@ from app.schemas.risk_tier import (
     RiskTierAssignmentInput,
 )
 from app.schemas.reasoning import ClusterNote, ReasoningResponse
+from app.services.enrichment.schemas import ClusterEnrichmentPayload
 
 # Override rule thresholds (tunable; no magic numbers in logic).
 CVSS_TIER1_THRESHOLD = 9.0  # CVSS > this → Tier 1 unless dev-only
 CVSS_TIER2_MIN = 7.0  # CVSS in [7, 9] → at least Tier 2
 DEV_ONLY_TIER_WHEN_HIGH_CVSS: RiskTier = 2  # When CVSS > 9 and is_dev_only, assign this tier
+# Grounded tier: Tier 1 allowed only with KEV or EPSS >= this (validator).
+EPSS_TIER1_MIN = 0.1
 
 # Default tier when priority/severity is missing or invalid (safe default).
 DEFAULT_TIER_WHEN_UNKNOWN: RiskTier = 2
@@ -24,6 +28,8 @@ DEFAULT_TIER_WHEN_UNKNOWN: RiskTier = 2
 OVERRIDE_CVSS_HIGH = "cvss_high"
 OVERRIDE_DEV_ONLY_DOWNGRADE = "dev_only_downgrade"
 OVERRIDE_CVSS_BAND_7_9 = "cvss_band_7_9"
+OVERRIDE_KEV_GROUNDED = "kev_grounded"
+OVERRIDE_TIER1_REQUIRES_EVIDENCE = "tier1_requires_evidence"
 
 
 def _normalize_priority(priority: str | None) -> str | None:
@@ -159,3 +165,83 @@ def assign_risk_tiers(
         is_dev = dev_only_map.get(vid, False)
         results.append(assign_risk_tier(c, llm_note=note, is_dev_only=is_dev))
     return results
+
+
+# --- Grounded assess and validate (for exploitability agent) ---
+
+
+def assess_tier_from_enrichment(
+    enrichment: ClusterEnrichmentPayload,
+    cvss_score: float,
+    severity: str,
+    is_dev_only: bool = False,
+) -> tuple[RiskTier, str]:
+    """
+    Rules-first suggested tier from enrichment (no LLM). Returns (suggested_tier, tier_reason).
+    KEV → Tier 1; high EPSS + high CVSS → Tier 1; else CVSS/severity bands.
+    """
+    cvss = _clamp_cvss(cvss_score)
+    sev = (severity or "").strip().lower() or "info"
+
+    if enrichment.kev:
+        return (1, "CISA KEV listed; known exploited.")
+    if (
+        enrichment.epss is not None
+        and enrichment.epss >= EPSS_TIER1_MIN
+        and cvss >= CVSS_TIER2_MIN
+        and not is_dev_only
+    ):
+        return (1, f"EPSS {enrichment.epss:.2f} and CVSS {cvss:.1f} indicate high exploit likelihood.")
+    if cvss > CVSS_TIER1_THRESHOLD:
+        if is_dev_only:
+            return (DEV_ONLY_TIER_WHEN_HIGH_CVSS, "CVSS > 9 but dev-only; downgraded.")
+        return (1, "CVSS > 9.")
+    if cvss >= CVSS_TIER2_MIN:
+        return (2, "CVSS 7–9 band.")
+    return (_severity_to_suggested_tier(sev), "Severity/CVSS band.")
+
+
+def validate_grounded_tier(
+    enrichment: ClusterEnrichmentPayload,
+    suggested_tier: RiskTier,
+    llm_adjusted_tier: str | None,
+    *,
+    allow_tier1_without_evidence: bool = False,
+) -> tuple[RiskTier, list[str]]:
+    """
+    Enforce tier bounds from evidence. Returns (final_tier, validation_notes).
+    - Tier 1 only allowed when KEV or epss >= EPSS_TIER1_MIN (or allow_tier1_without_evidence).
+    - If KEV and tier > 2, clamp to 2 (or 1) and add note.
+    - validation_notes: human-readable reasons (e.g. downgrade due to missing evidence).
+    """
+    notes: list[str] = []
+    # Resolve candidate tier: LLM string (critical/high/...) maps to 1/2/3, else use suggested_tier
+    candidate = suggested_tier
+    if llm_adjusted_tier:
+        raw = (llm_adjusted_tier or "").strip().lower()
+        if raw in ("critical", "crit"):
+            candidate = 1
+        elif raw == "high":
+            candidate = 2
+        elif raw in ("medium", "low", "info", "med", "moderate"):
+            candidate = 3
+        # else keep candidate from suggested_tier
+
+    has_evidence_for_tier1 = enrichment.kev or (
+        enrichment.epss is not None and enrichment.epss >= EPSS_TIER1_MIN
+    )
+
+    if candidate == 1 and not has_evidence_for_tier1 and not allow_tier1_without_evidence:
+        notes.append("Tier 1 requires KEV or EPSS >= 0.1; downgrading to Tier 2.")
+        candidate = 2
+
+    if enrichment.kev and candidate > 2:
+        notes.append("KEV listed; tier raised to 2.")
+        candidate = 2
+
+    if enrichment.cvss_check and enrichment.cvss_check.mismatch:
+        notes.append(
+            f"CVSS/severity mismatch: expected {enrichment.cvss_check.expected_severity}."
+        )
+
+    return (candidate, notes)

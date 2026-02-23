@@ -9,12 +9,13 @@ from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.core.database import get_db
 from app.schemas.auth import CurrentUser
+from app.schemas.exploitability import ExploitabilityOutput
 from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
 from app.schemas.ticket import DevTicketPayload, TicketsRequest, TicketsResponse
+from app.services.agent import run_exploitability_agent
 from app.services.clustering import build_clusters
-from app.services.reasoning import ReasoningServiceError, run_reasoning
-from app.services.risk_tier import assign_risk_tiers
+from app.services.reasoning import ReasoningServiceError
 from app.services.ticket_generator import (
     apply_tier_overrides,
     clusters_to_ticket_payloads,
@@ -78,22 +79,46 @@ async def post_tickets(
                 )
     elif body.use_reasoning and clusters:
         settings = get_settings()
-        try:
-            result = await run_reasoning(clusters, settings)
-        except ReasoningServiceError as e:
-            if "unreachable" in e.message.lower() or "timed out" in e.message.lower():
-                raise HTTPException(status_code=503, detail=e.message) from e
-            if "status" in e.message or "Ollama returned" in e.message:
-                raise HTTPException(status_code=502, detail=e.message) from e
-            raise HTTPException(status_code=422, detail=e.message) from e
-
-        tier_results = assign_risk_tiers(
-            clusters, reasoning_response=result, cluster_dev_only=None
-        )
-        for note in result.cluster_notes:
-            notes_by_id[note.vulnerability_id] = note
-        for tr in tier_results:
-            tier_by_id[tr.vulnerability_id] = tr
+        job_id = body.job_id if body.use_db else None
+        for cluster in clusters:
+            try:
+                output: ExploitabilityOutput = await run_exploitability_agent(
+                    cluster,
+                    settings,
+                    session=db,
+                    upload_job_id=job_id,
+                    persist_enrichment=True,
+                )
+            except (ReasoningServiceError, RuntimeError) as e:
+                msg = e.message if hasattr(e, "message") else str(e)
+                if "unreachable" in msg.lower() or "timed out" in msg.lower():
+                    raise HTTPException(status_code=503, detail=msg) from e
+                if "status" in msg or "Ollama returned" in msg:
+                    raise HTTPException(status_code=502, detail=msg) from e
+                raise HTTPException(status_code=422, detail=msg) from e
+            tier_num = 1 if output.adjusted_risk_tier == "critical" else (
+                2 if output.adjusted_risk_tier == "high" else 3
+            )
+            notes_by_id[cluster.vulnerability_id] = ClusterNote(
+                vulnerability_id=cluster.vulnerability_id,
+                priority=output.adjusted_risk_tier,
+                reasoning=output.reasoning,
+                assigned_tier=tier_num,
+                override_applied=None,
+                kev=output.kev,
+                epss=output.epss,
+                fixed_in_versions=output.fixed_in_versions,
+                package_ecosystem=output.package_ecosystem,
+                evidence=output.evidence,
+            )
+            tier_by_id[cluster.vulnerability_id] = ClusterRiskTierResult(
+                vulnerability_id=cluster.vulnerability_id,
+                assigned_tier=tier_num,
+                llm_reasoning=output.reasoning,
+                override_applied=None,
+            )
+        if db:
+            db.commit()
 
     for cluster in clusters:
         if cluster.repo == "multiple":

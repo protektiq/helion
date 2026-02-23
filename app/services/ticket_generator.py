@@ -10,6 +10,7 @@ from app.schemas.findings import VulnerabilityCluster
 from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
 from app.schemas.ticket import (
+    ACCEPTANCE_CRITERION_MAX_LENGTH,
     DESCRIPTION_MAX_LENGTH,
     DevTicketPayload,
     REMEDIATION_MAX_LENGTH,
@@ -149,7 +150,22 @@ def cluster_to_ticket_payload(
 
     title = _build_title(risk_tier_label, cluster)
     description = _build_description(cluster)
-    acceptance_criteria = DEFAULT_ACCEPTANCE_CRITERIA
+    acceptance_criteria = list(DEFAULT_ACCEPTANCE_CRITERIA)
+    if cluster_note:
+        if cluster_note.fixed_in_versions:
+            fix_line = "Upgrade to fixed version(s): " + ", ".join(
+                cluster_note.fixed_in_versions[:10]
+            )
+            if len(fix_line) > ACCEPTANCE_CRITERION_MAX_LENGTH:
+                fix_line = fix_line[:ACCEPTANCE_CRITERION_MAX_LENGTH - 3].rstrip() + "..."
+            acceptance_criteria.append(fix_line)
+        if cluster_note.evidence:
+            evidence_line = "Evidence: " + "; ".join(cluster_note.evidence[:15])
+            if len(evidence_line) > ACCEPTANCE_CRITERION_MAX_LENGTH:
+                evidence_line = (
+                    evidence_line[:ACCEPTANCE_CRITERION_MAX_LENGTH - 3].rstrip() + "..."
+                )
+            acceptance_criteria.append(evidence_line)
 
     return DevTicketPayload(
         title=title,

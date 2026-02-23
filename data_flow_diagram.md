@@ -115,58 +115,76 @@ flowchart LR
 
 All three schemas use the same core fields: `vulnerability_id`, `severity`, `repo`, `file_path`, `dependency`, `cvss_score`, `description`.
 
-## Reasoning flow
+## Enrichment (KEV, EPSS, OSV)
+
+- **Enrichment service** (`app/services/enrichment/`): For each cluster, the agent fetches **CISA KEV** (known exploited), **EPSS** (exploit probability), and **OSV** (advisory, fix versions, ecosystem). Results are stored in the **cluster_enrichments** table (JSONB) for traceability.
+- **KEV**: HTTPS feed `https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json`; in-memory cache with TTL (**ENRICHMENT_KEV_CACHE_TTL_SEC**, default 3600). Lookup by CVE ID.
+- **EPSS**: FIRST API `https://api.first.org/data/v1/epss?cve={id}`; returns probability 0–1 for CVE IDs.
+- **OSV**: `https://api.osv.dev/v1/query` (package+version from dependency) or `GET /v1/vulns/{id}` for GHSA. Provides ecosystem, summary, fixed_in_versions.
+- **Config**: **ENRICHMENT_KEV_ENABLED**, **ENRICHMENT_EPSS_ENABLED**, **ENRICHMENT_OSV_ENABLED** (default true); **ENRICHMENT_REQUEST_TIMEOUT_SEC** (default 15); **ENRICHMENT_KEV_CACHE_TTL_SEC** (default 3600). See `.env.example` for operator notes.
+
+## Reasoning flow (grounded agent)
 
 ```mermaid
 flowchart LR
   Client[Client]
   POST[POST /api/v1/reasoning]
-  Reason[ReasoningService]
-  Prompt[Build prompt]
-  Ollama[Ollama Llama3]
-  Parse[Parse JSON]
-  Resp[ReasoningResponse]
-  TierAssign[Risk tier assignment]
-  Enriched[Enriched response]
-  Client -->|"clusters JSON or use_db"| POST
-  POST --> Reason
-  Reason --> Prompt
-  Prompt --> Ollama
-  Ollama --> Parse
-  Parse --> Resp
-  Resp --> TierAssign
-  TierAssign -->|"deterministic overrides"| Enriched
-  Enriched --> Client
+  Clusters[Clusters from body or DB]
+  Agent[Exploitability agent per cluster]
+  Enrich[Enrich KEV EPSS OSV]
+  Assess[Assess tier rules]
+  LLM[LLM finalize]
+  Validate[Validator]
+  Store[cluster_enrichments]
+  Aggregate[Aggregate ClusterNotes]
+  Response[ReasoningResponse]
+  Client -->|"clusters or use_db"| POST
+  POST --> Clusters
+  Clusters --> Agent
+  Agent --> Enrich
+  Enrich --> Store
+  Enrich --> Assess
+  Assess --> LLM
+  LLM --> Validate
+  Validate --> Aggregate
+  Aggregate --> Response
+  Response --> Client
 ```
 
-- **POST /api/v1/reasoning**: Input is a list of `VulnerabilityCluster` in the request body, or `use_db: true` to load clusters from the database. When the user has more than one upload job, **job_id** is required in the body when use_db is true; when omitted in that case, returns 422. When 0 or 1 job, job_id may be omitted. The **ReasoningService** builds a prompt with the cluster data, sends it to the local LLM (Ollama with Llama 3) via `POST {OLLAMA_BASE_URL}/api/generate` with `format: "json"`. Ollama requests use **configurable options** from app settings: temperature, top_p, repeat_penalty, seed. **Defaults** (temperature 0, seed) make outputs **deterministic**; users can set the corresponding **env vars** (e.g. `OLLAMA_TEMPERATURE`, `OLLAMA_SEED`) to override for more creative reasoning. The model returns a single JSON object; the service parses it into **ReasoningResponse** (summary + cluster_notes with vulnerability_id, priority, reasoning). **Risk tier assignment** (in `app.services.risk_tier`) then runs deterministically on clusters + reasoning: override rules (e.g. CVSS > 9 → Tier 1 unless dev-only) produce Tier 1/2/3 per cluster; the response is enriched with `assigned_tier` and `override_applied` on each cluster note. Final tier is AI-assisted, not AI-dependent.
-- **Backend usage**: Other code can call `run_reasoning(clusters, settings)` from `app.services.reasoning` with a list of `VulnerabilityCluster` and the app settings to get structured reasoning without going through the HTTP endpoint. Use `assign_risk_tiers(clusters, reasoning_response=result, cluster_dev_only=...)` from `app.services.risk_tier` to compute tiers without the endpoint.
-- **Reasoning page (web)**: The Reasoning page supports `use_db: true` (default; clusters from DB) or `use_db: false` with pasted **ClustersResponse.clusters** JSON (or full ClustersResponse). Pasted input is validated (required cluster fields, max 100 clusters). On success, the page shows the summary and a **per-cluster notes table** (vulnerability_id, priority, assigned_tier, override_applied, reasoning). A **"Use these notes for Tickets"** button stores the **ReasoningResponse** in **sessionStorage** (key from **web/lib/reasoningStorage.ts**: `REASONING_STORAGE_KEY`) so the Tickets page can use it without re-running reasoning.
+- **POST /api/v1/reasoning**: Loads clusters (request body or DB with optional **job_id**). For **each cluster** the **exploitability agent** runs: **Enrich** (KEV, EPSS, OSV) → **Assess** (rules-first suggested tier) → **LLM finalize** (Ollama with grounded prompt) → **Validator** (tier bounds: e.g. Tier 1 only with KEV or EPSS ≥ 0.1). Enrichment is persisted to **cluster_enrichments**. Responses are aggregated into **ReasoningResponse** (summary + cluster_notes with priority, reasoning, assigned_tier, and optional **kev**, **epss**, **fixed_in_versions**, **package_ecosystem**, **evidence**). Final tier is evidence-aware and defensible.
+- **Backend usage**: Call `run_exploitability_agent(cluster, settings, session=..., upload_job_id=...)` from `app.services.agent` for a single cluster; the reasoning endpoint runs the agent per cluster and aggregates.
+- **Reasoning page (web)**: Same as before: use_db or pasted clusters, notes table, "Use these notes for Tickets" stores **ReasoningResponse** in sessionStorage. Notes may now include grounded evidence fields when enrichment ran.
 
-## Exploitability flow
+## Exploitability flow (grounded agent)
 
 ```mermaid
 flowchart LR
   Client[Client]
   POST[POST /api/v1/exploitability]
   Req[ExploitabilityRequest]
-  Tmpl[Build prompt from template]
-  Ollama[Ollama format json]
-  Parse[Parse JSON]
-  Validate[ExploitabilityOutput]
-  Out[JSON response]
+  Synthetic[Synthetic cluster]
+  Agent[Exploitability agent]
+  Enrich[Enrich KEV EPSS OSV]
+  Assess[Assess tier]
+  LLM[LLM finalize]
+  Validate[Validator]
+  Store[cluster_enrichments]
+  Out[ExploitabilityOutput]
   Client -->|"vulnerability_summary cvss_score repo_context dependency_type exposure_flags"| POST
   POST --> Req
-  Req --> Tmpl
-  Tmpl --> Ollama
-  Ollama --> Parse
-  Parse --> Validate
+  Req --> Synthetic
+  Synthetic --> Agent
+  Agent --> Enrich
+  Enrich --> Store
+  Enrich --> Assess
+  Assess --> LLM
+  LLM --> Validate
   Validate --> Out
   Out --> Client
 ```
 
-- **POST /api/v1/exploitability**: Accepts **ExploitabilityRequest** (vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags). The service builds a structured prompt from the template in `app.services.exploitability`, sends it to Ollama with `format: "json"`, parses and normalises the response (e.g. adjusted_risk_tier), validates it against **ExploitabilityOutput**, and returns `adjusted_risk_tier`, `reasoning`, and `recommended_action`. Deterministic output is encouraged via explicit schema in the prompt, Ollama JSON mode, and Pydantic validation (with optional normalisation of tier strings). The same **LLM settings** (temperature, seed, etc.) and **defaults** apply as in the reasoning flow; **env overrides** are available for more creative outputs.
-- **Backend usage**: Call `run_exploitability_reasoning(vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags, settings)` from `app.services.exploitability` to get structured exploitability reasoning without using the HTTP endpoint.
+- **POST /api/v1/exploitability**: Accepts **ExploitabilityRequest** (vulnerability_summary, cvss_score, repo_context, dependency_type, exposure_flags). The API builds a **synthetic cluster** (CVE extracted from summary when present), runs the **exploitability agent** (enrich → assess → LLM finalize → validate), persists enrichment to **cluster_enrichments**, and returns **ExploitabilityOutput** with `adjusted_risk_tier`, `reasoning`, `recommended_action`, and optional **kev**, **epss**, **fixed_in_versions**, **package_ecosystem**, **evidence**. Tier is constrained by validator (e.g. Tier 1 only with KEV or EPSS ≥ 0.1).
+- **Backend usage**: Call `run_exploitability_agent(cluster, settings, session=..., persist_enrichment=True)` from `app.services.agent` with a **VulnerabilityCluster** (or synthetic cluster from request).
 
 ## Ticket generation flow
 
@@ -185,7 +203,7 @@ flowchart LR
   Gen --> Payloads
 ```
 
-- **POST /api/v1/tickets**: Accepts **TicketsRequest** (`clusters`, `use_db`, `use_reasoning`, optional `tier_overrides`, optional `reasoning_response`, optional **job_id**). When the user has more than one upload job, **job_id** is required when use_db is true; when omitted in that case, returns 422. When 0 or 1 job, job_id may be omitted. When **`reasoning_response`** is provided (e.g. from the Reasoning page via sessionStorage), the server uses it to build `notes_by_id` and `tier_by_id` and does not call the reasoning service; when absent and `use_reasoning` is true, the reasoning service and risk tier assignment run so each ticket gets LLM remediation and tier label. Optional `tier_overrides` is a map of `vulnerability_id` → `"Tier 1"` | `"Tier 2"` | `"Tier 3"` for consultant override of risk tier before export; when present, ticket generator applies these labels (and updated titles) after building payloads. The **ticket generator** (`app.services.ticket_generator`) converts each cluster into a **DevTicketPayload** with title, description, affected_services, acceptance_criteria, recommended_remediation, and risk_tier_label. For clusters with `repo == "multiple"`, distinct repos are resolved from the findings table by `finding_ids` and passed as affected_services. Response is **TicketsResponse** (`tickets`: list of DevTicketPayload), Jira-ready for manual creation or downstream integration.
+- **POST /api/v1/tickets**: Accepts **TicketsRequest** (`clusters`, `use_db`, `use_reasoning`, optional `tier_overrides`, optional `reasoning_response`, optional **job_id**). When the user has more than one upload job, **job_id** is required when use_db is true; when omitted in that case, returns 422. When 0 or 1 job, job_id may be omitted. When **`reasoning_response`** is provided (e.g. from the Reasoning page via sessionStorage), the server uses it to build `notes_by_id` and `tier_by_id` and does not call the reasoning service; when absent and `use_reasoning` is true, the reasoning service and risk tier assignment run so each ticket gets LLM remediation and tier label. Optional `tier_overrides` is a map of `vulnerability_id` → `"Tier 1"` | `"Tier 2"` | `"Tier 3"` for consultant override of risk tier before export; when present, ticket generator applies these labels (and updated titles) after building payloads. The **ticket generator** (`app.services.ticket_generator`) converts each cluster into a **DevTicketPayload** with title, description, affected_services, acceptance_criteria, recommended_remediation, and risk_tier_label. When **cluster_note** includes **fixed_in_versions** or **evidence** (from grounded reasoning), those are appended to acceptance_criteria (e.g. "Upgrade to fixed version(s): X", "Evidence: KEV listed; EPSS 0.12"). For clusters with `repo == "multiple"`, distinct repos are resolved from the findings table by `finding_ids` and passed as affected_services. Response is **TicketsResponse** (`tickets`: list of DevTicketPayload), Jira-ready for manual creation or downstream integration.
 - **Backend usage**: Call `cluster_to_ticket_payload(cluster, ...)` for a single cluster, or `clusters_to_ticket_payloads(clusters, notes_by_id=..., tier_by_id=..., affected_services_by_id=...)` for batch. Use `resolve_affected_services(session, finding_ids)` when `repo == "multiple"` to get distinct repo names from the DB.
 - **Reasoning notes carry-forward**: The **Tickets** page (and **Jira export** when using the same request shape) reads **sessionStorage** for `REASONING_STORAGE_KEY` on load. If a valid **ReasoningResponse** is present (parsed and validated by **web/lib/reasoningStorage.ts** `parseStoredReasoningResponse`), the page shows a banner and a **"Use stored reasoning notes"** checkbox (default on). On submit with that option enabled, the client sends `reasoning_response` in the request and does not set `use_reasoning`; the server uses the stored notes for ticket generation. A **"Clear stored notes"** control removes the key from sessionStorage.
 - **Tickets page (UI)**: The Tickets page supports use_db (default true), use_reasoning (default false), optional paste of clusters when use_db is false, optional tier overrides table when clusters are loaded, "Generate tickets" (POST /api/v1/tickets), preview of backlog (ticket cards), and "Copy JSON" for the request payload (see **Tickets (frontend)** below).

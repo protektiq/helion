@@ -56,6 +56,13 @@ class Settings(BaseSettings):
     RETENTION_ENABLED: bool = True
     RETENTION_HOURS: int = 48
 
+    # Enrichment (KEV, EPSS, OSV): timeouts and feature flags
+    ENRICHMENT_KEV_ENABLED: bool = True
+    ENRICHMENT_EPSS_ENABLED: bool = True
+    ENRICHMENT_OSV_ENABLED: bool = True
+    ENRICHMENT_REQUEST_TIMEOUT_SEC: float = 15.0
+    ENRICHMENT_KEV_CACHE_TTL_SEC: int = 3600  # 1 hour
+
     # JWT authentication
     JWT_SECRET: SecretStr = SecretStr("change-me-in-production")
     JWT_ALGORITHM: str = "HS256"
@@ -152,6 +159,24 @@ class Settings(BaseSettings):
         if v < 1 or v > 8760:
             raise ValueError(
                 "RETENTION_HOURS must be between 1 and 8760 (1 hour to 1 year)"
+            )
+        return v
+
+    @field_validator("ENRICHMENT_REQUEST_TIMEOUT_SEC")
+    @classmethod
+    def validate_enrichment_timeout(cls, v: float) -> float:
+        if v <= 0 or v > 60:
+            raise ValueError(
+                "ENRICHMENT_REQUEST_TIMEOUT_SEC must be greater than 0 and at most 60"
+            )
+        return v
+
+    @field_validator("ENRICHMENT_KEV_CACHE_TTL_SEC")
+    @classmethod
+    def validate_kev_cache_ttl(cls, v: int) -> int:
+        if v < 0 or v > 86400:
+            raise ValueError(
+                "ENRICHMENT_KEV_CACHE_TTL_SEC must be between 0 and 86400 (0 to 24 hours)"
             )
         return v
 
