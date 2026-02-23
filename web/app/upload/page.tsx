@@ -117,12 +117,19 @@ export default function UploadPage() {
               {successPayload.ids && successPayload.ids.length > 0
                 ? `. IDs: ${successPayload.ids.length}`
                 : ""}
+              {typeof successPayload.upload_job_id === "number" && (
+                <> · Job ID: {successPayload.upload_job_id}</>
+              )}
             </p>
             <p style={{ marginTop: "0.5rem" }}>
               <Link
-                href="/results"
+                href={
+                  typeof successPayload.upload_job_id === "number"
+                    ? `/results?job_id=${successPayload.upload_job_id}`
+                    : "/results"
+                }
                 style={{ color: "#2563eb", textDecoration: "underline" }}
-                aria-label="View results"
+                aria-label="View results for this upload"
               >
                 View results
               </Link>

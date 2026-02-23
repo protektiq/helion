@@ -60,3 +60,7 @@ class ReasoningRequest(BaseModel):
         default=False,
         description="If true, ignore clusters in body and load current clusters from DB.",
     )
+    job_id: int | None = Field(
+        default=None,
+        description="When use_db is true, scope to this upload job; when omitted, uses latest job for the user.",
+    )

@@ -1,15 +1,16 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import { getSelectedJobId, setSelectedJobId } from "@/lib/jobStorage";
 import { setStoredReasoningResponse } from "@/lib/reasoningStorage";
 import {
   parsePastedClusters,
   rankClusters,
   MAX_CLUSTERS,
 } from "@/lib/clusterValidation";
-import type { ReasoningResponse, ValidationError } from "@/lib/types";
+import type { ReasoningResponse, UploadJobListItem, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
@@ -18,6 +19,8 @@ const MAX_CLUSTERS_CAP = 100;
 
 export default function ReasoningPage() {
   const [useDb, setUseDb] = useState(true);
+  const [jobId, setJobId] = useState<number | null>(null);
+  const [jobs, setJobs] = useState<UploadJobListItem[]>([]);
   const [maxClusters, setMaxClusters] = useState(100);
   const [clustersJson, setClustersJson] = useState("");
   const [status, setStatus] = useState<ReasoningStatus>("idle");
@@ -29,6 +32,33 @@ export default function ReasoningPage() {
     total: number;
     sending: number;
   } | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const client = createApiClient();
+        const res = await client.listUploadJobs();
+        setJobs(res.jobs ?? []);
+      } catch {
+        setJobs([]);
+      }
+    };
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (jobs.length === 0) return;
+    if (jobs.length === 1) {
+      setJobId(jobs[0].id);
+      setSelectedJobId(jobs[0].id);
+      return;
+    }
+    const stored = getSelectedJobId();
+    const inList = stored !== null && jobs.some((j) => j.id === stored);
+    const next = inList ? stored! : jobs[0].id;
+    setJobId(next);
+    setSelectedJobId(next);
+  }, [jobs]);
 
   const effectiveMaxClusters = Math.min(
     MAX_CLUSTERS_CAP,
@@ -106,7 +136,7 @@ export default function ReasoningPage() {
       setErrorDetail(null);
       const client = createApiClient();
       try {
-        const clustersResponse = await client.getClusters();
+        const clustersResponse = await client.getClusters(jobId ?? undefined);
         const ranked = rankClusters(clustersResponse.clusters);
         const clustersToSend =
           ranked.length > effectiveMaxClusters
@@ -130,7 +160,7 @@ export default function ReasoningPage() {
         setStatus("error");
       }
     },
-    [useDb, clustersJson, effectiveMaxClusters]
+    [useDb, jobId, clustersJson, effectiveMaxClusters]
   );
 
   const handleUseNotesForTickets = useCallback(() => {
@@ -160,6 +190,36 @@ export default function ReasoningPage() {
           />
           <span>Use current clusters from database</span>
         </label>
+        {useDb && jobs.length > 0 && (
+          <div style={{ marginBottom: "0.75rem" }}>
+            <label
+              htmlFor="reasoning-job-select"
+              style={{ display: "block", marginBottom: "0.25rem" }}
+            >
+              Upload job
+            </label>
+            <select
+              id="reasoning-job-select"
+              value={jobId ?? ""}
+              onChange={(e) => {
+                const v = e.target.value;
+                const id = v === "" ? null : parseInt(v, 10) || null;
+                if (id !== null) {
+                  setJobId(id);
+                  setSelectedJobId(id);
+                }
+              }}
+              aria-label="Select upload job for clusters"
+              style={{ minWidth: "14rem" }}
+            >
+              {jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  Job {j.id} ({j.finding_count} findings)
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
         {useDb && (
           <div style={{ marginBottom: "0.75rem" }}>
             <label

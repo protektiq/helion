@@ -1,0 +1,12 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "cluster_engine"
+version = "0.1.0"
+description = "Fast clustering of normalized findings (SCA/SAST) for Helion"
+requires-python = ">=3.10"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]

@@ -1,0 +1,15 @@
+[package]
+name = "cluster_engine"
+version = "0.1.0"
+edition = "2021"
+description = "Fast clustering of normalized findings (SCA/SAST) for Helion"
+
+[lib]
+name = "cluster_engine"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+regex = "1.10"
+pyo3 = { version = "0.22", features = ["extension-module"] }

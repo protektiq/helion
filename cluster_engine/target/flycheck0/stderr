@@ -1,0 +1,8 @@
+   0.013972992s  INFO prepare_target{force=false package_id=cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine) target="cluster_engine"}: cargo::core::compiler::fingerprint: fingerprint dirty for cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine)/Check { test: false }/TargetInner { ..: lib_target("cluster_engine", ["cdylib", "rlib"], "/home/carlos/helion/cluster_engine/src/lib.rs", Edition2021) }
+   0.014004462s  INFO prepare_target{force=false package_id=cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine) target="cluster_engine"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(Stale)
+   0.014812525s  INFO prepare_target{force=false package_id=cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine) target="cluster_engine"}: cargo::core::compiler::fingerprint: fingerprint dirty for cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine)/Check { test: true }/TargetInner { ..: lib_target("cluster_engine", ["cdylib", "rlib"], "/home/carlos/helion/cluster_engine/src/lib.rs", Edition2021) }
+   0.014832782s  INFO prepare_target{force=false package_id=cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine) target="cluster_engine"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(Stale)
+    Checking cluster_engine v0.1.0 (/home/carlos/helion/cluster_engine)
+error: could not compile `cluster_engine` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `cluster_engine` (lib test) due to 2 previous errors

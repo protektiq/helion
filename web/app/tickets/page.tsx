@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import { getSelectedJobId, setSelectedJobId } from "@/lib/jobStorage";
 import { parsePastedClusters } from "@/lib/clusterValidation";
 import {
   REASONING_STORAGE_KEY,
@@ -15,6 +16,7 @@ import type {
   ReasoningResponse,
   TicketsRequest,
   TicketsResponse,
+  UploadJobListItem,
   ValidationError,
   VulnerabilityCluster,
 } from "@/lib/types";
@@ -27,6 +29,8 @@ const TIER_LABELS = ["Tier 1", "Tier 2", "Tier 3"] as const;
 
 export default function TicketsPage() {
   const [useDb, setUseDb] = useState(true);
+  const [jobId, setJobId] = useState<number | null>(null);
+  const [jobs, setJobs] = useState<UploadJobListItem[]>([]);
   const [useReasoning, setUseReasoning] = useState(false);
   const [storedReasoning, setStoredReasoning] = useState<ReasoningResponse | null>(
     null
@@ -65,11 +69,11 @@ export default function TicketsPage() {
     }
   }, []);
 
-  const fetchClusters = useCallback(async () => {
+  const fetchClusters = useCallback(async (jobIdParam?: number | null) => {
     setClustersLoadStatus("loading");
     try {
       const client = createApiClient();
-      const data = await client.getClusters();
+      const data = await client.getClusters(jobIdParam ?? undefined);
       setClustersFromDb(data);
       setClustersLoadStatus("success");
     } catch {
@@ -78,9 +82,36 @@ export default function TicketsPage() {
   }, []);
 
   useEffect(() => {
+    const loadJobs = async () => {
+      try {
+        const client = createApiClient();
+        const res = await client.listUploadJobs();
+        setJobs(res.jobs ?? []);
+      } catch {
+        setJobs([]);
+      }
+    };
+    loadJobs();
+  }, []);
+
+  useEffect(() => {
+    if (jobs.length === 0) return;
+    if (jobs.length === 1) {
+      setJobId(jobs[0].id);
+      setSelectedJobId(jobs[0].id);
+      return;
+    }
+    const stored = getSelectedJobId();
+    const inList = stored !== null && jobs.some((j) => j.id === stored);
+    const next = inList ? stored! : jobs[0].id;
+    setJobId(next);
+    setSelectedJobId(next);
+  }, [jobs]);
+
+  useEffect(() => {
     if (!useDb) return;
-    fetchClusters();
-  }, [useDb, fetchClusters]);
+    fetchClusters(jobId);
+  }, [useDb, jobId, fetchClusters]);
 
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUseDb(e.target.checked);
@@ -165,6 +196,7 @@ export default function TicketsPage() {
           use_reasoning: useStored ? false : useReasoning,
           ...(useStored && storedReasoning ? { reasoning_response: storedReasoning } : {}),
           ...(Object.keys(tierOverrides).length > 0 ? { tier_overrides: tierOverrides } : {}),
+          ...(useDb && jobId != null ? { job_id: jobId } : {}),
         };
         const client = createApiClient();
         const result = await client.postTickets(body);
@@ -179,6 +211,7 @@ export default function TicketsPage() {
     },
     [
       useDb,
+      jobId,
       useReasoning,
       useStoredNotes,
       storedReasoning,
@@ -251,6 +284,37 @@ export default function TicketsPage() {
           />
           <span>Use current clusters from database</span>
         </label>
+        {useDb && jobs.length > 0 && (
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "0.75rem",
+            }}
+          >
+            <span style={{ whiteSpace: "nowrap" }}>Upload job</span>
+            <select
+              value={jobId ?? ""}
+              onChange={(e) => {
+                const v = e.target.value;
+                const id = v === "" ? null : parseInt(v, 10) || null;
+                if (id !== null) {
+                  setJobId(id);
+                  setSelectedJobId(id);
+                }
+              }}
+              aria-label="Select upload job for clusters"
+              style={{ minWidth: "12rem" }}
+            >
+              {jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  Job {j.id} ({j.finding_count} findings)
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         {storedReasoning !== null ? (
           <label
             style={{

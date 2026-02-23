@@ -86,6 +86,10 @@ class TicketsRequest(BaseModel):
         default=None,
         description="Optional pre-computed reasoning from POST /reasoning; when set, used instead of use_reasoning.",
     )
+    job_id: int | None = Field(
+        default=None,
+        description="When use_db is true, scope to this upload job; when omitted, uses latest job for the user.",
+    )
 
     @field_validator("tier_overrides")
     @classmethod

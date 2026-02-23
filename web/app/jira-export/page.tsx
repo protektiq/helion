@@ -1,19 +1,53 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
-import type { JiraExportResponse, ValidationError } from "@/lib/types";
+import { getSelectedJobId, setSelectedJobId } from "@/lib/jobStorage";
+import type {
+  JiraExportResponse,
+  UploadJobListItem,
+  ValidationError,
+} from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type JiraExportStatus = "idle" | "submitting" | "success" | "error";
 
 export default function JiraExportPage() {
   const [useDb, setUseDb] = useState(true);
+  const [jobId, setJobId] = useState<number | null>(null);
+  const [jobs, setJobs] = useState<UploadJobListItem[]>([]);
   const [useReasoning, setUseReasoning] = useState(false);
   const [status, setStatus] = useState<JiraExportStatus>("idle");
   const [response, setResponse] = useState<JiraExportResponse | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [errorDetail, setErrorDetail] = useState<ValidationError[] | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const client = createApiClient();
+        const res = await client.listUploadJobs();
+        setJobs(res.jobs ?? []);
+      } catch {
+        setJobs([]);
+      }
+    };
+    load();
+  }, []);
+
+  useEffect(() => {
+    if (jobs.length === 0) return;
+    if (jobs.length === 1) {
+      setJobId(jobs[0].id);
+      setSelectedJobId(jobs[0].id);
+      return;
+    }
+    const stored = getSelectedJobId();
+    const inList = stored !== null && jobs.some((j) => j.id === stored);
+    const next = inList ? stored! : jobs[0].id;
+    setJobId(next);
+    setSelectedJobId(next);
+  }, [jobs]);
 
   const handleUseDbChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUseDb(e.target.checked);
@@ -35,6 +69,7 @@ export default function JiraExportPage() {
           clusters: [],
           use_db: useDb,
           use_reasoning: useReasoning,
+          ...(useDb && jobId != null ? { job_id: jobId } : {}),
         });
         setResponse(data);
         setStatus("success");
@@ -44,7 +79,7 @@ export default function JiraExportPage() {
         setStatus("error");
       }
     },
-    [useDb, useReasoning]
+    [useDb, jobId, useReasoning]
   );
 
   return (
@@ -61,6 +96,37 @@ export default function JiraExportPage() {
           />
           <span>Use current clusters from database</span>
         </label>
+        {useDb && jobs.length > 0 && (
+          <label
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              marginBottom: "0.75rem",
+            }}
+          >
+            <span style={{ whiteSpace: "nowrap" }}>Upload job</span>
+            <select
+              value={jobId ?? ""}
+              onChange={(e) => {
+                const v = e.target.value;
+                const id = v === "" ? null : parseInt(v, 10) || null;
+                if (id !== null) {
+                  setJobId(id);
+                  setSelectedJobId(id);
+                }
+              }}
+              aria-label="Select upload job for export"
+              style={{ minWidth: "12rem" }}
+            >
+              {jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  Job {j.id} ({j.finding_count} findings)
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           <input
             type="checkbox"

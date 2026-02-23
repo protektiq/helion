@@ -2,11 +2,14 @@
 
 import { useState, useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createApiClient, getErrorMessage, getValidationDetail } from "@/lib/apiClient";
+import { getSelectedJobId, setSelectedJobId } from "@/lib/jobStorage";
 import ErrorAlert from "@/app/components/ErrorAlert";
 import type {
   ClustersResponse,
   JiraExportResponse,
+  UploadJobListItem,
   ValidationError,
   VulnerabilityCluster,
 } from "@/lib/types";
@@ -53,8 +56,21 @@ function capitalizeSeverity(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 }
 
+const JOB_ID_PARAM = "job_id";
+
 export default function ResultsSummaryPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const jobIdParam = searchParams.get(JOB_ID_PARAM);
+  const jobIdFromUrl =
+    jobIdParam !== null && jobIdParam !== ""
+      ? parseInt(jobIdParam, 10)
+      : undefined;
+  const urlJobIdValid =
+    jobIdFromUrl !== undefined && !Number.isNaN(jobIdFromUrl);
+
   const [summary, setSummary] = useState<ClustersResponse | null>(null);
+  const [jobs, setJobs] = useState<UploadJobListItem[]>([]);
   const [loadStatus, setLoadStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [loadError, setLoadError] = useState<string | null>(null);
   const [loadErrorDetail, setLoadErrorDetail] = useState<ValidationError[] | null>(null);
@@ -66,25 +82,77 @@ export default function ResultsSummaryPage() {
   const [severityFilter, setSeverityFilter] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchSummary = useCallback(async () => {
-    setLoadStatus("loading");
-    setLoadError(null);
-    setLoadErrorDetail(null);
+  const fetchSummary = useCallback(
+    async (jobId?: number | null) => {
+      setLoadStatus("loading");
+      setLoadError(null);
+      setLoadErrorDetail(null);
+      try {
+        const client = createApiClient();
+        const data = await client.getClusters(jobId);
+        setSummary(data);
+        setLoadStatus("success");
+      } catch (err) {
+        setLoadError(getErrorMessage(err));
+        setLoadErrorDetail(getValidationDetail(err));
+        setLoadStatus("error");
+      }
+    },
+    []
+  );
+
+  const fetchJobs = useCallback(async () => {
     try {
       const client = createApiClient();
-      const data = await client.getClusters();
-      setSummary(data);
-      setLoadStatus("success");
-    } catch (err) {
-      setLoadError(getErrorMessage(err));
-      setLoadErrorDetail(getValidationDetail(err));
-      setLoadStatus("error");
+      const res = await client.listUploadJobs();
+      setJobs(res.jobs ?? []);
+    } catch {
+      setJobs([]);
     }
   }, []);
 
   useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
+    fetchJobs();
+  }, [fetchJobs]);
+
+  const jobIds = useMemo(() => new Set(jobs.map((j) => j.id)), [jobs]);
+  const effectiveJobId = useMemo(() => {
+    if (urlJobIdValid && jobIds.has(jobIdFromUrl!)) return jobIdFromUrl!;
+    if (jobs.length > 1) {
+      const stored = getSelectedJobId();
+      if (stored !== null && jobIds.has(stored)) return stored;
+      return jobs[0].id;
+    }
+    if (jobs.length === 1) return jobs[0].id;
+    return undefined;
+  }, [urlJobIdValid, jobIdFromUrl, jobIds, jobs]);
+
+  useEffect(() => {
+    if (effectiveJobId === undefined) {
+      fetchSummary(undefined);
+      return;
+    }
+    setSelectedJobId(effectiveJobId);
+    fetchSummary(effectiveJobId);
+  }, [effectiveJobId, fetchSummary]);
+
+  useEffect(() => {
+    if (jobs.length > 1 && effectiveJobId !== undefined && (!urlJobIdValid || jobIdFromUrl !== effectiveJobId)) {
+      setSelectedJobId(effectiveJobId);
+      router.replace(`/results?${JOB_ID_PARAM}=${effectiveJobId}`);
+    }
+  }, [jobs.length, effectiveJobId, urlJobIdValid, jobIdFromUrl, router]);
+
+  const handleJobSelect = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const val = e.target.value;
+      const id = parseInt(val, 10);
+      if (Number.isNaN(id)) return;
+      setSelectedJobId(id);
+      router.replace(`/results?${JOB_ID_PARAM}=${id}`);
+    },
+    [router]
+  );
 
   const handleManualOverrideChange = useCallback(() => {
     setManualTierOverride((prev) => {
@@ -113,6 +181,7 @@ export default function ResultsSummaryPage() {
       clusters: [] as VulnerabilityCluster[],
       use_db: true,
       use_reasoning: false,
+      ...(effectiveJobId != null ? { job_id: effectiveJobId } : {}),
       ...(manualTierOverride && Object.keys(tierOverrides).length > 0
         ? { tier_overrides: tierOverrides }
         : {}),
@@ -137,7 +206,7 @@ export default function ResultsSummaryPage() {
       setExportDetail(getValidationDetail(err));
       setExportStatus("error");
     }
-  }, [manualTierOverride, tierOverrides]);
+  }, [effectiveJobId, manualTierOverride, tierOverrides]);
 
   const breakdown =
     summary !== null ? severityBreakdown(summary.clusters) : null;
@@ -162,8 +231,8 @@ export default function ResultsSummaryPage() {
   }, [summary, severityFilter, searchQuery]);
 
   const handleRefresh = useCallback(() => {
-    fetchSummary();
-  }, [fetchSummary]);
+    fetchSummary(effectiveJobId);
+  }, [effectiveJobId, fetchSummary]);
 
   const handleSeverityFilterChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -185,6 +254,23 @@ export default function ResultsSummaryPage() {
         <h1 style={{ fontSize: "1.25rem", margin: 0 }}>
           Results summary
         </h1>
+        {jobs.length > 0 && (
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <span style={{ whiteSpace: "nowrap" }}>Upload job</span>
+            <select
+              value={effectiveJobId ?? ""}
+              onChange={handleJobSelect}
+              aria-label="Select upload job to view clusters"
+              style={{ minWidth: "12rem" }}
+            >
+              {jobs.map((j) => (
+                <option key={j.id} value={j.id}>
+                  Job {j.id} ({j.finding_count} findings, {j.created_at.slice(0, 10)})
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         <button
           type="button"
           onClick={handleRefresh}

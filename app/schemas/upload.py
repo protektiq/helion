@@ -15,3 +15,7 @@ class UploadResponse(BaseModel):
         default_factory=list,
         description="Database IDs of the created finding rows.",
     )
+    upload_job_id: int = Field(
+        ...,
+        description="ID of the upload job this batch belongs to.",
+    )

@@ -9,7 +9,6 @@ from sqlalchemy.orm import Session
 from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.models import Finding
 from app.schemas.auth import CurrentUser
 from app.schemas.jira import JiraExportResponse
 from app.schemas.reasoning import ClusterNote
@@ -33,18 +32,27 @@ router = APIRouter()
 async def post_jira_export(
     body: TicketsRequest,
     db: Annotated[Session, Depends(get_db)],
-    _user: Annotated[CurrentUser, Depends(get_current_user)],
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> JiraExportResponse:
     """
     One-click export: create Jira epics (one per risk tier) and issues under them.
 
     Uses the same request as POST /tickets: clusters, use_db, use_reasoning.
     With use_db=true and use_reasoning=true, exports current DB clusters with
-    reasoning and risk tiers. Requires JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN,
+    reasoning and risk tiers. When the user has more than one upload job,
+    job_id is required when use_db is true; when omitted with multiple jobs,
+    returns 422. Requires JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN,
     JIRA_PROJECT_KEY to be set.
     """
     if body.use_db:
-        findings = db.query(Finding).all()
+        from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+
+        if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
+            raise HTTPException(
+                status_code=422,
+                detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
+            )
+        findings = get_findings_for_user_job(db, current_user.id, body.job_id)
         clusters = build_clusters(findings)
     else:
         clusters = body.clusters

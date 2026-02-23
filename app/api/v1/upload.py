@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.api.v1.auth import get_current_user
 from app.core.database import get_db
-from app.models import Finding
+from app.models import Finding, UploadJob
 from app.schemas.auth import CurrentUser
 from app.schemas.findings import RawFinding
 from app.schemas.upload import UploadResponse
@@ -112,6 +112,12 @@ async def _get_findings_from_request(request: Request) -> list[RawFinding]:
     )
 
 
+def _upload_source_from_content_type(request: Request) -> str:
+    """Return 'file' for multipart/form-data, 'api' for JSON."""
+    content_type = (request.headers.get("content-type") or "").split(";")[0].strip().lower()
+    return "file" if content_type == "multipart/form-data" else "api"
+
+
 @router.post("", response_model=UploadResponse, status_code=201)
 async def upload_findings(
     request: Request,
@@ -127,11 +133,24 @@ async def upload_findings(
       named `file` containing a `.json` file with the same structure.
 
     Findings are validated with the raw finding schema, normalized, and stored
-    in the database. Returns the count of accepted findings and their IDs.
+    in the database. Each upload creates an upload job; response includes
+    upload_job_id for job-scoped clusters, reasoning, and export.
     """
     raw_list = await _get_findings_from_request(request)
+    source = _upload_source_from_content_type(request)
+
+    upload_job = UploadJob(
+        user_id=current_user.id,
+        status="processing",
+        source=source,
+    )
+    db.add(upload_job)
+    db.flush()
+
     if not raw_list:
-        return UploadResponse(accepted=0, ids=[])
+        upload_job.status = "completed"
+        db.commit()
+        return UploadResponse(accepted=0, ids=[], upload_job_id=upload_job.id)
 
     pairs = [(raw, normalize_finding(raw)) for raw in raw_list]
     deduped = deduplicate_finding_pairs(pairs)
@@ -139,6 +158,8 @@ async def upload_findings(
     ids: list[int] = []
     for raw, normalized in deduped:
         row = Finding(
+            upload_job_id=upload_job.id,
+            user_id=current_user.id,
             vulnerability_id=normalized.vulnerability_id,
             severity=normalized.severity,
             repo=normalized.repo,
@@ -152,5 +173,6 @@ async def upload_findings(
         db.add(row)
         db.flush()
         ids.append(row.id)
+    upload_job.status = "completed"
     db.commit()
-    return UploadResponse(accepted=len(ids), ids=ids)
+    return UploadResponse(accepted=len(ids), ids=ids, upload_job_id=upload_job.id)

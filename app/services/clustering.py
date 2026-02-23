@@ -1,5 +1,6 @@
 """Cluster findings by CVE (SCA) or Rule ID + file path pattern (SAST), with affected services count."""
 
+import json
 import logging
 import time
 from collections import defaultdict
@@ -12,6 +13,23 @@ if TYPE_CHECKING:
     from app.models.finding import Finding
 
 logger = logging.getLogger(__name__)
+
+# Lazy import for optional Rust extension (cluster_engine); fallback to Python if missing.
+_CLUSTER_ENGINE = None
+
+
+def _get_cluster_engine():
+    """Return the cluster_engine module if installed, else None."""
+    global _CLUSTER_ENGINE
+    if _CLUSTER_ENGINE is not None:
+        return _CLUSTER_ENGINE
+    try:
+        import cluster_engine as ce  # noqa: PLC0415
+        _CLUSTER_ENGINE = ce
+        return ce
+    except ImportError:
+        _CLUSTER_ENGINE = False
+        return None
 
 # Severity order for choosing "worst" in a cluster (higher index = more severe).
 _SEVERITY_ORDER: tuple[SeverityLevel, ...] = (
@@ -97,10 +115,55 @@ def sort_clusters_by_severity_cvss(
     )
 
 
+def _findings_to_rust_input(findings: list["Finding"]) -> list[dict]:
+    """Convert ORM Finding list to JSON-serializable list for the Rust engine."""
+    return [
+        {
+            "id": str(f.id),
+            "vulnerability_id": f.vulnerability_id or "",
+            "severity": f.severity or "info",
+            "repo": f.repo or "",
+            "file_path": f.file_path or "",
+            "dependency": f.dependency or "",
+            "cvss_score": float(f.cvss_score),
+            "description": f.description or "No description",
+        }
+        for f in findings
+    ]
+
+
+def _build_clusters_rust(findings: list["Finding"]) -> list[VulnerabilityCluster]:
+    """Run clustering in the Rust engine; raises on error or invalid output."""
+    engine = _get_cluster_engine()
+    if not engine:
+        raise ImportError("cluster_engine not installed")
+    payload = _findings_to_rust_input(findings)
+    json_input = json.dumps(payload)
+    json_output = engine.cluster_findings(json_input)
+    data = json.loads(json_output)
+    clusters_data = data.get("clusters") or []
+    return [
+        VulnerabilityCluster(
+            vulnerability_id=c["vulnerability_id"],
+            severity=c["severity"],
+            repo=c["repo"],
+            file_path=c.get("file_path") or "",
+            dependency=c.get("dependency") or "",
+            cvss_score=float(c["cvss_score"]),
+            description=c.get("description") or "No description",
+            finding_ids=[str(x) for x in c["finding_ids"]],
+            affected_services_count=int(c["affected_services_count"]),
+            finding_count=int(c["finding_count"]),
+        )
+        for c in clusters_data
+    ]
+
+
 def build_clusters(findings: list["Finding"]) -> list[VulnerabilityCluster]:
     """
     Group findings by SCA (CVE ID) or SAST (rule ID + file path pattern).
     Returns distinct vulnerability clusters with canonical fields and affected_services_count.
+    Uses the Rust cluster_engine when available, otherwise falls back to Python implementation.
     """
     start = time.perf_counter()
     if not findings:
@@ -115,19 +178,37 @@ def build_clusters(findings: list["Finding"]) -> list[VulnerabilityCluster]:
         )
         return []
 
+    try:
+        clusters = _build_clusters_rust(findings)
+        elapsed = time.perf_counter() - start
+        logger.info(
+            "Cluster generation completed (Rust)",
+            extra={
+                "cluster_generation_seconds": elapsed,
+                "finding_count": len(findings),
+                "cluster_count": len(clusters),
+            },
+        )
+        return clusters
+    except Exception as e:
+        logger.debug(
+            "Rust cluster engine unavailable or failed, using Python",
+            extra={"reason": str(e)},
+        )
+
+    # Python fallback
     groups: defaultdict[str, list["Finding"]] = defaultdict(list)
     for f in findings:
         key = _cluster_key(f)
         groups[key].append(f)
 
-    clusters: list[VulnerabilityCluster] = []
+    clusters = []
     for group in groups.values():
         first = group[0]
         finding_ids = [str(f.id) for f in group]
         distinct_repos = len({(f.repo or "").strip() for f in group})
         severities = [f.severity or "info" for f in group]
         canonical_severity = _worst_severity(severities)
-        # Avoid misleading single-repo representation when cluster spans multiple repos.
         canonical_repo = "multiple" if distinct_repos > 1 else (first.repo or "unknown")
 
         clusters.append(

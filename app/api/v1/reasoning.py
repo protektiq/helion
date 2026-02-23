@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 from app.api.v1.auth import get_current_user
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.models import Finding
 from app.schemas.auth import CurrentUser
 from app.schemas.reasoning import ClusterNote, ReasoningRequest, ReasoningResponse
 from app.services.clustering import build_clusters, sort_clusters_by_severity_cvss
@@ -22,13 +21,15 @@ router = APIRouter()
 async def post_reasoning(
     body: ReasoningRequest,
     db: Annotated[Session, Depends(get_db)],
-    _user: Annotated[CurrentUser, Depends(get_current_user)],
+    current_user: Annotated[CurrentUser, Depends(get_current_user)],
 ) -> ReasoningResponse:
     """
     Run reasoning on vulnerability clusters via the local LLM (Ollama / Llama 3).
 
-    Send a list of clusters in the request body, or set use_db=true to use current
-    clusters from the database (same as GET /clusters). Returns a summary and
+    Send a list of clusters in the request body, or set use_db=true to use
+    clusters from the database. When the user has more than one upload job,
+    job_id is required in the body; when omitted with multiple jobs, returns 422.
+    When the user has 0 or 1 job, job_id may be omitted. Returns a summary and
     per-cluster notes (priority and reasoning from the LLM). Assigned risk tiers
     (Tier 1/2/3) are computed deterministically by override rules (e.g. CVSS > 9
     → Tier 1 unless dev-only); final tier is AI-assisted, not AI-dependent.
@@ -37,7 +38,14 @@ async def post_reasoning(
 
     reasoning_limited_note: str | None = None
     if body.use_db:
-        findings = db.query(Finding).all()
+        from app.services.job_findings import get_findings_for_user_job, get_user_upload_job_count
+
+        if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
+            raise HTTPException(
+                status_code=422,
+                detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
+            )
+        findings = get_findings_for_user_job(db, current_user.id, body.job_id)
         clusters = build_clusters(findings)
         if len(clusters) > 100:
             clusters = sort_clusters_by_severity_cvss(clusters)[:100]
