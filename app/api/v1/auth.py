@@ -74,17 +74,22 @@ def login(
     return TokenResponse(access_token=token, token_type="bearer")
 
 
-# Synthetic user used when AUTH_ENABLED is False (e.g. dev).
-_DEV_USER = CurrentUser(id=0, username="dev", role="admin")
-
-
 def get_current_user(
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(security)],
     db: Annotated[Session, Depends(get_db)],
 ) -> CurrentUser:
-    """Dependency: require valid Bearer JWT and return the current user. Raises 401 if missing or invalid. When AUTH_ENABLED is False, returns a synthetic dev user."""
+    """Dependency: require valid Bearer JWT and return the current user. Raises 401 if missing or invalid. When AUTH_ENABLED is False, resolves the dev user from the database by DEV_USERNAME."""
     if not settings.AUTH_ENABLED:
-        return _DEV_USER
+        dev_user = db.query(User).filter(User.username == settings.DEV_USERNAME).first()
+        if dev_user is None:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=(
+                    f"Dev mode requires a user with username '{settings.DEV_USERNAME}'. "
+                    f"Create one with: python -m app.scripts.create_user {settings.DEV_USERNAME} <password> admin"
+                ),
+            )
+        return CurrentUser(id=dev_user.id, username=dev_user.username, role=dev_user.role)
     if credentials is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

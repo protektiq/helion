@@ -1,19 +1,19 @@
 {
   "pages": {
-    "/page": [
+    "/exploitability/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/exploitability/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/layout.js"
     ],
-    "/reasoning/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/reasoning/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }

@@ -69,6 +69,8 @@ class Settings(BaseSettings):
     JWT_EXPIRE_MINUTES: int = 60
     # When False, get_current_user returns a synthetic user (no JWT required). Set to True in production.
     AUTH_ENABLED: bool = False
+    # When AUTH_ENABLED is False, get_current_user resolves this username from the database.
+    DEV_USERNAME: str = "dev"
 
     # Layer B clustering: optional semantic merge via embeddings + Qdrant
     CLUSTER_USE_SEMANTIC: bool = False
