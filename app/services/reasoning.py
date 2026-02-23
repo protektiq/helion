@@ -15,6 +15,130 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
+# Max characters of raw model output to log on JSON parse failure (sanitized, not full payload)
+DEBUG_LOG_PREFIX_LEN = 800
+
+# Allowed priority values (must match prompt); invalid values are defaulted to "medium"
+ALLOWED_PRIORITIES = frozenset(("critical", "high", "medium", "low", "info"))
+PRIORITY_ALIASES: dict[str, str] = {
+    "crit": "critical",
+    "critical": "critical",
+    "high": "high",
+    "medium": "medium",
+    "low": "low",
+    "info": "info",
+    "informational": "info",
+}
+
+
+def _normalize_priority(raw: str | None) -> str:
+    """Map priority/severity to an allowed value; default to 'medium' if invalid."""
+    if raw is None or not isinstance(raw, str) or not raw.strip():
+        return "medium"
+    key = raw.strip().lower()
+    normalized = PRIORITY_ALIASES.get(key)
+    if normalized is not None:
+        return normalized
+    if key in ALLOWED_PRIORITIES:
+        return key
+    return "medium"
+
+
+def _normalize_reasoning_output(
+    parsed: dict, clusters: list[VulnerabilityCluster]
+) -> dict:
+    """
+    Map common "almost-correct" LLM output shapes into the strict ReasoningResponse schema.
+
+    - Normalizes top-level keys (notes/clusters -> cluster_notes, overall_summary -> summary).
+    - Normalizes per-note keys (id -> vulnerability_id, remediation/recommendation -> reasoning, severity -> priority).
+    - Enforces allowed priority values (aliases and lowercase); invalid -> "medium".
+    - Filters out notes whose vulnerability_id is not in the input cluster ids.
+    - Ensures cluster_notes is a list and summary is a string.
+    """
+    # Resolve cluster_notes
+    cluster_notes = parsed.get("cluster_notes")
+    if cluster_notes is None:
+        cluster_notes = parsed.get("notes")
+    if cluster_notes is None:
+        cluster_notes = parsed.get("clusters")
+    if not isinstance(cluster_notes, list):
+        cluster_notes = []
+
+    # Resolve summary
+    summary = parsed.get("summary")
+    if summary is None:
+        summary = parsed.get("overall_summary")
+    if not isinstance(summary, str):
+        summary = str(summary) if summary is not None else "No summary provided."
+
+    allowed_ids = {c.vulnerability_id for c in clusters}
+    normalized_notes: list[dict[str, str]] = []
+
+    for item in cluster_notes:
+        if not isinstance(item, dict):
+            continue
+        vuln_id = item.get("vulnerability_id") or item.get("id")
+        if not vuln_id or not isinstance(vuln_id, str) or vuln_id.strip() == "":
+            continue
+        vuln_id = vuln_id.strip()
+        if vuln_id not in allowed_ids:
+            continue
+        reasoning = item.get("reasoning") or item.get("remediation") or item.get("recommendation")
+        if not isinstance(reasoning, str):
+            reasoning = str(reasoning) if reasoning is not None else "No reasoning provided."
+        priority_raw = item.get("priority") or item.get("severity")
+        priority = _normalize_priority(priority_raw)
+        normalized_notes.append({
+            "vulnerability_id": vuln_id,
+            "priority": priority,
+            "reasoning": reasoning,
+        })
+
+    return {"summary": summary, "cluster_notes": normalized_notes}
+
+
+def _is_fence_line(line: str) -> bool:
+    """True if the line is a markdown code fence (e.g. ``` or ```json)."""
+    s = line.strip()
+    return s == "```" or s.startswith("```")
+
+
+def _extract_json_object(text: str) -> str:
+    """
+    Extract a JSON object from model output.
+
+    Strips whitespace. If markdown code fences are present (e.g. ``` or
+    ```json on one line, closing ``` on another), removes the first
+    opening fence line and the last closing fence line so that content
+    wrapped in "Here is the result:\\n\\n```json\\n{...}\\n```" is
+    normalized. Then returns the substring from the first "{" to the
+    last "}" when both exist and last > first; otherwise returns the
+    stripped text. Does not unwrap or accept alternative shapes—validation
+    into ReasoningResponse remains strict.
+    """
+    text = text.strip()
+    if "```" in text:
+        lines = text.split("\n")
+        first_fence: int | None = None
+        last_fence: int | None = None
+        for i, line in enumerate(lines):
+            if _is_fence_line(line):
+                if first_fence is None:
+                    first_fence = i
+                last_fence = i
+        if (
+            first_fence is not None
+            and last_fence is not None
+            and last_fence > first_fence
+        ):
+            text = "\n".join(lines[first_fence + 1 : last_fence]).strip()
+    first = text.find("{")
+    last = text.rfind("}")
+    if first != -1 and last != -1 and last > first:
+        return text[first : last + 1]
+    return text
+
 
 class ReasoningServiceError(Exception):
     """Raised when the reasoning service cannot complete (Ollama unreachable, timeout, or invalid JSON)."""
@@ -26,40 +150,32 @@ class ReasoningServiceError(Exception):
 
 
 def _build_prompt(clusters: list[VulnerabilityCluster]) -> str:
-    """Build a single prompt that includes cluster data and instructs the model to return only JSON."""
+    """Build a prompt with cluster data and explicit JSON-only output rules."""
+    MAX_DESC_LEN = 200
     clusters_data = [
         {
-            "vulnerability_id": c.vulnerability_id,
-            "severity": c.severity,
+            "id": c.vulnerability_id,
+            "sev": c.severity,
+            "cvss": c.cvss_score,
             "repo": c.repo,
-            "file_path": c.file_path or "",
-            "dependency": c.dependency or "",
-            "cvss_score": c.cvss_score,
-            "description": c.description,
-            "affected_services_count": c.affected_services_count,
-            "finding_count": c.finding_count,
+            "dep": c.dependency or "",
+            "svc": c.affected_services_count,
+            "findings": c.finding_count,
+            "desc": (c.description or "")[:MAX_DESC_LEN],
         }
         for c in clusters
     ]
-    clusters_json = json.dumps(clusters_data, indent=2)
-    return f"""You are a security analyst. Below is a list of vulnerability clusters (grouped findings). For each cluster, provide a short priority label and reasoning/remediation hint.
-
-Vulnerability clusters (JSON):
-{clusters_json}
-
-Respond with ONLY a single valid JSON object (no markdown, no code fence, no extra text). The JSON must have exactly this shape:
-{{
-  "summary": "One short overall assessment of these clusters (1-3 sentences).",
-  "cluster_notes": [
-    {{
-      "vulnerability_id": "<same as in the list>",
-      "priority": "critical|high|medium|low",
-      "reasoning": "Short explanation or remediation hint for this cluster."
-    }}
-  ]
-}}
-
-Include one object in "cluster_notes" for each cluster in the input list, in the same order. Output only the JSON object."""
+    clusters_json = json.dumps(clusters_data, separators=(",", ":"))
+    instructions = (
+        "Return ONLY valid JSON. No markdown. Response must start with { and end with }.\n"
+        "Root object: only two keys—summary (string), cluster_notes (array). No other keys.\n"
+        "cluster_notes: array of objects. Each object has only three keys:\n"
+        "  vulnerability_id: string; must match one of the cluster id values from the Clusters list below.\n"
+        "  priority: exactly one of [\"critical\",\"high\",\"medium\",\"low\",\"info\"].\n"
+        "  reasoning: string, between 1 and 500 characters.\n"
+        "No extra keys in the root or in any cluster_notes item."
+    )
+    return instructions + "\n\nClusters:\n" + clusters_json
 
 
 async def run_reasoning(
@@ -172,18 +288,18 @@ async def run_reasoning(
 
     # Response may be a string (the generated text) or already parsed
     if isinstance(raw_response, str):
-        raw_response = raw_response.strip()
-        # Remove markdown code fence if present
-        if raw_response.startswith("```"):
-            lines = raw_response.split("\n")
-            if lines[0].startswith("```"):
-                lines = lines[1:]
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            raw_response = "\n".join(lines)
         try:
-            parsed = json.loads(raw_response)
+            parsed = json.loads(_extract_json_object(raw_response))
         except json.JSONDecodeError as e:
+            prefix = raw_response[:DEBUG_LOG_PREFIX_LEN]
+            sanitized = prefix.replace("\r", " ").replace("\n", " ")
+            logger.warning(
+                "Model returned invalid JSON; logging prefix of raw response",
+                extra={
+                    "model": settings.OLLAMA_MODEL,
+                    "raw_response_prefix": sanitized,
+                },
+            )
             raise ReasoningServiceError(
                 "Invalid JSON from model. The model must respond with only valid JSON.",
                 cause=e,
@@ -196,9 +312,20 @@ async def run_reasoning(
             "Model output is not a JSON object."
         )
 
+    parsed = _normalize_reasoning_output(parsed, clusters)
+
     try:
         return ReasoningResponse.model_validate(parsed)
     except Exception as e:
+        raw_snippet = json.dumps(parsed)[:DEBUG_LOG_PREFIX_LEN]
+        sanitized = raw_snippet.replace("\r", " ").replace("\n", " ")
+        logger.debug(
+            "Schema validation failed; logging prefix of model output",
+            extra={
+                "model": settings.OLLAMA_MODEL,
+                "raw_output_prefix": sanitized,
+            },
+        )
         raise ReasoningServiceError(
             "Model output does not match expected schema (summary, cluster_notes with vulnerability_id, priority, reasoning).",
             cause=e,
