@@ -218,7 +218,7 @@ def validate_grounded_tier(
     # Resolve candidate tier: LLM string (critical/high/...) maps to 1/2/3, else use suggested_tier
     candidate = suggested_tier
     if llm_adjusted_tier:
-        raw = (llm_adjusted_tier or "").strip().lower()
+        raw = llm_adjusted_tier.strip().lower()
         if raw in ("critical", "crit"):
             candidate = 1
         elif raw == "high":
