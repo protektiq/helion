@@ -58,6 +58,18 @@ def _plain_text_to_adf(plain: str) -> dict[str, Any]:
     return {"type": "doc", "version": 1, "content": content}
 
 
+def _ticket_to_issue_body(ticket: DevTicketPayload) -> str:
+    """Build full Jira issue body: description plus acceptance criteria section."""
+    body = (ticket.description or "").strip()
+    if not body:
+        body = "No description."
+    if ticket.acceptance_criteria:
+        body = body + "\n\nAcceptance criteria:\n" + "\n".join(
+            str(c).strip() or " " for c in ticket.acceptance_criteria
+        )
+    return body
+
+
 def _is_jira_configured(settings: Settings) -> bool:
     if not settings.JIRA_BASE_URL or not settings.JIRA_BASE_URL.strip():
         return False
@@ -232,7 +244,7 @@ async def export_tickets_to_jira(
             if not epic_key:
                 errors.append(f"Issue '{ticket.title[:50]}...': no epic for tier '{ticket.risk_tier_label}'")
                 continue
-            description_adf = _plain_text_to_adf(ticket.description)
+            description_adf = _plain_text_to_adf(_ticket_to_issue_body(ticket))
             try:
                 key = await _create_issue(
                     client,

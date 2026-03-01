@@ -148,6 +148,54 @@ class TestSingleClusterWithNoteAndTier(unittest.TestCase):
         payload = cluster_to_ticket_payload(cluster, risk_tier_result=tier_result)
         self.assertEqual(payload.risk_tier_label, "Tier 1")
 
+    def test_description_includes_exploitability_evidence_when_note_has_enrichment(self) -> None:
+        """With ClusterNote containing KEV, EPSS, evidence, fix versions, ecosystem, description has Exploitability section."""
+        cluster = _cluster(vulnerability_id="CVE-2024-1234")
+        note = ClusterNote(
+            vulnerability_id=cluster.vulnerability_id,
+            priority="high",
+            reasoning="Upgrade to fixed version.",
+            kev=True,
+            epss=0.15,
+            evidence=["KEV listed", "EPSS 0.15"],
+            fixed_in_versions=["2.0.0", "2.1.0"],
+            package_ecosystem="npm",
+        )
+        payload = cluster_to_ticket_payload(cluster, cluster_note=note)
+        self.assertIn("Exploitability evidence:", payload.description)
+        self.assertIn("CISA KEV: Yes", payload.description)
+        self.assertIn("EPSS: 0.15", payload.description)
+        self.assertIn("Evidence:", payload.description)
+        self.assertIn("KEV listed", payload.description)
+        self.assertIn("Fix versions:", payload.description)
+        self.assertIn("2.0.0", payload.description)
+        self.assertIn("Package ecosystem: npm", payload.description)
+
+    def test_acceptance_criteria_include_kev_and_epss_when_note_has_enrichment(self) -> None:
+        """With ClusterNote containing KEV/EPSS, acceptance criteria include explicit CISA KEV and EPSS lines."""
+        cluster = _cluster(vulnerability_id="CVE-2024-5678")
+        note = ClusterNote(
+            vulnerability_id=cluster.vulnerability_id,
+            priority="critical",
+            reasoning="Remediate soon.",
+            kev=True,
+            epss=0.85,
+            evidence=["KEV listed"],
+            fixed_in_versions=["3.0.0"],
+        )
+        payload = cluster_to_ticket_payload(cluster, cluster_note=note)
+        ac = payload.acceptance_criteria
+        self.assertIn("CISA KEV: Yes", ac)
+        self.assertIn("EPSS: 0.85", ac)
+        self.assertTrue(
+            any("Evidence:" in c for c in ac),
+            "Acceptance criteria should include evidence line",
+        )
+        self.assertTrue(
+            any("Upgrade to fixed version" in c for c in ac),
+            "Acceptance criteria should include fix versions line",
+        )
+
 
 class TestBatch(unittest.TestCase):
     """clusters_to_ticket_payloads with optional maps."""

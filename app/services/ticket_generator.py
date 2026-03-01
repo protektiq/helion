@@ -74,8 +74,29 @@ def _build_title(
     return base[:max_length].rstrip()
 
 
-def _build_description(cluster: VulnerabilityCluster) -> str:
-    """Structured description: vulnerability_id, description, severity, CVSS, context."""
+def _has_enrichment_in_note(note: ClusterNote | None) -> bool:
+    """True if cluster_note has any exploitability evidence to show."""
+    if note is None:
+        return False
+    if note.kev is not None:
+        return True
+    if note.epss is not None:
+        return True
+    if note.evidence and len(note.evidence) > 0:
+        return True
+    if note.fixed_in_versions and len(note.fixed_in_versions) > 0:
+        return True
+    if note.package_ecosystem and str(note.package_ecosystem).strip():
+        return True
+    return False
+
+
+def _build_description(
+    cluster: VulnerabilityCluster,
+    cluster_note: ClusterNote | None = None,
+) -> str:
+    """Structured description: vulnerability_id, description, severity, CVSS, context.
+    When cluster_note has enrichment, appends Exploitability evidence section."""
     lines = [
         f"Vulnerability: {cluster.vulnerability_id}",
         f"Description: {cluster.description}",
@@ -88,6 +109,29 @@ def _build_description(cluster: VulnerabilityCluster) -> str:
         lines.append(f"File path: {cluster.file_path.strip()}")
     if cluster.dependency and cluster.dependency.strip():
         lines.append(f"Dependency: {cluster.dependency.strip()}")
+
+    if _has_enrichment_in_note(cluster_note):
+        lines.append("")
+        lines.append("Exploitability evidence:")
+        note = cluster_note
+        lines.append(f"CISA KEV: {'Yes' if note.kev else 'No'}")
+        if note.epss is not None:
+            lines.append(f"EPSS: {note.epss:.2f}")
+        else:
+            lines.append("EPSS: n/a")
+        if note.evidence and len(note.evidence) > 0:
+            evidence_str = "; ".join(note.evidence[:15])
+            if len(evidence_str) > 500:
+                evidence_str = evidence_str[:497] + "..."
+            lines.append(f"Evidence: {evidence_str}")
+        if note.fixed_in_versions and len(note.fixed_in_versions) > 0:
+            fix_str = ", ".join(note.fixed_in_versions[:10])
+            if len(fix_str) > 300:
+                fix_str = fix_str[:297] + "..."
+            lines.append(f"Fix versions: {fix_str}")
+        if note.package_ecosystem and str(note.package_ecosystem).strip():
+            lines.append(f"Package ecosystem: {note.package_ecosystem.strip()}")
+
     text = "\n".join(lines)
     if len(text) > DESCRIPTION_MAX_LENGTH:
         return text[:DESCRIPTION_MAX_LENGTH].rstrip()
@@ -149,9 +193,18 @@ def cluster_to_ticket_payload(
         remediation = FALLBACK_REMEDIATION
 
     title = _build_title(risk_tier_label, cluster)
-    description = _build_description(cluster)
+    description = _build_description(cluster, cluster_note)
     acceptance_criteria = list(DEFAULT_ACCEPTANCE_CRITERIA)
     if cluster_note:
+        if cluster_note.kev is not None:
+            acceptance_criteria.append(f"CISA KEV: {'Yes' if cluster_note.kev else 'No'}")
+        if cluster_note.epss is not None:
+            epss_line = f"EPSS: {cluster_note.epss:.2f}"
+            if len(epss_line) > ACCEPTANCE_CRITERION_MAX_LENGTH:
+                epss_line = epss_line[:ACCEPTANCE_CRITERION_MAX_LENGTH - 3].rstrip() + "..."
+            acceptance_criteria.append(epss_line)
+        elif cluster_note.kev is not None or (cluster_note.evidence and len(cluster_note.evidence) > 0):
+            acceptance_criteria.append("EPSS: n/a")
         if cluster_note.fixed_in_versions:
             fix_line = "Upgrade to fixed version(s): " + ", ".join(
                 cluster_note.fixed_in_versions[:10]

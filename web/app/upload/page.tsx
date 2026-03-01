@@ -37,9 +37,9 @@ export default function UploadPage() {
       if (!file) return;
 
       const name = file.name.toLowerCase();
-      if (!name.endsWith(".json")) {
+      if (!name.endsWith(".json") && !name.endsWith(".sarif")) {
         setStatus("error");
-        setErrorMessage("File must have a .json extension.");
+        setErrorMessage("File must have a .json or .sarif extension.");
         return;
       }
 
@@ -70,7 +70,7 @@ export default function UploadPage() {
   return (
     <main style={{ padding: "2rem", maxWidth: "32rem", margin: "0 auto" }}>
       <h1 style={{ fontSize: "1.25rem", marginBottom: "1rem" }}>
-        Upload findings (JSON)
+        Upload findings (JSON or SARIF)
       </h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
@@ -80,9 +80,9 @@ export default function UploadPage() {
           <input
             id="file-input"
             type="file"
-            accept=".json"
+            accept=".json,.sarif"
             onChange={handleFileChange}
-            aria-label="Select JSON file"
+            aria-label="Select JSON or SARIF file"
           />
         </div>
         <button
@@ -107,7 +107,7 @@ export default function UploadPage() {
         style={{ marginTop: "1rem", minHeight: "1.5em" }}
       >
         {status === "idle" && (
-          <p style={{ color: "#666" }}>Select a JSON file and submit.</p>
+          <p style={{ color: "#666" }}>Select a JSON or SARIF file and submit.</p>
         )}
         {status === "uploading" && <p>Uploading…</p>}
         {status === "success" && successPayload !== null && (

@@ -15,9 +15,10 @@ from app.schemas.reasoning import ClusterNote
 from app.schemas.risk_tier import ClusterRiskTierResult
 from app.schemas.ticket import TicketsRequest
 from app.services.cluster_persistence import get_or_build_clusters_for_job, load_clusters_for_job
+from app.schemas.exploitability import ExploitabilityOutput
+from app.services.agent import run_exploitability_agent
 from app.services.jira_export import JiraApiError, JiraNotConfiguredError, export_tickets_to_jira
-from app.services.reasoning import ReasoningServiceError, run_reasoning
-from app.services.risk_tier import assign_risk_tiers
+from app.services.reasoning import ReasoningServiceError
 from app.services.ticket_generator import (
     apply_tier_overrides,
     clusters_to_ticket_payloads,
@@ -26,6 +27,35 @@ from app.services.ticket_generator import (
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+
+_ADJUSTED_TO_TIER = {"critical": 1, "high": 2, "medium": 3, "low": 3, "info": 3}
+
+
+def _agent_output_to_note_and_tier(
+    vulnerability_id: str,
+    output: ExploitabilityOutput,
+) -> tuple[ClusterNote, ClusterRiskTierResult]:
+    """Convert ExploitabilityOutput to ClusterNote and ClusterRiskTierResult."""
+    tier = _ADJUSTED_TO_TIER.get(output.adjusted_risk_tier.strip().lower(), 2)
+    note = ClusterNote(
+        vulnerability_id=vulnerability_id,
+        priority=output.adjusted_risk_tier,
+        reasoning=output.reasoning,
+        assigned_tier=tier,
+        override_applied=None,
+        kev=output.kev,
+        epss=output.epss,
+        fixed_in_versions=output.fixed_in_versions,
+        package_ecosystem=output.package_ecosystem,
+        evidence=output.evidence,
+    )
+    result = ClusterRiskTierResult(
+        vulnerability_id=vulnerability_id,
+        assigned_tier=tier,
+        llm_reasoning=output.reasoning,
+        override_applied=None,
+    )
+    return (note, result)
 
 
 @router.post("/export", response_model=JiraExportResponse)
@@ -80,22 +110,30 @@ async def post_jira_export(
                 )
     elif body.use_reasoning and clusters:
         settings = get_settings()
-        try:
-            result = await run_reasoning(clusters, settings)
-        except ReasoningServiceError as e:
-            if "unreachable" in e.message.lower() or "timed out" in e.message.lower():
-                raise HTTPException(status_code=503, detail=e.message) from e
-            if "status" in e.message or "Ollama returned" in e.message:
-                raise HTTPException(status_code=502, detail=e.message) from e
-            raise HTTPException(status_code=422, detail=e.message) from e
-
-        tier_results = assign_risk_tiers(
-            clusters, reasoning_response=result, cluster_dev_only=None
-        )
-        for note in result.cluster_notes:
-            notes_by_id[note.vulnerability_id] = note
-        for tr in tier_results:
-            tier_by_id[tr.vulnerability_id] = tr
+        job_id = body.job_id if body.use_db else None
+        for cluster in clusters:
+            try:
+                output: ExploitabilityOutput = await run_exploitability_agent(
+                    cluster,
+                    settings,
+                    session=db,
+                    upload_job_id=job_id,
+                    persist_enrichment=True,
+                )
+            except (ReasoningServiceError, RuntimeError) as e:
+                msg = e.message if hasattr(e, "message") else str(e)
+                if "unreachable" in msg.lower() or "timed out" in msg.lower():
+                    raise HTTPException(status_code=503, detail=msg) from e
+                if "status" in msg or "Ollama returned" in msg:
+                    raise HTTPException(status_code=502, detail=msg) from e
+                raise HTTPException(status_code=422, detail=msg) from e
+            note, tier_result = _agent_output_to_note_and_tier(
+                cluster.vulnerability_id, output
+            )
+            notes_by_id[cluster.vulnerability_id] = note
+            tier_by_id[cluster.vulnerability_id] = tier_result
+        if db:
+            db.commit()
 
     for cluster in clusters:
         if cluster.repo == "multiple":

@@ -12,6 +12,7 @@ from app.services.jira_export import (
     JiraNotConfiguredError,
     _is_jira_configured,
     _plain_text_to_adf,
+    _ticket_to_issue_body,
     export_tickets_to_jira,
 )
 
@@ -58,6 +59,35 @@ class TestPlainTextToAdf(unittest.TestCase):
         self.assertEqual(out["content"][0]["content"][0]["text"], "Line 1")
         self.assertEqual(out["content"][1]["content"][0]["text"], "Line 2")
         self.assertEqual(out["content"][2]["content"][0]["text"], "Line 3")
+
+
+class TestTicketToIssueBody(unittest.TestCase):
+    """_ticket_to_issue_body builds description + acceptance criteria for Jira issue."""
+
+    def test_includes_description_and_acceptance_criteria(self) -> None:
+        ticket = _ticket(
+            description="Vulnerability: CVE-2024-0001\nSeverity: high",
+            acceptance_criteria=["CISA KEV: Yes", "EPSS: 0.15", "Vulnerability remediated."],
+        )
+        body = _ticket_to_issue_body(ticket)
+        self.assertIn("Vulnerability: CVE-2024-0001", body)
+        self.assertIn("Severity: high", body)
+        self.assertIn("Acceptance criteria:", body)
+        self.assertIn("CISA KEV: Yes", body)
+        self.assertIn("EPSS: 0.15", body)
+        self.assertIn("Vulnerability remediated.", body)
+
+    def test_acceptance_criteria_appended_when_present(self) -> None:
+        """Issue body includes acceptance criteria section when ticket has criteria."""
+        ticket = _ticket(
+            description="Short desc.",
+            acceptance_criteria=["AC1", "AC2"],
+        )
+        body = _ticket_to_issue_body(ticket)
+        self.assertIn("Short desc.", body)
+        self.assertIn("Acceptance criteria:", body)
+        self.assertIn("AC1", body)
+        self.assertIn("AC2", body)
 
 
 class TestIsJiraConfigured(unittest.TestCase):

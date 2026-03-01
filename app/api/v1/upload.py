@@ -14,13 +14,14 @@ from app.schemas.auth import CurrentUser
 from app.schemas.findings import RawFinding
 from app.schemas.upload import UploadResponse
 from app.services.normalize import deduplicate_finding_pairs, normalize_finding
+from app.services.sarif_parser import sarif_to_rawfindings
 from app.services.scanner_mappers import normalize_shape_to_rawfinding
 
 router = APIRouter()
 
 MAX_FINDINGS_PER_REQUEST = 10_000
 MAX_UPLOAD_FILE_BYTES = 50 * 1024 * 1024  # 50 MB
-ALLOWED_JSON_EXTENSIONS = frozenset({".json"})
+ALLOWED_JSON_EXTENSIONS = frozenset({".json", ".sarif"})
 
 
 def _is_upload_file(obj: object) -> bool:
@@ -32,6 +33,18 @@ def _is_upload_file(obj: object) -> bool:
         and callable(getattr(obj, "read", None))
         and hasattr(obj, "filename")
     )
+
+
+def _is_sarif_root(data: dict) -> bool:
+    """True if data is a SARIF root object (version, $schema, runs array)."""
+    if not isinstance(data, dict) or "runs" not in data:
+        return False
+    if not data.get("version"):
+        return False
+    if not data.get("$schema"):
+        return False
+    runs = data.get("runs")
+    return isinstance(runs, list)
 
 
 def _is_osv_scanner_wrapper(data: dict) -> bool:
@@ -81,7 +94,9 @@ def _flatten_osv_scanner_results(data: dict) -> list[dict]:
 def _parse_and_validate_findings(data: list | dict) -> list[RawFinding]:
     """Parse JSON structure into list of RawFinding; accept single object or array."""
     if isinstance(data, dict):
-        if _is_osv_scanner_wrapper(data):
+        if _is_sarif_root(data):
+            items = sarif_to_rawfindings(data)
+        elif _is_osv_scanner_wrapper(data):
             items = _flatten_osv_scanner_results(data)
         else:
             items = [data]
@@ -132,13 +147,13 @@ async def _get_findings_from_request(request: Request) -> list[RawFinding]:
         if file is None or not _is_upload_file(file):
             raise HTTPException(
                 status_code=422,
-                detail="Multipart request must include a 'file' field with a JSON file.",
+                detail="Multipart request must include a 'file' field with a JSON or SARIF file.",
             )
         filename = getattr(file, "filename", None) or ""
-        if not filename.lower().endswith(".json"):
+        if not filename.lower().endswith((".json", ".sarif")):
             raise HTTPException(
                 status_code=422,
-                detail="Uploaded file must have a .json extension.",
+                detail="Uploaded file must have a .json or .sarif extension.",
             )
         content = await file.read()
         if len(content) > MAX_UPLOAD_FILE_BYTES:
