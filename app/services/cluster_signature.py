@@ -49,6 +49,12 @@ def _ecosystem_from_raw_payload(raw_payload: dict | None) -> str:
     # Snyk-style: package manager in payload
     if "packageManager" in raw_payload and isinstance(raw_payload["packageManager"], str):
         return raw_payload["packageManager"].strip().lower()[:64]
+    # OSV-Scanner: package.ecosystem in raw_payload
+    pkg = raw_payload.get("package")
+    if isinstance(pkg, dict) and pkg.get("ecosystem"):
+        eco = pkg.get("ecosystem")
+        if isinstance(eco, str) and eco.strip():
+            return eco.strip().lower()[:64]
     return ""
 
 
@@ -65,12 +71,15 @@ def _sca_deterministic_key(
     if not vid:
         vid = "unknown"
     ecosystem = _ecosystem_from_raw_payload(raw_payload)
-    # Package name: from dependency field, or from raw (Trivy PkgName)
+    # Package name: from dependency field, or from raw (Trivy PkgName, OSV-Scanner package.name)
     pkg = (dependency or "").strip()
-    if raw_payload and isinstance(raw_payload, dict) and raw_payload.get("PkgName"):
-        pn = raw_payload.get("PkgName")
-        if isinstance(pn, str) and pn.strip():
-            pkg = pn.strip()
+    if raw_payload and isinstance(raw_payload, dict):
+        if raw_payload.get("PkgName") and isinstance(raw_payload["PkgName"], str) and raw_payload["PkgName"].strip():
+            pkg = raw_payload["PkgName"].strip()
+        elif raw_payload.get("package") and isinstance(raw_payload["package"], dict):
+            pn = raw_payload["package"].get("name")
+            if isinstance(pn, str) and pn.strip():
+                pkg = pn.strip()
     pkg_normalized = _normalize_package_name(pkg)
     if not pkg_normalized:
         pkg_normalized = "unknown"

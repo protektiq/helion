@@ -34,10 +34,57 @@ def _is_upload_file(obj: object) -> bool:
     )
 
 
+def _is_osv_scanner_wrapper(data: dict) -> bool:
+    """True if data looks like OSV-Scanner native JSON (top-level 'results' array)."""
+    results = data.get("results")
+    if not isinstance(results, list) or not results:
+        return False
+    first = results[0]
+    return isinstance(first, dict) and "packages" in first
+
+
+def _flatten_osv_scanner_results(data: dict) -> list[dict]:
+    """
+    Flatten OSV-Scanner { results: [ { source, packages: [ { package, vulnerabilities[] } ] } ] }
+    to one dict per (source, package, vulnerability) for mapper consumption.
+    """
+    items: list[dict] = []
+    for result in data.get("results") or []:
+        if not isinstance(result, dict):
+            continue
+        source = result.get("source") or {}
+        for pkg in result.get("packages") or []:
+            if not isinstance(pkg, dict):
+                continue
+            package = pkg.get("package") or {}
+            for vuln in pkg.get("vulnerabilities") or []:
+                if not isinstance(vuln, dict):
+                    continue
+                flat: dict = {
+                    "id": vuln.get("id"),
+                    "aliases": vuln.get("aliases", []),
+                    "package": package,
+                    "source": source,
+                }
+                if vuln.get("summary") is not None:
+                    flat["summary"] = vuln.get("summary")
+                if vuln.get("details") is not None:
+                    flat["details"] = vuln.get("details")
+                if vuln.get("severity") is not None:
+                    flat["severity"] = vuln.get("severity")
+                if vuln.get("database_specific") is not None:
+                    flat["database_specific"] = vuln.get("database_specific")
+                items.append(flat)
+    return items
+
+
 def _parse_and_validate_findings(data: list | dict) -> list[RawFinding]:
     """Parse JSON structure into list of RawFinding; accept single object or array."""
     if isinstance(data, dict):
-        items = [data]
+        if _is_osv_scanner_wrapper(data):
+            items = _flatten_osv_scanner_results(data)
+        else:
+            items = [data]
     elif isinstance(data, list):
         items = data
     else:

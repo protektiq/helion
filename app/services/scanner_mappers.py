@@ -50,6 +50,15 @@ def _is_semgrep_like(obj: dict[str, Any]) -> bool:
     return "check_id" in obj and ("path" in obj or "metadata" in obj)
 
 
+def _is_osv_scanner_like(obj: dict[str, Any]) -> bool:
+    """Heuristic: OSV-Scanner flattened shape has package (dict with name+ecosystem) and vuln id."""
+    pkg = obj.get("package")
+    if not isinstance(pkg, dict) or "name" not in pkg or "ecosystem" not in pkg:
+        return False
+    vid = obj.get("id") or obj.get("vulnerability_id")
+    return isinstance(vid, str) and bool(vid.strip())
+
+
 def map_trivy_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
     """Map Trivy-style dict to RawFinding-shaped dict. Preserve original in raw_payload."""
     out: dict[str, Any] = {}
@@ -128,6 +137,70 @@ def map_semgrep_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
     return _merge_rawfinding_shape(out, obj)
 
 
+def _extract_osv_severity_and_cvss(obj: dict[str, Any]) -> tuple[str | None, float | None]:
+    """Extract severity string and CVSS score from OSV-style vuln (severity[] or database_specific)."""
+    severity_out: str | None = None
+    cvss_out: float | None = None
+    sev_list = obj.get("severity")
+    if isinstance(sev_list, list) and sev_list:
+        for s in sev_list:
+            if not isinstance(s, dict):
+                continue
+            score = s.get("score")
+            if score is not None:
+                try:
+                    cvss_out = float(score)
+                except (TypeError, ValueError):
+                    pass
+                if cvss_out is not None:
+                    break
+            if severity_out is None:
+                severity_out = _str_or_none(s.get("severity"))
+    db = obj.get("database_specific")
+    if isinstance(db, dict):
+        if cvss_out is None:
+            score = db.get("cvss_score") or db.get("severity")
+            if score is not None:
+                try:
+                    cvss_out = float(score)
+                except (TypeError, ValueError):
+                    pass
+        if severity_out is None:
+            severity_out = _str_or_none(db.get("severity"))
+    return (severity_out, cvss_out)
+
+
+def map_osv_scanner_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
+    """Map OSV-Scanner flattened dict to RawFinding-shaped dict. Preserve original in raw_payload."""
+    out: dict[str, Any] = {}
+    raw = dict(obj)
+    pkg = obj.get("package") or {}
+    src = obj.get("source") or {}
+
+    out["vulnerability_id"] = _str_or_none(obj.get("id")) or _str_or_none(obj.get("vulnerability_id"))
+    if not out["vulnerability_id"] and isinstance(obj.get("aliases"), list):
+        for a in obj["aliases"]:
+            if isinstance(a, str) and a.strip().upper().startswith("CVE-"):
+                out["vulnerability_id"] = a.strip()
+                break
+
+    if isinstance(pkg, dict) and pkg.get("name") is not None:
+        out["dependency"] = _str_or_none(pkg.get("name"))
+    if isinstance(src, dict) and src.get("path") is not None:
+        out["file_path"] = _str_or_none(src.get("path"))
+
+    sev, cvss = _extract_osv_severity_and_cvss(obj)
+    if sev:
+        out["severity"] = sev
+    if cvss is not None and 0 <= cvss <= 10:
+        out["cvss_score"] = cvss
+
+    out["description"] = _str_or_none(obj.get("summary")) or _str_or_none(obj.get("details"))
+    out["scanner_source"] = "osv-scanner"
+    out["raw_payload"] = raw
+    return _merge_rawfinding_shape(out, obj)
+
+
 def _str_or_none(value: Any) -> str | None:
     """Return string or None; coerce non-str to str if sensible."""
     if value is None:
@@ -193,4 +266,6 @@ def normalize_shape_to_rawfinding(obj: dict[str, Any]) -> dict[str, Any]:
         return map_snyk_to_raw(obj)
     if _is_semgrep_like(obj):
         return map_semgrep_to_raw(obj)
+    if _is_osv_scanner_like(obj):
+        return map_osv_scanner_to_raw(obj)
     return apply_generic_aliases(obj)
