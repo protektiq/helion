@@ -54,7 +54,7 @@ async def post_jira_export(
             )
         clusters = load_clusters_for_job(db, current_user.id, body.job_id)
         if not clusters:
-            clusters, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
+            clusters, _, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
     else:
         clusters = body.clusters
 

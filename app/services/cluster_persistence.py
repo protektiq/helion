@@ -100,16 +100,16 @@ def get_or_build_clusters_for_job(
     job_id: int | None,
     *,
     use_semantic: bool = False,
-) -> tuple[list[VulnerabilityCluster], int]:
+) -> tuple[list[VulnerabilityCluster], int, list]:
     """
     Load findings for the job, run clustering (Layer A + optional Layer B), persist to clusters
-    table, and return (clusters, raw_finding_count). Used by GET /clusters so results are stored
-    for tickets/reasoning/Jira.
+    table, and return (clusters, raw_finding_count, findings). Used by GET /clusters so results
+    are stored for tickets/reasoning/Jira. Callers may use the findings list for rule summary etc.
     """
     findings = get_findings_for_user_job(db, user_id, job_id)
     if not findings:
-        return [], 0
+        return [], 0, []
     clusters = build_clusters_v2(findings, use_semantic=use_semantic)
     upload_job_id = findings[0].upload_job_id
     save_clusters_for_job(db, upload_job_id, clusters)
-    return clusters, len(findings)
+    return clusters, len(findings), findings

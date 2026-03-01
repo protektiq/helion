@@ -75,7 +75,7 @@ async def post_reasoning(
             )
         clusters = load_clusters_for_job(db, current_user.id, body.job_id)
         if not clusters:
-            clusters, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
+            clusters, _, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
         if len(clusters) > 100:
             clusters = sort_clusters_by_severity_cvss(clusters)[:100]
             reasoning_limited_note = "Reasoning limited to top 100 clusters."

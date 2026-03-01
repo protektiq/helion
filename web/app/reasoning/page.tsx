@@ -10,7 +10,7 @@ import {
   rankClusters,
   MAX_CLUSTERS,
 } from "@/lib/clusterValidation";
-import type { ReasoningResponse, UploadJobListItem, ValidationError } from "@/lib/types";
+import type { ReasoningResponse, RuleSummary, UploadJobListItem, ValidationError } from "@/lib/types";
 import ErrorAlert from "@/app/components/ErrorAlert";
 
 type ReasoningStatus = "idle" | "submitting" | "success" | "error";
@@ -32,6 +32,7 @@ export default function ReasoningPage() {
     total: number;
     sending: number;
   } | null>(null);
+  const [ruleSummary, setRuleSummary] = useState<RuleSummary | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -59,6 +60,23 @@ export default function ReasoningPage() {
     setJobId(next);
     setSelectedJobId(next);
   }, [jobs]);
+
+  useEffect(() => {
+    if (!useDb || jobId == null) {
+      setRuleSummary(null);
+      return;
+    }
+    const load = async () => {
+      try {
+        const client = createApiClient();
+        const data = await client.getClusters(jobId);
+        setRuleSummary(data.rule_summary ?? null);
+      } catch {
+        setRuleSummary(null);
+      }
+    };
+    load();
+  }, [useDb, jobId]);
 
   const effectiveMaxClusters = Math.min(
     MAX_CLUSTERS_CAP,
@@ -254,6 +272,107 @@ export default function ReasoningPage() {
               1–100; backend allows at most 100.
             </span>
           </div>
+        )}
+        {useDb &&
+          ruleSummary != null &&
+          (ruleSummary.top_noisy_rules.length > 0 ||
+            ruleSummary.rules_with_severity_disagreement.length > 0) && (
+          <section
+            style={{ marginBottom: "1rem" }}
+            aria-label="Top rules by volume (Semgrep SAST)"
+          >
+            <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>
+              Top rules by volume
+            </h2>
+            {ruleSummary.top_noisy_rules.length > 0 && (
+              <div
+                style={{
+                  border: "1px solid #e5e7eb",
+                  borderRadius: "4px",
+                  overflow: "auto",
+                  maxHeight: "12rem",
+                  marginBottom: "0.5rem",
+                }}
+                role="region"
+                aria-label="Top noisy rules table"
+              >
+                <table
+                  style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}
+                  aria-label="Top noisy rules: rule ID and finding count"
+                >
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#f9fafb" }}>
+                      <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                        Rule ID
+                      </th>
+                      <th scope="col" style={{ textAlign: "right", padding: "0.5rem 0.75rem" }}>
+                        Count
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ruleSummary.top_noisy_rules.map((r) => (
+                      <tr key={r.rule_id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                        <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }} title={r.rule_id}>
+                          {r.rule_id}
+                        </td>
+                        <td style={{ padding: "0.5rem 0.75rem", textAlign: "right" }}>
+                          {r.count}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {ruleSummary.rules_with_severity_disagreement.length > 0 && (
+              <div style={{ fontSize: "0.875rem" }}>
+                <h3 style={{ fontSize: "0.9375rem", marginBottom: "0.25rem" }}>
+                  Rules with severity disagreement
+                </h3>
+                <div
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "4px",
+                    overflow: "auto",
+                    maxHeight: "10rem",
+                  }}
+                  role="region"
+                  aria-label="Rules with severity disagreement"
+                >
+                  <table
+                    style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}
+                    aria-label="Rules with multiple severities"
+                  >
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#f9fafb" }}>
+                        <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                          Rule ID
+                        </th>
+                        <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                          Severity counts
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ruleSummary.rules_with_severity_disagreement.map((r) => (
+                        <tr key={r.rule_id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                          <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }} title={r.rule_id}>
+                            {r.rule_id}
+                          </td>
+                          <td style={{ padding: "0.5rem 0.75rem" }}>
+                            {Object.entries(r.severity_counts)
+                              .map(([sev, c]) => `${sev}: ${c}`)
+                              .join(", ")}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </section>
         )}
         {!useDb && (
           <div style={{ marginBottom: "0.75rem" }}>

@@ -445,6 +445,107 @@ export default function ResultsSummaryPage() {
             </tbody>
           </table>
 
+          {summary.rule_summary != null &&
+            (summary.rule_summary.top_noisy_rules.length > 0 ||
+              summary.rule_summary.rules_with_severity_disagreement.length > 0) && (
+            <section
+              style={{ marginBottom: "1.5rem" }}
+              aria-label="Top rules by volume (Semgrep SAST)"
+            >
+              <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>
+                Top rules by volume
+              </h2>
+              {summary.rule_summary.top_noisy_rules.length > 0 && (
+                <div
+                  style={{
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "4px",
+                    overflow: "auto",
+                    maxHeight: "16rem",
+                    marginBottom: "0.75rem",
+                  }}
+                  role="region"
+                  aria-label="Top noisy rules table"
+                >
+                  <table
+                    style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}
+                    aria-label="Top noisy rules: rule ID and finding count"
+                  >
+                    <thead>
+                      <tr style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#f9fafb" }}>
+                        <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                          Rule ID
+                        </th>
+                        <th scope="col" style={{ textAlign: "right", padding: "0.5rem 0.75rem" }}>
+                          Count
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {summary.rule_summary.top_noisy_rules.map((r) => (
+                        <tr key={r.rule_id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                          <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }} title={r.rule_id}>
+                            {r.rule_id}
+                          </td>
+                          <td style={{ padding: "0.5rem 0.75rem", textAlign: "right" }}>
+                            {r.count}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {summary.rule_summary.rules_with_severity_disagreement.length > 0 && (
+                <div style={{ fontSize: "0.875rem" }}>
+                  <h3 style={{ fontSize: "0.9375rem", marginBottom: "0.5rem" }}>
+                    Rules with severity disagreement
+                  </h3>
+                  <div
+                    style={{
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "4px",
+                      overflow: "auto",
+                      maxHeight: "12rem",
+                    }}
+                    role="region"
+                    aria-label="Rules with severity disagreement"
+                  >
+                    <table
+                      style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.875rem" }}
+                      aria-label="Rules with multiple severities"
+                    >
+                      <thead>
+                        <tr style={{ borderBottom: "1px solid #e5e7eb", backgroundColor: "#f9fafb" }}>
+                          <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                            Rule ID
+                          </th>
+                          <th scope="col" style={{ textAlign: "left", padding: "0.5rem 0.75rem" }}>
+                            Severity counts
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {summary.rule_summary.rules_with_severity_disagreement.map((r) => (
+                          <tr key={r.rule_id} style={{ borderBottom: "1px solid #e5e7eb" }}>
+                            <td style={{ padding: "0.5rem 0.75rem", wordBreak: "break-all" }} title={r.rule_id}>
+                              {r.rule_id}
+                            </td>
+                            <td style={{ padding: "0.5rem 0.75rem" }}>
+                              {Object.entries(r.severity_counts)
+                                .map(([sev, c]) => `${sev}: ${c}`)
+                                .join(", ")}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+            </section>
+          )}
+
           <section style={{ marginBottom: "1.5rem" }} aria-label="Cluster list and filters">
             <h2 style={{ fontSize: "1rem", marginBottom: "0.75rem" }}>Clusters</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem 1rem", marginBottom: "0.75rem", alignItems: "center" }}>

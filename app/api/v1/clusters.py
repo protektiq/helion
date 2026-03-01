@@ -11,7 +11,7 @@ from app.core.database import get_db
 from app.schemas.auth import CurrentUser
 from app.schemas.findings import ClustersResponse, CompressionMetrics
 from app.services.cluster_persistence import get_or_build_clusters_for_job
-from app.services.job_findings import get_user_upload_job_count
+from app.services.job_findings import get_user_upload_job_count, summarize_rules
 
 router = APIRouter()
 
@@ -37,7 +37,7 @@ def get_clusters(
             detail="Multiple upload jobs exist; specify job_id to scope clusters (e.g. ?job_id=123).",
         )
     settings = get_settings()
-    clusters, raw_finding_count = get_or_build_clusters_for_job(
+    clusters, raw_finding_count, findings = get_or_build_clusters_for_job(
         db, current_user.id, job_id, use_semantic=settings.CLUSTER_USE_SEMANTIC
     )
     cluster_count = len(clusters)
@@ -49,4 +49,9 @@ def get_clusters(
         cluster_count=cluster_count,
         compression_ratio=compression_ratio,
     )
-    return ClustersResponse(clusters=clusters, metrics=metrics)
+    rule_summary = summarize_rules(findings) if findings else None
+    return ClustersResponse(
+        clusters=clusters,
+        metrics=metrics,
+        rule_summary=rule_summary,
+    )

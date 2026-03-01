@@ -194,6 +194,57 @@ class CompressionMetrics(BaseModel):
     )
 
 
+# --- Semgrep rule analytics (SAST triage / workshop credibility) ---
+
+class RuleCount(BaseModel):
+    """One rule and its finding count for 'top by volume' analytics."""
+
+    rule_id: str = Field(
+        ...,
+        min_length=1,
+        description="Semgrep rule id (check_id), stored as vulnerability_id on findings.",
+    )
+    count: int = Field(
+        ...,
+        ge=0,
+        description="Number of findings for this rule.",
+    )
+
+
+class RuleSeverityDisagreement(BaseModel):
+    """Rule that has more than one severity across its findings (noise / misconfiguration signal)."""
+
+    rule_id: str = Field(
+        ...,
+        min_length=1,
+        description="Semgrep rule id.",
+    )
+    severity_counts: dict[str, int] = Field(
+        ...,
+        description="Severity -> count for this rule (multiple keys indicate disagreement).",
+    )
+
+
+# Cap list sizes for rule summary to keep response bounded.
+TOP_NOISY_RULES_LIMIT = 20
+RULES_DISAGREEMENT_LIMIT = 20
+
+
+class RuleSummary(BaseModel):
+    """Rule-level analytics for Semgrep SAST: top noisy rules and rules with severity disagreement."""
+
+    top_noisy_rules: list[RuleCount] = Field(
+        default_factory=list,
+        max_length=TOP_NOISY_RULES_LIMIT,
+        description="Rules with highest finding count (top N).",
+    )
+    rules_with_severity_disagreement: list[RuleSeverityDisagreement] = Field(
+        default_factory=list,
+        max_length=RULES_DISAGREEMENT_LIMIT,
+        description="Rules that have more than one severity across findings.",
+    )
+
+
 class ClustersResponse(BaseModel):
     """Response for GET /api/v1/clusters: clusters plus compression metrics."""
 
@@ -204,4 +255,8 @@ class ClustersResponse(BaseModel):
     metrics: CompressionMetrics = Field(
         ...,
         description="Compression metrics: raw_finding_count, cluster_count, compression_ratio.",
+    )
+    rule_summary: RuleSummary | None = Field(
+        default=None,
+        description="Rule-level analytics for Semgrep findings (top noisy rules, severity disagreement); None when no Semgrep data.",
     )

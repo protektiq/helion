@@ -104,6 +104,26 @@ flowchart LR
 - **Canonical repo**: When a cluster spans more than one repository, `repo` is set to `"multiple"` to avoid implying a single repo; when `affected_services_count` is 1, `repo` is that repository.
 - **affected_services_count**: For each cluster, the number of distinct repositories (repos) that have at least one finding in that cluster. There is no separate “service” entity; repo is the service/repository dimension.
 
+## Semgrep rule analytics (SAST triage)
+
+```mermaid
+flowchart LR
+  Findings[Findings for job]
+  Summarize[summarize_rules]
+  RuleSummary[RuleSummary]
+  API[GET /clusters]
+  UI[Results / Reasoning UI]
+  Findings --> Summarize
+  Summarize --> RuleSummary
+  RuleSummary --> API
+  API --> UI
+```
+
+- **Source**: The same findings used for clustering (returned by **get_or_build_clusters_for_job** as the third element of its tuple) are passed to **summarize_rules** in the clusters endpoint.
+- **Flow**: **app/services/job_findings.py** defines **summarize_rules(findings)**. It filters to Semgrep findings (`scanner_source == "semgrep"`), groups by `vulnerability_id` (Semgrep rule id / check_id), and produces **RuleSummary**: **top_noisy_rules** (rules with highest finding count, capped at 20) and **rules_with_severity_disagreement** (rules that have more than one severity across findings, capped at 20).
+- **Consumption**: **ClustersResponse** includes an optional **rule_summary** field. When the job has findings, the clusters endpoint sets **rule_summary** from **summarize_rules(findings)**; when there are no findings, **rule_summary** is null. The **Results** page and **Reasoning** page (when "Use current clusters from database" is selected and a job is chosen) display a "Top rules by volume" panel when **rule_summary** is present, showing the top noisy rules table and optionally the rules-with-severity-disagreement table. No ingestion UI changes; Semgrep JSON is already accepted via the existing upload flow.
+- **Cluster behavior**: SAST clustering in **app/services/cluster_signature.py** already uses **extra.message** and **metadata.cwe** from Semgrep **raw_payload** in **_sast_signature_from_raw_payload()**, so the same rule + message + CWE across files merges into one cluster ("rule families"). No changes required for rule analytics.
+
 ## Data retention
 
 - **Retention job** (run via `python -m app.retention` or manually): When **RETENTION_ENABLED** is true, deletes findings with `created_at < now() - RETENTION_HOURS` (default 48h). Logs how many were deleted. Cluster rows are tied to **upload_job_id** (CASCADE on job delete); GET /clusters recomputes and persists for the selected job when called.
@@ -111,6 +131,22 @@ flowchart LR
 ## Shared field set
 
 All three schemas use the same core fields: `vulnerability_id`, `severity`, `repo`, `file_path`, `dependency`, `cvss_score`, `description`.
+
+## Tool integration
+
+The pipeline is **tool-agnostic** after shape mapping: any scanner whose output can be mapped to RawFinding flows through normalize → dedupe → persist → cluster, and any enrichment source can attach evidence to clusters used by reasoning and tickets.
+
+There are **two extension points** for integrating an open-source (or proprietary) tool:
+
+1. **Mapper/parser into RawFinding** — So the tool’s JSON becomes findings that enter the pipeline.
+   - **Where:** [app/services/scanner_mappers.py](app/services/scanner_mappers.py), function `normalize_shape_to_rawfinding()`.
+   - **Contract:** Input is one scanner result object (dict). Output must be a dict with keys from `RAWFINDING_KEYS`: `vulnerability_id`, `severity`, `repo`, `file_path`, `dependency`, `cvss_score`, `description`, `scanner_source`, `raw_payload`. Preserve the original object in `raw_payload` and set `scanner_source` to a stable identifier (e.g. `"trivy"`, `"snyk"`). This dict is passed to `RawFinding.model_validate()` in the upload flow; no other code changes are required downstream.
+
+2. **Enrichment provider** — So the tool’s data attaches evidence (and optionally structured fields) to clusters used by reasoning and ticket generation.
+   - **Where:** [app/services/enrichment/](app/services/enrichment/): add a client module and call it from `enrich_cluster()` in [enrich_cluster.py](app/services/enrichment/enrich_cluster.py).
+   - **Contract:** Input is a `VulnerabilityCluster` and app `Settings`. Output contributes to `ClusterEnrichmentPayload`: at minimum append short strings to `evidence` (e.g. `"KEV listed"`, `"EPSS 0.12"`). Optionally extend the payload schema in [schemas.py](app/services/enrichment/schemas.py) for structured data. Callers persist the returned dict via `save_cluster_enrichment()` to the `cluster_enrichments` table (JSONB).
+
+For step-by-step checklists (new scanner vs new enrichment provider), see [docs/tool_integration.md](docs/tool_integration.md).
 
 ## Enrichment (KEV, EPSS, OSV)
 
