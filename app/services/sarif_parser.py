@@ -174,8 +174,10 @@ def sarif_to_rawfindings(payload: dict) -> list[dict]:
 
             rule_meta = _get_rule_metadata(vulnerability_id, run)
             raw_payload: dict = dict(rule_meta)
+            raw_payload["rule_helpUri"] = rule_meta.get("helpUri")
             raw_payload["_sarif_result"] = {
                 "ruleId": vulnerability_id,
+                "kind": result.get("kind"),
                 "message": result.get("message"),
                 "level": level,
                 "locations": result.get("locations", [])[:1],

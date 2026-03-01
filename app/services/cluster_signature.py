@@ -33,6 +33,10 @@ def _ecosystem_from_raw_payload(raw_payload: dict | None) -> str:
     """Extract ecosystem from Trivy/Snyk-style raw_payload. Returns normalized string or empty."""
     if not raw_payload or not isinstance(raw_payload, dict):
         return ""
+    # Prominent top-level key (e.g. OSV-Scanner raw_payload.package_ecosystem)
+    eco = raw_payload.get("package_ecosystem")
+    if isinstance(eco, str) and eco.strip():
+        return eco.strip().lower()[:64]
     # Trivy: DataSource.ID (e.g. "ghsa" for npm) or PkgIdentifier.PURL
     ds = raw_payload.get("DataSource")
     if isinstance(ds, dict) and ds.get("ID"):

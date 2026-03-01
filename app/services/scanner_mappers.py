@@ -177,6 +177,12 @@ def map_osv_scanner_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
     pkg = obj.get("package") or {}
     src = obj.get("source") or {}
 
+    # Store package.ecosystem prominently in raw_payload for clustering/analytics grouping.
+    if isinstance(pkg, dict) and pkg.get("ecosystem") is not None:
+        eco = pkg.get("ecosystem")
+        if isinstance(eco, str) and eco.strip():
+            raw["package_ecosystem"] = eco.strip().lower()[:64]
+
     out["vulnerability_id"] = _str_or_none(obj.get("id")) or _str_or_none(obj.get("vulnerability_id"))
     if not out["vulnerability_id"] and isinstance(obj.get("aliases"), list):
         for a in obj["aliases"]:

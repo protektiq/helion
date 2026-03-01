@@ -36,7 +36,7 @@ Goal: accept the tool’s JSON output so that each finding is mapped to RawFindi
 ### Reference
 
 - Existing mappers: Trivy (`map_trivy_to_raw`), Snyk (`map_snyk_to_raw`), Semgrep (`map_semgrep_to_raw`), **OSV-Scanner** (`map_osv_scanner_to_raw`), and `apply_generic_aliases` in [app/services/scanner_mappers.py](app/services/scanner_mappers.py).
-- **OSV-Scanner**: Native JSON output (`osv-scanner scan --format json`) is supported. The upload flow detects the top-level `results` wrapper and flattens it to one finding per (source, package, vulnerability) before mapping; no pre-processing required. Each flattened item is mapped via `map_osv_scanner_to_raw` (vulnerability_id, dependency, file_path, severity/CVSS when present, `scanner_source: "osv-scanner"`).
+- **OSV-Scanner**: Native JSON output (`osv-scanner scan --format json`) is supported. The upload flow detects the top-level `results` wrapper and flattens it to one finding per (source, package, vulnerability) before mapping; no pre-processing required. Each flattened item is mapped via `map_osv_scanner_to_raw` (vulnerability_id, dependency, file_path, severity/CVSS when present, `scanner_source: "osv-scanner"`). The mapper stores `package.ecosystem` as a top-level **`raw_payload.package_ecosystem`** so clustering and analytics can group by ecosystem without navigating nested payload.
 - RawFinding schema: [app/schemas/findings.py](app/schemas/findings.py). All fields are optional for ingestion; the normalizer fills defaults and standardizes severity/CVE/GHSA.
 
 ---
