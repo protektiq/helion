@@ -1,4 +1,9 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/exploitability/page": "app/exploitability/page.js"
+  "/exploitability/page": "app/exploitability/page.js",
+  "/tickets/page": "app/tickets/page.js",
+  "/admin/users/page": "app/admin/users/page.js",
+  "/jira/page": "app/jira/page.js",
+  "/upload/page": "app/upload/page.js",
+  "/results/page": "app/results/page.js",
+  "/reasoning/page": "app/reasoning/page.js"
 }

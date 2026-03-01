@@ -1,0 +1,8 @@
+Scanning dir .
+Scanning /home/carlos/helion/ at commit 1990d8add73e00f04ea831e85338f6c0a996e64e
+Scanned /home/carlos/helion/cluster_engine/Cargo.lock file and found 32 packages
+Scanning directory for vendored libs: /home/carlos/helion/cluster_engine/target/debug/deps
+Scanned /home/carlos/helion/requirements.txt file and found 13 packages
+Scanned /home/carlos/helion/web/package-lock.json file and found 36 packages
+Scanning dir --format
+Failed to walk --format: lstat --format: no such file or directory
