@@ -33,13 +33,13 @@ FastAPI backend with modular structure, Postgres, and environment-based config.
 
    ```bash
    cp .env.example .env
-   # Edit .env with your DATABASE_URL and other settings
+   # Edit .env with your database credentials and other settings
    ```
 
-   Required for running with DB: `DATABASE_URL` (Postgres URL). Optional: `APP_ENV`, `DEBUG`, `API_V1_PREFIX` (see `.env.example`).
+   **Database (required for running with DB):** Set either `DATABASE_URL` (full Postgres URL) or use split credentials: `POSTGRES_PASSWORD` plus optional `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_USER`, `POSTGRES_DB` (see `.env.example`). Credentials are never hardcoded (OWASP); they must come from environment or `.env`.
 
 4. **Postgres**  
-   Ensure PostgreSQL is running and the database in `DATABASE_URL` exists (e.g. `createdb helion`).
+   Ensure PostgreSQL is running and the database in your connection URL exists (e.g. `createdb helion`). Connection details come from `DATABASE_URL` or from `POSTGRES_*` env vars (see `.env.example`).
 
 5. **Database migrations**  
    Create the `findings` table (and any future schema) with Alembic:

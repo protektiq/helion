@@ -2,8 +2,9 @@
 
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import quote_plus
 
-from pydantic import SecretStr, field_validator
+from pydantic import SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Allowed URL schemes for DATABASE_URL (module-level so validators can use it).
@@ -29,8 +30,14 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     API_V1_PREFIX: str = "/api/v1"
 
-    # Postgres: required in prod; for dev can use a default if you run Postgres locally
-    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/helion"
+    # Postgres: set DATABASE_URL (full URI) or use split credentials (no password in code).
+    # If DATABASE_URL is set it is used as-is; otherwise URL is built from POSTGRES_* (POSTGRES_PASSWORD required).
+    DATABASE_URL: str | None = None
+    POSTGRES_HOST: str = "localhost"
+    POSTGRES_PORT: int = 5432
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: SecretStr | None = None
+    POSTGRES_DB: str = "helion"
 
     # Ollama (local LLM): optional; app runs without it if reasoning is not used
     OLLAMA_BASE_URL: str = "http://localhost:11434"
@@ -83,14 +90,35 @@ class Settings(BaseSettings):
 
     @field_validator("DATABASE_URL")
     @classmethod
-    def validate_database_url(cls, v: str) -> str:
-        if not v or not v.strip():
-            raise ValueError("DATABASE_URL must be set and non-empty")
+    def validate_database_url(cls, v: str | None) -> str | None:
+        if v is None or not v.strip():
+            return None
         if not any(v.startswith(prefix) for prefix in VALID_DATABASE_URL_PREFIXES):
             raise ValueError(
                 "DATABASE_URL must be a PostgreSQL URL (e.g. postgresql:// or postgresql+psycopg2://)"
             )
         return v.strip()
+
+    @model_validator(mode="after")
+    def resolve_database_url(self) -> "Settings":
+        """Build DATABASE_URL from POSTGRES_* when DATABASE_URL is not set (OWASP: no password in code)."""
+        if self.DATABASE_URL and self.DATABASE_URL.strip():
+            return self
+        password = self.POSTGRES_PASSWORD
+        if not password or not password.get_secret_value().strip():
+            raise ValueError(
+                "Either DATABASE_URL or POSTGRES_PASSWORD must be set in environment or .env"
+            )
+        password_encoded = quote_plus(password.get_secret_value())
+        url = (
+            f"postgresql://{self.POSTGRES_USER}:{password_encoded}"
+            f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
+        if not any(url.startswith(p) for p in VALID_DATABASE_URL_PREFIXES):
+            raise ValueError(
+                "Built DATABASE_URL must be a PostgreSQL URL (postgresql:// or postgresql+psycopg2://)"
+            )
+        return self.model_copy(update={"DATABASE_URL": url})
 
     @field_validator("OLLAMA_BASE_URL")
     @classmethod

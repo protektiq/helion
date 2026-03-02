@@ -2,6 +2,10 @@
 
 High-level flow of vulnerability finding data from scanners into normalized and clustered representations.
 
+## Configuration and secrets (OWASP)
+
+Database and other secrets are **never hardcoded**. Credentials are loaded from the environment or from a `.env` file (not committed). The app supports either a full `DATABASE_URL` or split Postgres credentials (`POSTGRES_PASSWORD` plus optional host/port/user/db); the password is supplied only via env or a secrets manager. See `.env.example` and [app/core/config.py](app/core/config.py).
+
 ## Authentication and access control
 
 ```mermaid
