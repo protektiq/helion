@@ -43,13 +43,14 @@ def load_clusters_for_job(
     db: Session,
     user_id: int,
     job_id: int | None,
-) -> list[VulnerabilityCluster]:
+) -> tuple[list[VulnerabilityCluster], int | None]:
     """
     Load persisted clusters for the given user and job.
 
     - If job_id is set: return clusters for that job only if the job belongs to the user.
     - If job_id is None: resolve to the user's latest job (by created_at) and return its clusters.
-    - If the job has no clusters or the job is not the user's, return empty list.
+    - If the job has no clusters or the job is not the user's, return ([], None).
+    - Returns (clusters, upload_job_id) so callers can pass upload_job_id when persisting enrichments.
     """
     if job_id is not None:
         job = (
@@ -58,7 +59,7 @@ def load_clusters_for_job(
             .first()
         )
         if not job:
-            return []
+            return [], None
         upload_job_id = job.id
     else:
         latest = (
@@ -69,7 +70,7 @@ def load_clusters_for_job(
             .first()
         )
         if not latest:
-            return []
+            return [], None
         upload_job_id = latest.id
 
     rows = (
@@ -77,7 +78,7 @@ def load_clusters_for_job(
         .filter(Cluster.upload_job_id == upload_job_id)
         .all()
     )
-    return [
+    clusters = [
         VulnerabilityCluster(
             vulnerability_id=r.vulnerability_id,
             severity=r.severity,
@@ -92,6 +93,7 @@ def load_clusters_for_job(
         )
         for r in rows
     ]
+    return clusters, upload_job_id
 
 
 def get_or_build_clusters_for_job(

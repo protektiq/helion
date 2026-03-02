@@ -77,7 +77,9 @@ def map_trivy_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
                     score = v["CVSS"][k].get("V3Score") or v["CVSS"][k].get("V2Score")
                     if score is not None:
                         try:
-                            out["cvss_score"] = float(score)
+                            s = float(score)
+                            if s > 0:
+                                out["cvss_score"] = s
                         except (TypeError, ValueError):
                             pass
                         break
@@ -108,7 +110,9 @@ def map_snyk_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
         out["description"] = _str_or_none(obj.get("title"))
     if "cvss_score" in obj:
         try:
-            out["cvss_score"] = float(obj["cvss_score"])
+            s = float(obj["cvss_score"])
+            if s > 0:
+                out["cvss_score"] = s
         except (TypeError, ValueError):
             pass
     out["scanner_source"] = out.get("scanner_source") or "snyk"
@@ -198,7 +202,7 @@ def map_osv_scanner_to_raw(obj: dict[str, Any]) -> dict[str, Any]:
     sev, cvss = _extract_osv_severity_and_cvss(obj)
     if sev:
         out["severity"] = sev
-    if cvss is not None and 0 <= cvss <= 10:
+    if cvss is not None and 0 < cvss <= 10:
         out["cvss_score"] = cvss
 
     out["description"] = _str_or_none(obj.get("summary")) or _str_or_none(obj.get("details"))
@@ -228,7 +232,9 @@ def _merge_rawfinding_shape(out: dict[str, Any], obj: dict[str, Any]) -> dict[st
         if alias in obj and obj[alias] is not None:
             val = obj[alias]
             if target == "cvss_score" and isinstance(val, (int, float)):
-                result[target] = float(val)
+                s = float(val)
+                if s > 0:
+                    result[target] = s
             elif isinstance(val, str):
                 result[target] = val.strip() or None
             else:
@@ -249,7 +255,9 @@ def apply_generic_aliases(obj: dict[str, Any]) -> dict[str, Any]:
         if key in GENERIC_ALIASES:
             target = GENERIC_ALIASES[key]
             if target == "cvss_score" and isinstance(value, (int, float)):
-                result[target] = float(value)
+                s = float(value)
+                if s > 0:
+                    result[target] = s
             elif isinstance(value, str):
                 result[target] = value.strip() or None
             else:

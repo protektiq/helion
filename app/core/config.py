@@ -62,6 +62,8 @@ class Settings(BaseSettings):
     ENRICHMENT_OSV_ENABLED: bool = True
     ENRICHMENT_REQUEST_TIMEOUT_SEC: float = 15.0
     ENRICHMENT_KEV_CACHE_TTL_SEC: int = 3600  # 1 hour
+    ENRICHMENT_EPSS_CACHE_TTL_SEC: int = 3600  # EPSS per-CVE cache TTL (seconds)
+    ENRICHMENT_EPSS_DEBUG: bool = False
 
     # JWT authentication
     JWT_SECRET: SecretStr = SecretStr("change-me-in-production")
@@ -186,6 +188,15 @@ class Settings(BaseSettings):
         if v < 0 or v > 86400:
             raise ValueError(
                 "ENRICHMENT_KEV_CACHE_TTL_SEC must be between 0 and 86400 (0 to 24 hours)"
+            )
+        return v
+
+    @field_validator("ENRICHMENT_EPSS_CACHE_TTL_SEC")
+    @classmethod
+    def validate_epss_cache_ttl(cls, v: int) -> int:
+        if v < 0 or v > 86400:
+            raise ValueError(
+                "ENRICHMENT_EPSS_CACHE_TTL_SEC must be between 0 and 86400 (0 to 24 hours)"
             )
         return v
 

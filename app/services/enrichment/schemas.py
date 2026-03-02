@@ -1,6 +1,37 @@
 """Pydantic schemas for enrichment payload (JSONB shape and evidence)."""
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+# EPSS state for enrichment/reasoning (distinct from client_epss EpssStatus).
+EpssStateStatus = Literal["AVAILABLE", "NOT_APPLICABLE", "NOT_FOUND", "ERROR"]
+
+
+class EpssState(BaseModel):
+    """Typed EPSS state: score when available, or reason when not."""
+
+    status: EpssStateStatus = Field(
+        ...,
+        description="AVAILABLE (score+percentile), NOT_APPLICABLE (GHSA/non-CVE), NOT_FOUND (no record), ERROR (lookup failed).",
+    )
+    score: float | None = Field(
+        default=None,
+        ge=0,
+        le=1,
+        description="EPSS score (0-1) when status is AVAILABLE.",
+    )
+    percentile: float | None = Field(
+        default=None,
+        ge=0,
+        le=1,
+        description="EPSS percentile (0-1) when status is AVAILABLE.",
+    )
+    reason: str | None = Field(
+        default=None,
+        max_length=64,
+        description="Short reason when not AVAILABLE (e.g. GHSA-only, non-CVE, lookup failed).",
+    )
 
 
 class CvssCheck(BaseModel):
@@ -51,6 +82,26 @@ class ClusterEnrichmentPayload(BaseModel):
         ge=0,
         le=1,
         description="EPSS probability (0-1); None if not available (e.g. non-CVE).",
+    )
+    epss_percentile: float | None = Field(
+        default=None,
+        ge=0,
+        le=1,
+        description="EPSS percentile (0-1) when available; None otherwise.",
+    )
+    epss_display: str | None = Field(
+        default=None,
+        max_length=120,
+        description="Human-readable EPSS line for tickets (e.g. '0.94 (99.99 percentile)', 'Not applicable (GHSA-only)').",
+    )
+    epss_status: EpssStateStatus | None = Field(
+        default=None,
+        description="EPSS state: AVAILABLE, NOT_APPLICABLE, NOT_FOUND, or ERROR.",
+    )
+    epss_reason: str | None = Field(
+        default=None,
+        max_length=64,
+        description="Short reason when EPSS not available (e.g. GHSA-only, lookup failed).",
     )
     osv: list[OsvEntry] = Field(
         default_factory=list,

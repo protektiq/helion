@@ -43,6 +43,26 @@ class ClusterNote(BaseModel):
         le=1,
         description="EPSS exploit probability (0-1); None if not available.",
     )
+    epss_display: str | None = Field(
+        default=None,
+        max_length=120,
+        description="Human-readable EPSS line for tickets (e.g. '0.94 (99.99 percentile)', 'Not applicable (GHSA-only)').",
+    )
+    epss_percentile: float | None = Field(
+        default=None,
+        ge=0,
+        le=1,
+        description="EPSS percentile (0-1) when available; None otherwise.",
+    )
+    epss_status: Literal["AVAILABLE", "NOT_APPLICABLE", "NOT_FOUND", "ERROR"] | None = Field(
+        default=None,
+        description="EPSS state: AVAILABLE, NOT_APPLICABLE, NOT_FOUND, or ERROR.",
+    )
+    epss_reason: str | None = Field(
+        default=None,
+        max_length=64,
+        description="Short reason when EPSS not available (e.g. GHSA-only, lookup failed).",
+    )
     fixed_in_versions: list[str] | None = Field(
         default=None,
         max_length=50,
@@ -76,6 +96,10 @@ class ReasoningResponse(BaseModel):
 class ReasoningRequest(BaseModel):
     """Request body for POST /api/v1/reasoning."""
 
+    job_id: int = Field(
+        ...,
+        description="Upload job ID; required for enrichment persistence.",
+    )
     clusters: list[VulnerabilityCluster] = Field(
         ...,
         min_length=0,
@@ -86,7 +110,9 @@ class ReasoningRequest(BaseModel):
         default=False,
         description="If true, ignore clusters in body and load current clusters from DB.",
     )
-    job_id: int | None = Field(
-        default=None,
-        description="When use_db is true, scope to this upload job; when omitted, uses latest job for the user.",
+    max_clusters: int = Field(
+        default=20,
+        ge=1,
+        le=100,
+        description="Maximum number of clusters to assess; applied after loading or parsing.",
     )

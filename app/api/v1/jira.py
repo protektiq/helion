@@ -17,11 +17,13 @@ from app.schemas.ticket import TicketsRequest
 from app.services.cluster_persistence import get_or_build_clusters_for_job, load_clusters_for_job
 from app.schemas.exploitability import ExploitabilityOutput
 from app.services.agent import run_exploitability_agent
+from app.services.enrichment import load_enrichments_for_job
 from app.services.jira_export import JiraApiError, JiraNotConfiguredError, export_tickets_to_jira
 from app.services.reasoning import ReasoningServiceError
 from app.services.ticket_generator import (
     apply_tier_overrides,
     clusters_to_ticket_payloads,
+    enrichment_to_cluster_note,
     resolve_affected_services,
 )
 
@@ -45,6 +47,10 @@ def _agent_output_to_note_and_tier(
         override_applied=None,
         kev=output.kev,
         epss=output.epss,
+        epss_display=output.epss_display,
+        epss_percentile=output.epss_percentile,
+        epss_status=output.epss_status,
+        epss_reason=output.epss_reason,
         fixed_in_versions=output.fixed_in_versions,
         package_ecosystem=output.package_ecosystem,
         evidence=output.evidence,
@@ -74,6 +80,7 @@ async def post_jira_export(
     returns 422. Requires JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN,
     JIRA_PROJECT_KEY to be set.
     """
+    upload_job_id: int | None = None
     if body.use_db:
         from app.services.job_findings import get_user_upload_job_count
 
@@ -82,9 +89,10 @@ async def post_jira_export(
                 status_code=422,
                 detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
             )
-        clusters = load_clusters_for_job(db, current_user.id, body.job_id)
+        clusters, upload_job_id = load_clusters_for_job(db, current_user.id, body.job_id)
         if not clusters:
-            clusters, _, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
+            clusters, _, findings = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
+            upload_job_id = findings[0].upload_job_id if findings else None
     else:
         clusters = body.clusters
 
@@ -110,14 +118,13 @@ async def post_jira_export(
                 )
     elif body.use_reasoning and clusters:
         settings = get_settings()
-        job_id = body.job_id if body.use_db else None
         for cluster in clusters:
             try:
                 output: ExploitabilityOutput = await run_exploitability_agent(
                     cluster,
                     settings,
                     session=db,
-                    upload_job_id=job_id,
+                    upload_job_id=upload_job_id if body.use_db else None,
                     persist_enrichment=True,
                 )
             except (ReasoningServiceError, RuntimeError) as e:
@@ -135,6 +142,26 @@ async def post_jira_export(
         if db:
             db.commit()
 
+    enrichment_by_key: dict[tuple[str, str], dict] = {}
+    if body.use_db and upload_job_id is not None:
+        enrichments = load_enrichments_for_job(db, upload_job_id)
+        enrichment_by_key = {
+            (e.vulnerability_id, e.dependency or ""): e.enrichment
+            for e in enrichments
+        }
+
+    notes_by_key: dict[tuple[str, str], ClusterNote] = {}
+    for cluster in clusters:
+        key = (cluster.vulnerability_id, cluster.dependency or "")
+        note = notes_by_id.get(cluster.vulnerability_id)
+        if note is not None:
+            notes_by_key[key] = note
+        elif key in enrichment_by_key:
+            notes_by_key[key] = enrichment_to_cluster_note(
+                cluster.vulnerability_id,
+                enrichment_by_key[key],
+            )
+
     for cluster in clusters:
         if cluster.repo == "multiple":
             repos = resolve_affected_services(db, cluster.finding_ids)
@@ -143,7 +170,7 @@ async def post_jira_export(
 
     tickets = clusters_to_ticket_payloads(
         clusters,
-        notes_by_id=notes_by_id if notes_by_id else None,
+        notes_by_key=notes_by_key if notes_by_key else None,
         tier_by_id=tier_by_id if tier_by_id else None,
         affected_services_by_id=affected_services_by_id if affected_services_by_id else None,
     )

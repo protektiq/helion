@@ -11,12 +11,13 @@ from app.schemas.exploitability import (
     AdjustedRiskTier,
     ExploitabilityOutput,
 )
-from app.schemas.findings import VulnerabilityCluster
+from app.schemas.findings import VulnerabilityCluster, cvss_display
 from app.services.enrichment import enrich_cluster
 from app.services.enrichment.schemas import ClusterEnrichmentPayload
 from app.services.reasoning import ReasoningServiceError, _extract_json_object
 from app.services.risk_tier import (
     assess_tier_from_enrichment,
+    is_high_epss,
     validate_grounded_tier,
 )
 
@@ -28,6 +29,11 @@ from app.services.agent.state import ExploitabilityAgentState
 logger = logging.getLogger(__name__)
 
 DEBUG_LOG_PREFIX_LEN = 800
+
+# Urgency prefixes for recommendation text (KEV / high EPSS).
+KEV_URGENT_PREFIX = "Known exploited in the wild (CISA KEV). Prioritize immediate remediation. "
+HIGH_EPSS_URGENT_PREFIX = "High exploit likelihood (EPSS). "
+REASONING_MAX_LEN = 500
 
 # Tier number to adjusted_risk_tier string for ExploitabilityOutput.
 TIER_TO_ADJUSTED: dict[int, AdjustedRiskTier] = {
@@ -74,11 +80,12 @@ def assess_node(state: ExploitabilityAgentState) -> ExploitabilityAgentState:
     if not isinstance(cluster, VulnerabilityCluster):
         cluster = VulnerabilityCluster.model_validate(cluster)
     payload: ClusterEnrichmentPayload = state["enrichment_payload"]
+    is_dev_only = state.get("is_dev_only", False)
     tier, reason = assess_tier_from_enrichment(
         payload,
         cluster.cvss_score,
         cluster.severity,
-        is_dev_only=False,
+        is_dev_only=is_dev_only,
     )
     return {
         "assessed_tier": tier,
@@ -127,14 +134,18 @@ async def llm_finalize_node(
     assessed_tier: int = state.get("assessed_tier") or 2
     assessed_reason: str = state.get("assessed_reason") or ""
 
-    epss_str = f"{payload.epss:.2f}" if payload.epss is not None else "n/a"
+    epss_str = (
+        payload.epss_display
+        if (payload.epss_display and payload.epss_display.strip())
+        else (f"{payload.epss:.2f}" if payload.epss is not None else "n/a")
+    )
     fixed_str = ", ".join(payload.fixed_in_versions[:10]) if payload.fixed_in_versions else "n/a"
     evidence_str = "; ".join(payload.evidence[:15]) if payload.evidence else "n/a"
 
     prompt = GROUNDED_PROMPT_TEMPLATE.format(
         vulnerability_id=cluster.vulnerability_id,
         severity=cluster.severity,
-        cvss_score=cluster.cvss_score,
+        cvss_score=cvss_display(cluster.cvss_score),
         repo=cluster.repo or "n/a",
         dependency=cluster.dependency or "n/a",
         description=(cluster.description or "")[:500],
@@ -214,6 +225,7 @@ def validate_node(state: ExploitabilityAgentState) -> ExploitabilityAgentState:
         assessed_tier,
         llm_tier_str,
         allow_tier1_without_evidence=False,
+        is_dev_only=state.get("is_dev_only", False),
     )
     adjusted_tier_str: AdjustedRiskTier = TIER_TO_ADJUSTED.get(
         final_tier, "high"
@@ -223,8 +235,13 @@ def validate_node(state: ExploitabilityAgentState) -> ExploitabilityAgentState:
         (llm_out.get("recommended_action") or "").strip()
         or "Review and remediate per security guidance."
     )
-    if len(reasoning) > 500:
-        reasoning = reasoning[:497] + "..."
+    # Prepend urgency language for KEV and/or high EPSS (consultant credibility).
+    if payload.kev:
+        reasoning = (KEV_URGENT_PREFIX + reasoning).strip()
+    elif is_high_epss(payload.epss, payload.epss_percentile):
+        reasoning = (HIGH_EPSS_URGENT_PREFIX + reasoning).strip()
+    if len(reasoning) > REASONING_MAX_LEN:
+        reasoning = reasoning[: REASONING_MAX_LEN - 3].rstrip() + "..."
     if len(recommended_action) > 300:
         recommended_action = recommended_action[:297] + "..."
 
@@ -234,6 +251,10 @@ def validate_node(state: ExploitabilityAgentState) -> ExploitabilityAgentState:
         recommended_action=recommended_action,
         kev=payload.kev,
         epss=payload.epss,
+        epss_percentile=payload.epss_percentile,
+        epss_display=payload.epss_display,
+        epss_status=payload.epss_status,
+        epss_reason=payload.epss_reason,
         fixed_in_versions=payload.fixed_in_versions or None,
         package_ecosystem=payload.package_ecosystem,
         evidence=payload.evidence or None,

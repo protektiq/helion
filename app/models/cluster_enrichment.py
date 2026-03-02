@@ -1,6 +1,6 @@
 """ORM model for cluster enrichment payloads (KEV/EPSS/OSV) per run."""
 
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB
 
 from app.models.base import Base
@@ -13,6 +13,14 @@ class ClusterEnrichment(Base):
     """
 
     __tablename__ = "cluster_enrichments"
+    __table_args__ = (
+        UniqueConstraint(
+            "upload_job_id",
+            "vulnerability_id",
+            "dependency",
+            name="uq_cluster_enrichments_job_vuln_dep",
+        ),
+    )
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     upload_job_id = Column(

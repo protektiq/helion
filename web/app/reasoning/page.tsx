@@ -129,6 +129,13 @@ export default function ReasoningPage() {
           setResponse(null);
           return;
         }
+        if (jobId === null) {
+          setErrorMessage("Select an upload job.");
+          setErrorDetail(null);
+          setStatus("error");
+          setResponse(null);
+          return;
+        }
         setStatus("submitting");
         setResponse(null);
         setErrorMessage(null);
@@ -136,8 +143,10 @@ export default function ReasoningPage() {
         try {
           const client = createApiClient();
           const body = await client.postReasoning({
+            job_id: jobId,
             clusters,
             use_db: false,
+            max_clusters: effectiveMaxClusters,
           });
           setResponse(body);
           setStatus("success");
@@ -148,27 +157,24 @@ export default function ReasoningPage() {
         }
         return;
       }
+      if (jobId === null) {
+        setErrorMessage("Select an upload job.");
+        setErrorDetail(null);
+        setStatus("error");
+        setResponse(null);
+        return;
+      }
       setStatus("submitting");
       setResponse(null);
       setErrorMessage(null);
       setErrorDetail(null);
       const client = createApiClient();
       try {
-        const clustersResponse = await client.getClusters(jobId ?? undefined);
-        const ranked = rankClusters(clustersResponse.clusters);
-        const clustersToSend =
-          ranked.length > effectiveMaxClusters
-            ? ranked.slice(0, effectiveMaxClusters)
-            : ranked;
-        if (ranked.length > effectiveMaxClusters) {
-          setDbSliceInfo({
-            total: ranked.length,
-            sending: clustersToSend.length,
-          });
-        }
         const body = await client.postReasoning({
-          clusters: clustersToSend,
-          use_db: false,
+          job_id: jobId,
+          use_db: true,
+          clusters: [],
+          max_clusters: effectiveMaxClusters,
         });
         setResponse(body);
         setStatus("success");
@@ -208,7 +214,7 @@ export default function ReasoningPage() {
           />
           <span>Use current clusters from database</span>
         </label>
-        {useDb && jobs.length > 0 && (
+        {jobs.length > 0 && (
           <div style={{ marginBottom: "0.75rem" }}>
             <label
               htmlFor="reasoning-job-select"
@@ -238,41 +244,39 @@ export default function ReasoningPage() {
             </select>
           </div>
         )}
-        {useDb && (
-          <div style={{ marginBottom: "0.75rem" }}>
-            <label
-              htmlFor="reasoning-max-clusters"
-              style={{ display: "block", marginBottom: "0.25rem" }}
-            >
-              Max clusters
-            </label>
-            <input
-              id="reasoning-max-clusters"
-              type="number"
-              min={1}
-              max={MAX_CLUSTERS_CAP}
-              value={maxClusters}
-              onChange={handleMaxClustersChange}
-              onBlur={handleMaxClustersBlur}
-              aria-label="Max clusters (1–100; backend allows at most 100)"
-              aria-describedby="reasoning-max-clusters-hint"
-              style={{
-                width: "100%",
-                maxWidth: "6rem",
-                padding: "0.375rem 0.5rem",
-                fontSize: "0.875rem",
-                border: "1px solid #d1d5db",
-                borderRadius: "4px",
-              }}
-            />
-            <span
-              id="reasoning-max-clusters-hint"
-              style={{ fontSize: "0.75rem", color: "#6b7280", display: "block", marginTop: "0.25rem" }}
-            >
-              1–100; backend allows at most 100.
-            </span>
-          </div>
-        )}
+        <div style={{ marginBottom: "0.75rem" }}>
+          <label
+            htmlFor="reasoning-max-clusters"
+            style={{ display: "block", marginBottom: "0.25rem" }}
+          >
+            Max clusters
+          </label>
+          <input
+            id="reasoning-max-clusters"
+            type="number"
+            min={1}
+            max={MAX_CLUSTERS_CAP}
+            value={maxClusters}
+            onChange={handleMaxClustersChange}
+            onBlur={handleMaxClustersBlur}
+            aria-label="Max clusters to assess (1–100)"
+            aria-describedby="reasoning-max-clusters-hint"
+            style={{
+              width: "100%",
+              maxWidth: "6rem",
+              padding: "0.375rem 0.5rem",
+              fontSize: "0.875rem",
+              border: "1px solid #d1d5db",
+              borderRadius: "4px",
+            }}
+          />
+          <span
+            id="reasoning-max-clusters-hint"
+            style={{ fontSize: "0.75rem", color: "#6b7280", display: "block", marginTop: "0.25rem" }}
+          >
+            Assess at most this many clusters (1–100). When using DB, clusters are ordered by severity first.
+          </span>
+        </div>
         {useDb &&
           ruleSummary != null &&
           (ruleSummary.top_noisy_rules.length > 0 ||
@@ -409,7 +413,7 @@ export default function ReasoningPage() {
         )}
         <button
           type="submit"
-          disabled={status === "submitting"}
+          disabled={status === "submitting" || jobId === null}
           aria-busy={status === "submitting"}
           aria-label={
             status === "submitting" ? "Running reasoning" : "Run reasoning"

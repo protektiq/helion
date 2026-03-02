@@ -5,7 +5,7 @@ priority and reasoning; override rules (e.g. CVSS > 9 → Tier 1 unless dev-only
 Enrichment-aware assess and validate support grounded exploitability agent.
 """
 
-from app.schemas.findings import SEVERITY_VALUES, VulnerabilityCluster
+from app.schemas.findings import SEVERITY_VALUES, VulnerabilityCluster, is_cvss_present
 from app.schemas.risk_tier import (
     ClusterRiskTierResult,
     RiskTier,
@@ -18,8 +18,23 @@ from app.services.enrichment.schemas import ClusterEnrichmentPayload
 CVSS_TIER1_THRESHOLD = 9.0  # CVSS > this → Tier 1 unless dev-only
 CVSS_TIER2_MIN = 7.0  # CVSS in [7, 9] → at least Tier 2
 DEV_ONLY_TIER_WHEN_HIGH_CVSS: RiskTier = 2  # When CVSS > 9 and is_dev_only, assign this tier
-# Grounded tier: Tier 1 allowed only with KEV or EPSS >= this (validator).
-EPSS_TIER1_MIN = 0.1
+# Grounded tier: Tier 1 allowed only with KEV or EPSS >= this (or percentile >= 90%).
+EPSS_TIER1_MIN = 0.7
+# Tier 2 evidence: score or percentile above these can support at least Tier 2.
+EPSS_TIER2_MIN = 0.3
+EPSS_TIER2_PERCENTILE = 0.7
+# High EPSS: score or percentile above these triggers +1 tier bump (cap at 1) and urgency language.
+EPSS_HIGH_SCORE = 0.7
+EPSS_HIGH_PERCENTILE = 0.9
+
+
+def is_high_epss(epss: float | None, epss_percentile: float | None) -> bool:
+    """True when EPSS score >= 0.7 or percentile >= 0.9 (for tier bump and urgency language)."""
+    if epss is not None and epss >= EPSS_HIGH_SCORE:
+        return True
+    if epss_percentile is not None and epss_percentile >= EPSS_HIGH_PERCENTILE:
+        return True
+    return False
 
 # Default tier when priority/severity is missing or invalid (safe default).
 DEFAULT_TIER_WHEN_UNKNOWN: RiskTier = 2
@@ -112,15 +127,15 @@ def assign_risk_tier(
     else:
         suggested = _severity_to_suggested_tier(severity)
 
-    # Apply overrides (order matters).
-    if cvss > CVSS_TIER1_THRESHOLD:
+    # Apply overrides only when CVSS is present (not missing/0).
+    if is_cvss_present(cvss) and cvss > CVSS_TIER1_THRESHOLD:
         if is_dev_only:
             tier = DEV_ONLY_TIER_WHEN_HIGH_CVSS
             override = OVERRIDE_DEV_ONLY_DOWNGRADE
         else:
             tier = 1
             override = OVERRIDE_CVSS_HIGH
-    elif cvss >= CVSS_TIER2_MIN and suggested > 2:
+    elif is_cvss_present(cvss) and cvss >= CVSS_TIER2_MIN and suggested > 2:
         tier = 2
         override = OVERRIDE_CVSS_BAND_7_9
     else:
@@ -182,23 +197,62 @@ def assess_tier_from_enrichment(
     """
     cvss = _clamp_cvss(cvss_score)
     sev = (severity or "").strip().lower() or "info"
+    cvss_present = is_cvss_present(cvss)
 
     if enrichment.kev:
+        if is_dev_only:
+            return (2, "CISA KEV listed but dev-only; tier set to Tier 2.")
         return (1, "CISA KEV listed; known exploited.")
     if (
-        enrichment.epss is not None
-        and enrichment.epss >= EPSS_TIER1_MIN
+        cvss_present
+        and (
+            (enrichment.epss is not None and enrichment.epss >= EPSS_TIER1_MIN)
+            or (
+                enrichment.epss_percentile is not None
+                and enrichment.epss_percentile >= EPSS_HIGH_PERCENTILE
+            )
+        )
         and cvss >= CVSS_TIER2_MIN
         and not is_dev_only
     ):
-        return (1, f"EPSS {enrichment.epss:.2f} and CVSS {cvss:.1f} indicate high exploit likelihood.")
-    if cvss > CVSS_TIER1_THRESHOLD:
+        tier, reason = (
+            1,
+            f"EPSS {enrichment.epss:.2f} and CVSS {cvss:.1f} indicate high exploit likelihood."
+            if enrichment.epss is not None
+            else f"EPSS percentile {enrichment.epss_percentile:.0%} and CVSS {cvss:.1f} indicate high exploit likelihood.",
+        )
+    elif cvss_present and cvss > CVSS_TIER1_THRESHOLD:
         if is_dev_only:
-            return (DEV_ONLY_TIER_WHEN_HIGH_CVSS, "CVSS > 9 but dev-only; downgraded.")
-        return (1, "CVSS > 9.")
-    if cvss >= CVSS_TIER2_MIN:
-        return (2, "CVSS 7–9 band.")
-    return (_severity_to_suggested_tier(sev), "Severity/CVSS band.")
+            tier, reason = (DEV_ONLY_TIER_WHEN_HIGH_CVSS, "CVSS > 9 but dev-only; downgraded.")
+        else:
+            tier, reason = (1, "CVSS > 9.")
+    elif cvss_present and cvss >= CVSS_TIER2_MIN:
+        tier, reason = (2, "CVSS 7–9 band.")
+    else:
+        tier = _severity_to_suggested_tier(sev)
+        reason = "Rules-based severity."
+
+    # High EPSS (score >= 0.7 or percentile >= 90%): bump tier by 1, cap at 1.
+    if tier > 1 and (
+        (enrichment.epss is not None and enrichment.epss >= EPSS_HIGH_SCORE)
+        or (
+            enrichment.epss_percentile is not None
+            and enrichment.epss_percentile >= EPSS_HIGH_PERCENTILE
+        )
+    ):
+        tier = max(1, tier - 1)
+        reason = (reason + " High EPSS; tier raised.").strip()
+    # Tier 2 evidence: EPSS in [0.3, 0.7) or percentile in [0.7, 0.9) → at least Tier 2.
+    elif tier == 3 and (
+        (enrichment.epss is not None and enrichment.epss >= EPSS_TIER2_MIN)
+        or (
+            enrichment.epss_percentile is not None
+            and enrichment.epss_percentile >= EPSS_TIER2_PERCENTILE
+        )
+    ):
+        tier = 2
+        reason = (reason + " EPSS supports Tier 2.").strip()
+    return (tier, reason)
 
 
 def validate_grounded_tier(
@@ -207,11 +261,12 @@ def validate_grounded_tier(
     llm_adjusted_tier: str | None,
     *,
     allow_tier1_without_evidence: bool = False,
+    is_dev_only: bool = False,
 ) -> tuple[RiskTier, list[str]]:
     """
     Enforce tier bounds from evidence. Returns (final_tier, validation_notes).
-    - Tier 1 only allowed when KEV or epss >= EPSS_TIER1_MIN (or allow_tier1_without_evidence).
-    - If KEV and tier > 2, clamp to 2 (or 1) and add note.
+    - KEV forces Tier 1 unless is_dev_only (then Tier 2). Applied first so LLM cannot dilute.
+    - Tier 1 only allowed when KEV or EPSS >= 0.7 / 90th percentile (or allow_tier1_without_evidence).
     - validation_notes: human-readable reasons (e.g. downgrade due to missing evidence).
     """
     notes: list[str] = []
@@ -227,16 +282,27 @@ def validate_grounded_tier(
             candidate = 3
         # else keep candidate from suggested_tier
 
+    # KEV first: drive outcome before evidence check so LLM cannot dilute.
+    if enrichment.kev:
+        if is_dev_only:
+            candidate = 2
+            notes.append("KEV listed but dev-only; tier set to Tier 2.")
+        else:
+            candidate = 1
+            notes.append("KEV listed; tier set to Tier 1.")
+
     has_evidence_for_tier1 = enrichment.kev or (
-        enrichment.epss is not None and enrichment.epss >= EPSS_TIER1_MIN
+        (enrichment.epss is not None and enrichment.epss >= EPSS_TIER1_MIN)
+        or (
+            enrichment.epss_percentile is not None
+            and enrichment.epss_percentile >= EPSS_HIGH_PERCENTILE
+        )
     )
 
     if candidate == 1 and not has_evidence_for_tier1 and not allow_tier1_without_evidence:
-        notes.append("Tier 1 requires KEV or EPSS >= 0.1; downgrading to Tier 2.")
-        candidate = 2
-
-    if enrichment.kev and candidate > 2:
-        notes.append("KEV listed; tier raised to 2.")
+        notes.append(
+            "Tier 1 requires KEV or EPSS >= 0.7 (or 90th percentile); downgrading to Tier 2."
+        )
         candidate = 2
 
     if enrichment.cvss_check and enrichment.cvss_check.mismatch:

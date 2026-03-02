@@ -41,6 +41,10 @@ def _agent_output_to_cluster_note(
         override_applied=None,
         kev=output.kev,
         epss=output.epss,
+        epss_display=output.epss_display,
+        epss_percentile=output.epss_percentile,
+        epss_status=output.epss_status,
+        epss_reason=output.epss_reason,
         fixed_in_versions=output.fixed_in_versions,
         package_ecosystem=output.package_ecosystem,
         evidence=output.evidence,
@@ -56,36 +60,36 @@ async def post_reasoning(
     """
     Run grounded exploitability agent per cluster and aggregate notes.
 
-    When use_db=true, loads clusters from the database (job_id required if
-    user has multiple jobs). Each cluster is run through the agent (enrich
-    with KEV/EPSS/OSV → assess → LLM finalize → validate). Enrichment is
-    persisted. Returns a summary and per-cluster notes with assigned tiers
-    and optional evidence (kev, epss, fixed_in_versions, evidence).
+    When use_db=true, loads clusters from the database for the given job_id.
+    Each cluster is run through the agent (enrich with KEV/EPSS/OSV → assess
+    → LLM finalize → validate). Enrichment is persisted. Returns a summary
+    and per-cluster notes with assigned tiers and optional evidence.
     """
+    if body.job_id is None:
+        raise HTTPException(
+            status_code=400,
+            detail="job_id is required for enrichment persistence",
+        )
     settings = get_settings()
 
     reasoning_limited_note: str | None = None
+    upload_job_id: int = body.job_id
     if body.use_db:
-        from app.services.job_findings import get_user_upload_job_count
-
-        if body.job_id is None and get_user_upload_job_count(db, current_user.id) > 1:
-            raise HTTPException(
-                status_code=422,
-                detail="Multiple upload jobs exist; include job_id in the request body to scope to one job.",
-            )
-        clusters = load_clusters_for_job(db, current_user.id, body.job_id)
+        clusters, _ = load_clusters_for_job(db, current_user.id, body.job_id)
         if not clusters:
-            clusters, _, _ = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
-        if len(clusters) > 100:
-            clusters = sort_clusters_by_severity_cvss(clusters)[:100]
-            reasoning_limited_note = "Reasoning limited to top 100 clusters."
+            clusters, _, findings = get_or_build_clusters_for_job(db, current_user.id, body.job_id)
+        if len(clusters) > body.max_clusters:
+            clusters = sort_clusters_by_severity_cvss(clusters)[: body.max_clusters]
+            reasoning_limited_note = f"Reasoning limited to top {body.max_clusters} clusters by severity."
     else:
         clusters = body.clusters
         if len(clusters) > 100:
             raise HTTPException(
-                status_code=422,
-                detail="At most 100 clusters are allowed per request.",
+                status_code=400,
+                detail="Max clusters is 100 for pasted input.",
             )
+    # Apply configurable cap in both modes.
+    clusters = clusters[: body.max_clusters]
 
     if not clusters:
         return ReasoningResponse(
@@ -93,7 +97,6 @@ async def post_reasoning(
             cluster_notes=[],
         )
 
-    job_id = body.job_id if body.use_db else None
     notes: list[ClusterNote] = []
     for i, cluster in enumerate(clusters):
         try:
@@ -101,7 +104,7 @@ async def post_reasoning(
                 cluster,
                 settings,
                 session=db,
-                upload_job_id=job_id,
+                upload_job_id=upload_job_id,
                 persist_enrichment=True,
             )
             notes.append(

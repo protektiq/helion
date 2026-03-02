@@ -5,12 +5,15 @@ import unittest
 from app.schemas.findings import VulnerabilityCluster
 from app.schemas.reasoning import ClusterNote, ReasoningResponse
 from app.schemas.risk_tier import RiskTierAssignmentInput
+from app.services.enrichment.schemas import ClusterEnrichmentPayload
 from app.services.risk_tier import (
     OVERRIDE_CVSS_BAND_7_9,
     OVERRIDE_CVSS_HIGH,
     OVERRIDE_DEV_ONLY_DOWNGRADE,
     assign_risk_tier,
     assign_risk_tiers,
+    assess_tier_from_enrichment,
+    validate_grounded_tier,
 )
 
 
@@ -162,6 +165,20 @@ class TestEdgeCases(unittest.TestCase):
         result = assign_risk_tier(cluster, llm_note=None, is_dev_only=False)
         self.assertEqual(result.assigned_tier, 2)
 
+    def test_cvss_zero_high_severity_no_override(self) -> None:
+        """When cvss_score is 0, no CVSS override; tier from severity. No 'CVSS 0.0' in narrative."""
+        cluster = _cluster(cvss_score=0.0, severity="high")
+        result = assign_risk_tier(cluster, llm_note=None, is_dev_only=False)
+        self.assertEqual(result.assigned_tier, 2)
+        self.assertIsNone(result.override_applied)
+
+    def test_cvss_zero_critical_severity_tier_from_severity(self) -> None:
+        """When cvss_score is 0 and severity is critical, tier 1 from severity, no CVSS override."""
+        cluster = _cluster(cvss_score=0.0, severity="critical")
+        result = assign_risk_tier(cluster, llm_note=None, is_dev_only=False)
+        self.assertEqual(result.assigned_tier, 1)
+        self.assertIsNone(result.override_applied)
+
     def test_risk_tier_assignment_input_with_dev_only(self) -> None:
         inp = RiskTierAssignmentInput(
             vulnerability_id="CVE-X",
@@ -211,6 +228,250 @@ class TestAssignRiskTiersBatch(unittest.TestCase):
         self.assertEqual(results[0].override_applied, OVERRIDE_CVSS_HIGH)
         self.assertEqual(results[1].assigned_tier, 2)
         self.assertEqual(results[1].override_applied, OVERRIDE_DEV_ONLY_DOWNGRADE)
+
+
+class TestAssessTierFromEnrichment(unittest.TestCase):
+    """assess_tier_from_enrichment reason strings when CVSS is not present."""
+
+    def test_cvss_zero_returns_rules_based_severity(self) -> None:
+        """When cvss_score is 0, reason is 'Rules-based severity.' and does not mention CVSS 0.0."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=None,
+            epss_percentile=None,
+            epss_display="n/a",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        tier, reason = assess_tier_from_enrichment(payload, cvss_score=0.0, severity="high")
+        self.assertEqual(tier, 2)
+        self.assertEqual(reason, "Rules-based severity.")
+        self.assertNotIn("CVSS 0.0", reason)
+        self.assertNotIn("0.0", reason)
+
+    def test_cvss_present_high_returns_cvss_band_reason(self) -> None:
+        """When cvss_score is 7.5, reason references CVSS band."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=None,
+            epss_percentile=None,
+            epss_display="n/a",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        tier, reason = assess_tier_from_enrichment(payload, cvss_score=7.5, severity="high")
+        self.assertEqual(tier, 2)
+        self.assertIn("CVSS", reason)
+
+    def test_kev_and_dev_only_returns_tier_2(self) -> None:
+        """When KEV is true and is_dev_only is True, assess returns Tier 2."""
+        payload = ClusterEnrichmentPayload(
+            kev=True,
+            epss=None,
+            epss_percentile=None,
+            epss_display="n/a",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=["KEV listed"],
+        )
+        tier, reason = assess_tier_from_enrichment(
+            payload, cvss_score=8.0, severity="high", is_dev_only=True
+        )
+        self.assertEqual(tier, 2)
+        self.assertIn("dev-only", reason.lower())
+
+
+class TestValidateGroundedTierKEV(unittest.TestCase):
+    """validate_grounded_tier: KEV forces Tier 1."""
+
+    def test_kev_and_llm_medium_sets_tier_1(self) -> None:
+        """When KEV is true and LLM says medium (3), final tier is 1."""
+        payload = ClusterEnrichmentPayload(
+            kev=True,
+            epss=0.5,
+            epss_percentile=0.8,
+            epss_display="0.50",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=["KEV listed"],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=3, llm_adjusted_tier="medium"
+        )
+        self.assertEqual(final_tier, 1)
+        self.assertTrue(any("Tier 1" in n for n in notes))
+
+    def test_kev_and_llm_high_sets_tier_1(self) -> None:
+        """When KEV is true and LLM says high (2), final tier is 1."""
+        payload = ClusterEnrichmentPayload(
+            kev=True,
+            epss=None,
+            epss_percentile=None,
+            epss_display="n/a",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=["KEV listed"],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=2, llm_adjusted_tier="high"
+        )
+        self.assertEqual(final_tier, 1)
+
+    def test_kev_and_dev_only_sets_tier_2(self) -> None:
+        """When KEV is true but is_dev_only is True, final tier is 2."""
+        payload = ClusterEnrichmentPayload(
+            kev=True,
+            epss=0.5,
+            epss_percentile=0.8,
+            epss_display="0.50",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=["KEV listed"],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=3, llm_adjusted_tier="medium", is_dev_only=True
+        )
+        self.assertEqual(final_tier, 2)
+        self.assertTrue(
+            any("dev-only" in n.lower() for n in notes),
+            f"Expected a dev-only note in {notes}",
+        )
+
+
+class TestValidateGroundedTierTier1Evidence(unittest.TestCase):
+    """validate_grounded_tier: Tier 1 requires KEV or EPSS >= 0.7 / 90th percentile."""
+
+    def test_tier1_without_kev_epss_below_07_downgrades_to_2(self) -> None:
+        """Tier 1 without KEV and EPSS 0.5 (below 0.7), no 90th percentile → downgrade to Tier 2."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=0.5,
+            epss_percentile=None,
+            epss_display="0.50",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=1, llm_adjusted_tier="critical"
+        )
+        self.assertEqual(final_tier, 2)
+        self.assertTrue(
+            any("0.7" in n or "90th" in n for n in notes),
+            f"Expected Tier 1 evidence message in {notes}",
+        )
+
+    def test_tier1_with_epss_075_stays_tier_1(self) -> None:
+        """Tier 1 with EPSS 0.75 (no KEV) → stays Tier 1."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=0.75,
+            epss_percentile=None,
+            epss_display="0.75",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=1, llm_adjusted_tier="critical"
+        )
+        self.assertEqual(final_tier, 1)
+
+    def test_tier1_with_percentile_91_stays_tier_1(self) -> None:
+        """Tier 1 with EPSS percentile 0.91 (no KEV) → stays Tier 1."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=None,
+            epss_percentile=0.91,
+            epss_display="n/a",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        final_tier, notes = validate_grounded_tier(
+            payload, suggested_tier=1, llm_adjusted_tier="critical"
+        )
+        self.assertEqual(final_tier, 1)
+    """assess_tier_from_enrichment: high EPSS bumps tier by 1 (cap at 1)."""
+
+    def test_high_epss_score_bumps_tier_2_to_1(self) -> None:
+        """EPSS >= 0.7 with tier 2 from severity (CVSS below 7) → tier 1."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=0.75,
+            epss_percentile=0.85,
+            epss_display="0.75",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        # CVSS 5 so we get tier 2 from severity, not from EPSS 0.1 + CVSS 7 rule
+        tier, reason = assess_tier_from_enrichment(
+            payload, cvss_score=5.0, severity="high", is_dev_only=False
+        )
+        self.assertEqual(tier, 1)
+        self.assertIn("High EPSS", reason)
+
+    def test_high_epss_percentile_bumps_tier_3_to_2(self) -> None:
+        """EPSS percentile >= 0.9 with low CVSS (tier 3) → tier 2."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=0.2,
+            epss_percentile=0.92,
+            epss_display="0.20 (92nd percentile)",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        tier, reason = assess_tier_from_enrichment(
+            payload, cvss_score=5.0, severity="low", is_dev_only=False
+        )
+        self.assertEqual(tier, 2)
+        self.assertIn("High EPSS", reason)
+
+    def test_epss_below_threshold_no_bump(self) -> None:
+        """EPSS 0.05 and percentile 0.5 do not trigger tier bump; tier stays 2 from CVSS band."""
+        payload = ClusterEnrichmentPayload(
+            kev=False,
+            epss=0.05,
+            epss_percentile=0.5,
+            epss_display="0.05",
+            osv=[],
+            fixed_in_versions=[],
+            package_ecosystem=None,
+            cvss_check=None,
+            evidence=[],
+        )
+        # CVSS 7 gives tier 2; EPSS 0.05 < 0.7 and percentile 0.5 < 0.9 so no bump
+        tier, reason = assess_tier_from_enrichment(
+            payload, cvss_score=7.0, severity="high", is_dev_only=False
+        )
+        self.assertEqual(tier, 2)
+        self.assertNotIn("High EPSS", reason)
 
 
 if __name__ == "__main__":

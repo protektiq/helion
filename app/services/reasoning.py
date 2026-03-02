@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 
 import httpx
 
-from app.schemas.findings import VulnerabilityCluster
+from app.schemas.findings import VulnerabilityCluster, cvss_display
 from app.schemas.reasoning import ReasoningResponse
 
 if TYPE_CHECKING:
@@ -156,7 +156,7 @@ def _build_prompt(clusters: list[VulnerabilityCluster]) -> str:
         {
             "id": c.vulnerability_id,
             "sev": c.severity,
-            "cvss": c.cvss_score,
+            "cvss": cvss_display(c.cvss_score),
             "repo": c.repo,
             "dep": c.dependency or "",
             "svc": c.affected_services_count,

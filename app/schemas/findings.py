@@ -31,6 +31,18 @@ def _validate_cvss(value: float | None) -> float | None:
     return value
 
 
+def is_cvss_present(cvss_score: float | None) -> bool:
+    """True when a meaningful CVSS score exists (not None and > 0). Use for narratives and override logic."""
+    return cvss_score is not None and cvss_score > 0
+
+
+def cvss_display(cvss_score: float | None) -> str:
+    """Return CVSS score as string for display, or 'n/a' when missing or 0. Use in tickets and prompts."""
+    if not is_cvss_present(cvss_score):
+        return "n/a"
+    return str(cvss_score)
+
+
 class RawFinding(BaseModel):
     """Scanner-agnostic raw finding for ingestion. All fields optional to accept varying scanner outputs."""
 

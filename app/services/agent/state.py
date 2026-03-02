@@ -11,6 +11,7 @@ class ExploitabilityAgentState(TypedDict, total=False):
     """State passed through enrich → assess → llm_finalize → validate."""
 
     cluster: VulnerabilityCluster
+    is_dev_only: bool  # When True, KEV does not force Tier 1 (dev-only override).
     enrichment_payload: ClusterEnrichmentPayload
     enrichment_raw: dict[str, Any]
     assessed_tier: int  # 1, 2, or 3
