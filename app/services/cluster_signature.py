@@ -129,11 +129,9 @@ def _sast_signature_from_raw_payload(
 
 def _file_path_pattern(repo: str, file_path: str) -> str:
     """Normalize file path for SAST fallback: strip repo prefix, normalize slashes."""
-    if not file_path or not (file_path or "").strip():
+    if not (file_path or "").strip():
         return ""
     path = (file_path or "").strip().replace("\\", "/")
-    if not path:
-        return ""
     repo_norm = (repo or "").strip().replace("\\", "/").strip("/")
     if repo_norm and path.startswith(repo_norm + "/"):
         path = path[len(repo_norm) + 1 :].lstrip("/")
