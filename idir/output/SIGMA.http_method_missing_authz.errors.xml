@@ -1,0 +1,135 @@
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.http_method_missing_authz</checker>
+<type>sigma.http_method_missing_authz</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the configuration of operation-level security controls. This is configured by a non-empty local security field, for example `{L}'security':[{L}'OAuth2':['read','write']{R}]{R}`. The best practice is to apply the security controls globally, rather than per operation, to avoid accidentally leaving an operation unprotected.}}</description>
+<line>1</line>
+</event>
+<extra>http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.http_method_missing_authz_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>HTTP method missing authorization</type>
+<cwe>862</cwe>
+<localEffect></localEffect>
+<longDescription>The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.http_method_missing_authz</checker>
+<type>sigma.http_method_missing_authz</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the configuration of operation-level security controls. This is configured by a non-empty local security field, for example `{L}'security':[{L}'OAuth2':['read','write']{R}]{R}`. The best practice is to apply the security controls globally, rather than per operation, to avoid accidentally leaving an operation unprotected.}}</description>
+<line>1</line>
+</event>
+<extra>http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.http_method_missing_authz_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>HTTP method missing authorization</type>
+<cwe>862</cwe>
+<localEffect></localEffect>
+<longDescription>The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.http_method_missing_authz</checker>
+<type>sigma.http_method_missing_authz</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the configuration of operation-level security controls. This is configured by a non-empty local security field, for example `{L}'security':[{L}'OAuth2':['read','write']{R}]{R}`. The best practice is to apply the security controls globally, rather than per operation, to avoid accidentally leaving an operation unprotected.}}</description>
+<line>1</line>
+</event>
+<extra>http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.http_method_missing_authz_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>HTTP method missing authorization</type>
+<cwe>862</cwe>
+<localEffect></localEffect>
+<longDescription>The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>

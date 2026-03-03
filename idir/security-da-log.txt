@@ -1,0 +1,4 @@
+"C:\Program Files\Coverity\Coverity Static Analysis\bin\cov-security-da" --dir C:\coverity-testing\helion-4\idir --ticker-mode none 
+cov-security-da version 2025.12.0 on Windows 11 Enterprise, 64-bit (build 26100)
+Internal version numbers: 8600bcfa3c p-2025.12-push-40
+

@@ -1,0 +1,7 @@
+{
+  "covAnalyzeArgs" : [
+    "--recommended-security-checkers"
+  ],
+  "fileOptions" : [],
+  "fileCheckerOptions" : []
+}

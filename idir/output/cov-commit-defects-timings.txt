@@ -1,0 +1,82 @@
+# Version: 8600bcfa3c p-2025.12-push-40
+# Command Line: C:\Program Files\Coverity\Coverity Static Analysis\bin\cov-commit-defects --dir C:\coverity-testing\helion-4\idir --url https://coverity.field-test.blackduck.com:443 --stream helion-4 --on-new-cert distrust --ticker-mode none --snapshot-id-file C:\coverity-testing\helion-4\idir\coverity-cli\snapshot-id --auth-key-file C:\Users\CARLOS~1\AppData\Local\Temp\1626856513_auth_key
+timer                                          ms      calls
+------------------------------------------------------------
+cov-commit-defects                           8500          1
+  set_working_domain                           16          1
+  send_idir_v1                                578          1
+  send_analysis_and_build_metrics              16          2
+    open emit DB                                0          1
+  send_defects_v3                            1203          2
+    HashKVS mappingBegin                        0          2
+      HashKVSBigLockRead                        0          2
+  start_determining_blame_v2                  110          1
+  send_snapshot_info                            0          1
+  send_analysis_settings_v1                     0          1
+  send_collectable_analysis_metrics             0          1
+  send_his_metrics                              0          1
+  send_sourcefile_descriptions_v3             265          1
+    retrieve_string_from_table                  0        262
+  send_filtering_report                         0          1
+  send_xrefs_v2                                78          1
+    HashKVS mappingBegin                        0          1
+      HashKVSBigLockRead                        0          1
+  send_functions_v1                            46          1
+  send_owners_v1                                0          1
+  send_output_files_v1                        797          1
+  send_scm_change_record_md5s                   0          1
+    open emit DB                                0          1
+  send_scm_annotation_md5s                      0          1
+    open emit DB                                0          1
+  send_analysis_summaries_md5_v1               16          1
+    get_lock                                    0          1
+    HashKVS has_key                             0          1
+      HashKVSBigLockRead                        0          1
+      find                                      0          1
+        read partial table                      0          1
+    HashKVS mappingBegin                        0          1
+      HashKVSBigLockRead                        0          1
+  send_analysis_summaries_contents_v1          94          1
+  send_desktop_analysis_data_v1                 0          1
+    HashKVS find                                0          1
+      HashKVSBigLockRead                        0          1
+      find                                      0          1
+        read partial table                      0          1
+  send_timestamp_v1                             0          1
+  check_updates_v0                              0          1
+  (left over)                                5281
+
+activity                                       ms      calls
+------------------------------------------------------------
+cov-commit-defects                           8500          1
+set_working_domain                             16          1
+send_idir_v1                                  578          1
+send_analysis_and_build_metrics                16          2
+open emit DB                                    0          3
+send_defects_v3                              1203          2
+HashKVS mappingBegin                            0          4
+HashKVSBigLockRead                              0          6
+start_determining_blame_v2                    110          1
+send_snapshot_info                              0          1
+send_analysis_settings_v1                       0          1
+send_collectable_analysis_metrics               0          1
+send_his_metrics                                0          1
+send_sourcefile_descriptions_v3               265          1
+retrieve_string_from_table                      0        262
+send_filtering_report                           0          1
+send_xrefs_v2                                  78          1
+send_functions_v1                              46          1
+send_owners_v1                                  0          1
+send_output_files_v1                          797          1
+send_scm_change_record_md5s                     0          1
+send_scm_annotation_md5s                        0          1
+send_analysis_summaries_md5_v1                 16          1
+get_lock                                        0          1
+HashKVS has_key                                 0          1
+find                                            0          2
+read partial table                              0          2
+send_analysis_summaries_contents_v1            94          1
+send_desktop_analysis_data_v1                   0          1
+HashKVS find                                    0          1
+send_timestamp_v1                               0          1
+check_updates_v0                                0          1

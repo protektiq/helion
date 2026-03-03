@@ -1,0 +1,5974 @@
+{
+  "ALLOC_FREE_MISMATCH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ANDROID_CAPABILITY_LEAK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ANGULAR_EXPRESSION_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "ANGULAR_SCE_DISABLED" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "ARRAY_VS_SINGLETON" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ASPNET_MVC_VERSION_HEADER" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ASSERT_SIDE_EFFECT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ATTRIBUTE_NAME_CONFLICT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "AUTO_CAUSES_COPY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_ALLOC_ARITHMETIC" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_ALLOC_STRLEN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_CERT_VERIFICATION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "BAD_CHECK_OF_WAIT_COND" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_COMPARE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_EQ" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_EQ_TYPES" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_FREE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_LOCK_OBJECT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_OVERRIDE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_SHIFT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "BAD_SIZEOF" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CALL_SUPER" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CHAR_IO" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CHECKED_RETURN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "COM.BAD_FREE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "COM.BSTR.CONV" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.ANDROID_GRADLE_OBFUSCATION_NOT_ENABLED" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.ASP_VIEWSTATE_MAC" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.BEEGO_CSRF_PROTECTION_DISABLED" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.DEAD_AUTHORIZATION_RULE" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.DYNAMIC_DATA_HTML_COMMENT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.ENABLED_DEBUG_MODE" : {
+    "disabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "CONFIG.ENABLED_TRACE_MODE" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "CONFIG.HANA_XS_PREVENT_XSRF_DISABLED" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "CONFIG.UNSAFE_SESSION_TIMEOUT" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "CONSTANT_EXPRESSION_RESULT" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "COOKIE_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "COOKIE_SERIALIZER_CONFIG" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "COPY_INSTEAD_OF_MOVE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "COPY_PASTE_ERROR" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "CSRF" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "CSS_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "CTOR_DTOR_LEAK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.COLLECTIVE_WARP_SHUFFLE_WIDTH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.CUDEVICE_HANDLES" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.DEVICE_DEPENDENT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.DEVICE_DEPENDENT_CALLBACKS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.DIVERGENCE_AT_COLLECTIVE_OPERATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.ERROR_INTERFACE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.ERROR_KERNEL_LAUNCH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.FORK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.INACTIVE_THREAD_AT_COLLECTIVE_WARP" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.INITIATION_OBJECT_DEVICE_THREAD_BLOCK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.INVALID_MEMORY_ACCESS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.SHARE_FUNCTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.SHARE_OBJECT_STREAM_ASSOCIATED" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.SPECIFIERS_INCONSISTENCY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.SYNCHRONIZE_CALLBACKS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "CUDA.SYNCHRONIZE_TERMINATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DC.DANGEROUS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DC.DEADLOCK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DEADCODE" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "DELETE_ARRAY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DELETE_VOID" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DENY_LIST_FOR_AUTHN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DIVIDE_BY_ZERO" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "DOM_XSS" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "DYNAMIC_OBJECT_ATTRIBUTES" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "EL_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "END_OF_LIFE_RAILS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "END_OF_LIFE_RUBY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "EVALUATION_ORDER" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "FORWARD_NULL" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "GLOBAL_INIT_ORDER" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "GUARDED_BY_VIOLATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "HARDCODED_CREDENTIALS" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "HEADER_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "HIBERNATE_BAD_HASHCODE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "IDENTICAL_BRANCHES" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "IDENTIFIER_TYPO" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "IMPLICIT_INTENT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INCOMPATIBLE_CAST" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INCOMPLETE_DEALLOCATOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INEFFICIENT_RESERVE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INFINITE_LOOP" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INSECURE_COMMUNICATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INSECURE_CSP" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INSECURE_FILE_PERMISSIONS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "INSECURE_RANDOM" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "INSECURE_SALT" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "INSUFFICIENT_LOGGING" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "INVALIDATE_ITERATOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "JAVA_CODE_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "JCR_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "JSONWEBTOKEN_UNTRUSTED_DECODE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "JSP_DYNAMIC_INCLUDE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "JSP_SQL_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "LDAP_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "LOCALSTORAGE_MANIPULATION" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "LOCK_EVASION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "LOCK_INVERSION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MASS_ASSIGNMENT" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "MISMATCHED_ITERATOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_AUTHZ" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "MISSING_BREAK" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "MISSING_COMMA" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_IFRAME_SANDBOX" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "MISSING_MOVE_ASSIGNMENT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_PERMISSION_FOR_BROADCAST" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_RESTORE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_RETURN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MISSING_THROW" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MOBILE_ID_MISUSE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "MULTIPLE_INIT_SMART_PTRS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "NEGATIVE_RETURNS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "NESTING_INDENT_MISMATCH" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "NON_STATIC_GUARDING_STATIC" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "NOSQL_QUERY_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "NO_EFFECT" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "NULL_FIELD" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "NULL_RETURNS" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "OGNL_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "OPEN_REDIRECT" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "ORM_LOAD_NULL_CHECK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "ORM_UNNECESSARY_GET" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "OS_CMD_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "OVERFLOW_BEFORE_WIDEN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "OVERLAPPING_COPY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "OVERRUN" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "PASS_BY_VALUE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "PATH_MANIPULATION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "PRECEDENCE_ERROR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "PREDICTABLE_RANDOM_SEED" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "PRINTF_ARGS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "PROPERTY_MIXUP" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RAILS_DEFAULT_ROUTES" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RAILS_DEVISE_CONFIG" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RAILS_MISSING_FILTER_ACTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "READLINK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "REGEX_CONFUSION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "REGEX_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "REGEX_MISSING_ANCHOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RESOURCE_LEAK" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RETURN_LOCAL" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "REVERSE_INULL" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "REVERSE_INVALID_ITERATOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "REVERSE_NEGATIVE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "REVERSE_TABNABBING" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "RISKY_CRYPTO" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "RUBY_VULNERABLE_LIBRARY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SCRIPT_CODE_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SEALED_JAR_ESCAPE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SENSITIVE_DATA_LEAK" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SERVLET_ATOMICITY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SESSIONSTORAGE_MANIPULATION" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SESSION_FIXATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SESSION_MANIPULATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.access_control_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.access_to_secret" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.admin_access_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.admin_dashboard_publicly_accessible" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.alias_ip_disabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.allow_all_authz_policy" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.allow_non_strict_processing" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.allow_self_signed_certificate" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.always_remember_me_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.anonymous_access_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.anti_spoofing_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.api_exposes_refresh_token" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.api_key_auth_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.api_key_in_query_string" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.apparmour_default_configuration_override" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.audio_recording_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.automatic_key_rotation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.automatic_os_upgrade_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.automatic_repair_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.automatic_upgrade_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.automounting_service_account_token" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.azure_ad_authentication_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.azure_ad_managed_identities_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.backups_allowed" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.basic_auth_enabled" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.biometric_authentication_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.broad_domain_attribute_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.broad_filesystem_access" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cache_ttl_too_long" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cbc_insecure_padding" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.certificate_rotation_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.certificate_verification_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.circuit_breaker_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.client_store_info_leak" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cloud_database_deletion_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.cloud_gateway_publicly_accessible" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cloud_object_lock_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.cloud_resource_assigned_public_ip" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.cloud_resource_publicly_accessible" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.cloud_service_authn_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cloud_service_authz_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.cloud_storage_allows_public_config" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cloud_storage_default_allow_all" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.cloud_storage_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cloud_storage_publicly_accessible" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.confidential_computing_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.config_browser_plugin_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.conflicting_names" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.connection_timeout_disabled" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_access_to_host_filesystem" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_cpu_share_unlimited" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_daemon_socket_exposed" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_empty_security_context" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_excessive_restart_times" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_filesystem_write" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_hostport_binding" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_insecure_bind_address" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_mapped_to_privileged_port" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_missing_cpu_limit" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_missing_memory_limit" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_missing_pids_limit" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_privilege_escalation_allowed" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_requesting_net_raw" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_requesting_sys_admin" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_running_as_root" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_sharing_host_ipc_namespace" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_sharing_host_network_namespace" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_sharing_host_pid_namespace" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_sharing_mount_volumes" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.container_storing_secret_in_environment_variable" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.container_sudo_usage" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.content_isolation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.content_security_policy_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.cookie_logging_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cookie_session_signing_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.cors_configured_globally" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.cors_expose_sensitive_data" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_no_credentials_permissive_origin" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_origin_string" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.cors_permissive_methods" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_preflight_age_too_long" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_with_credentials_all_origin" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_with_credentials_http_origin" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_with_credentials_null_origin" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.cors_with_credentials_subdomain_origin" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.credentials_validation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.credentials_without_keychain_protection" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csp_frame_ancestors_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csp_mixed_content" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csp_permissive_source" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csp_unsafe_eval" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csp_unsafe_inline" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csrf" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.csrf_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.custom_cryptography" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.custom_keyboards_enabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.custom_resource_in_default_namespace" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dangerous_oauth2_implicit_flow" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dangerous_ropc_flow" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dangerously_exposed_interface" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.data_exfiltration_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.data_mask_obfuscation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.data_sent_to_external_server" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.database_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.database_integrity_protection_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.database_repair_mode_enabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.ddos_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.debug_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.debug_logging_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.default_allow_all_authz_policy" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.default_service_account_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.deletion_protection_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.deprecated_component_used" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.deprecated_http_client" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.deprecated_runtime_version" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.deprecated_xss_header" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dev_mode_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.digest_auth_enabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.disk_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dns_prefetch_control_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.dnssec_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.drop_invalid_header_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.duplicate_validation_forms" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dynamic_method_invocation" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.dynamically_loading_extensions_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.el_injection" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.element_any" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.empty_encryption_key" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.empty_password" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.empty_salt" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.empty_signing_key" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_auth_attempts" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_buffer_size" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_connection_timeout" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_http_buffer_size" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.excessive_ingress" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_key_rotation_period" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.excessive_memory_limit" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_request_retries" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.excessive_request_size" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.excessive_session_lifetime" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.excessive_token_lifetime" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.excessive_ttl" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.expect_ct_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.experimental_features_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.exposed_directory_listing" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.exposed_privileged_account" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.exposed_secret" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.expression_escaping_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.external_storage_used" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.file_data_unprotected_on_device" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.file_header_crc_disabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_fields" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_file_path" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_filesize" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_safe_file_names" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_storage" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.file_upload_misconfiguration_of_temp_files" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.full_table_scan" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.gateway_exposes_all_hosts" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.general_pasteboard_used" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.geo_redundant_backup_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.graphiql_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.hardcoded_remember_me_key" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.hardcoded_secret" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.hardcoded_value" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.hardware_backed_security_disabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.healthcheck_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.hide_powered_by_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.host_header_validation_disabled" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.hpkp_max_age_too_long" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.hpkp_report_uri_missing_tls" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.hsts_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.hsts_http_header_short_max_age" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.hsts_http_header_subdomains_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.http_firewall_allow_any_http_method" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_firewall_allows_special_char" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_firewall_insecure_default" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_header_validation_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_method_missing_authz" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_verb_tampering_method_inclusion" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.http_verb_tampering_method_omission" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.ie_no_open_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.image_scanning_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.immutable_tag_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.improper_use_of_add_command" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.improper_use_of_symmetric_cryptography" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.incomplete_credential_removal" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.infrastructure_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insecure_active_user_switch" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_argon2_parameters" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_block_cipher_algorithm" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_block_cipher_mode" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_cipher" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.insecure_cookie_storage" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.insecure_credential_use" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_dataframe" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_direct_object_reference" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_file_permission" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_iframe_sandbox" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_ipc" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_network_bind" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_permission_on_exported_component" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_random" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_random_seed" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_referrer_policy" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_samesite_attribute_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insecure_stream_cipher_algorithm" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.insecure_temporary_file" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insecure_tls_cipher_suite" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insecure_tls_renegotiation" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.insecure_tls_version" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insecure_xss_filter" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.insufficient_asymmetric_key_size" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.insufficient_brute_force_protection" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insufficient_log_retention" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insufficient_logging" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insufficient_password_hash_iterations" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insufficient_password_hash_key_length" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insufficient_password_hash_salt_length" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insufficient_presigned_url_timeout" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.insufficient_soft_delete_retention" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.insufficient_symmetric_key_size" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.insufficient_token_entropy" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.introspection_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.invalid_command_used" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.ip_forwarding_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.iptable_synchronization_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.javascript_code_in_description" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.jwt_algorithm_none" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.jwt_ignored_expiration_time" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.jwt_ignored_start_time" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.jwt_no_claims_validation" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.jwt_non_expiring_token" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.jwt_revoke_missing" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.jwt_untrusted_decode" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.kernel_protection_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.keyboard_cache_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.keychain_data_unprotected_after_device_powered_on" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.keychain_data_unprotected_after_first_login" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.keychain_data_unprotected_passcode_not_set" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.kms_encryption_service_disabled" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.kubernetes_dashboard_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.ldap_anonymous_authentication" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.ldap_entry_poisoning" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.least_privilege_violation" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.legacy_attribute_based_access_control" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.local_infile_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.location_tracking_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.log_file_validation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.log_monitoring_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.logging_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.logging_request_parameters" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.login_over_http" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.lossy_encoding" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.malicious_url" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.markdown_allow_dangerous_html" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.message_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.microservice_authn_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.middleware_applied_globally" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.misconfigured_oauth2" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_default_response_object" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_exported_attribute" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_global_exception_handler" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.missing_high_availability_support" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.missing_httponly_attribute" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_httponly_attribute_csrf_cookie" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_httponly_attribute_session_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_iframe_sandbox" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_load_balancer" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_mfa" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.missing_min_sdk_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_mtls" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.missing_network_security_policy" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.missing_perfect_forward_secrecy" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_permission_on_exported_component" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_samesite_attribute" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_samesite_attribute_csrf_cookie" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_samesite_attribute_session_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_secure_attribute" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_secure_attribute_csrf_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.missing_secure_attribute_remember_me_cookie" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_secure_attribute_session_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_security_constraint" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_servlet_mapping" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_target_sdk_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_tls" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_uses_sdk_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_vpc" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.missing_x_frame_options_header" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.mixed_content_allowed" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.multi_region_configuration_aggregation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.multi_region_logging_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.no_complexity_limit" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.no_depth_limit" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.no_password_change_on_first_login" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.no_rate_limiting" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.no_sniff_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.non_production_api_endpoint" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.non_production_route" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.null_cipher_used" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.oauth2_pkce_plaintext_challenge" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.oauth2_scope_in_token_request" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.open_smtp_relay" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.optimized_image_not_used" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.outdated_target_sdk_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.outdated_version_used" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.overwrite_unintended_variables" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.parameter_merging_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.parameters_validation_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.password_change_disallowed" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.password_change_without_old_password" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.password_stored_without_hash" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.permissive_intent_list" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.permissive_navigation_list" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.permissive_network_list" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.permitted_cross_domain_policies_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.persistent_cookie" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.plaintext_storage_sensitive_data" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.predictable_secret" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.privileged_connection_allowed" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.privileged_container_allowed" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.profiling_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.project_encryption_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.public_github_repository" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.publicly_accessible_serial_port_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.publicly_writable_directories_used" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.query_encryption_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.query_logging_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.referrer_policy_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.relative_path" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.remote_access_via_guest_account" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.remote_application_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.remote_execution_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.remote_file_inclusion" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.request_allows_any_media_type" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.request_logging_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.request_tracing_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.request_validation_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.response_cache_encryption_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.response_cache_used_without_validation" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.response_caching_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.response_logging_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.reverse_tabnabbing" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.root_path_attribute_cookie" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.rsa_no_padding" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.safe_browsing_options_disabled" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.sasl_plain_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.screenshot_data_leak" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.script_checks_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.script_timeout_too_long" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.seccomp_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.security_alerts_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.security_alerts_notification_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.security_scanning_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.selinux_default_configuration_override" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.sensitive_data_in_cookie" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.sensitive_data_in_query_string" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.sensitive_data_in_response" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.server_side_request_unrestricted" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.service_account_lookup_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.session_cookie_misuse" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.session_fixation_protection_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.shared_preferences_data_exposure" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.shell_missing_pipefail" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.shielded_nodes_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.shielded_vm_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.socket_accepts_all_origins" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.ssh_port_exposed" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.ssh_publicly_accessible" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.ssl_pinning_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.ssrf_with_untrusted_callback" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.state_changing_get_request" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.static_iv" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.static_non_expiring_token" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.storage_optimization_disabled" : {
+    "disabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.storage_versioning_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.stripe_validation_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.synchronized_credentials" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.tag_authorization_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.termination_protection_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.third_party_trusted" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.tiller_service_exposed" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.trace_mode_enabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.trojan_source" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unauthenticated_readonly_access" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unbounded_occurrences" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.uncontrolled_search_path" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.undefined_oauth2_scope" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unfettered_resource_loading" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.unfiltered_html_allowed" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unlimited_concurrent_sessions" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unprotected_admin_operation" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unprotected_master_key" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unreliable_root_jailbreak_detection" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.unrestricted_database_access" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unrestricted_egress" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unrestricted_ingress" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.unrestricted_postmessage_target" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.unsafe_authentication_filter" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_eval" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.unsafe_file_inclusion" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_http_method" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_innerhtml_manipulation" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.unsafe_language_feature" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_min_os_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_min_sdk_version" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_os_command" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_receipt_verification" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_session_storage" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.unsafe_sms" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_webview_usage" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unsafe_xml_canonicalization" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unspecified_cipher_transformation" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unspecified_software_version" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.unused_form_bean" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.unused_security_control" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.update_command_runs_in_isolation" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.user_namespace_disabled" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.vendor_provided_encryption_key" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.verbose_error_message" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.verbose_server_banner" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.view_state_stored_on_client" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.vulnerable_software" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.waf_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.weak_auth_mechanism" : {
+    "enabled" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3"
+    ]
+  },
+  "SIGMA.weak_biometric_authentication" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.weak_hash" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.weak_password_hash" : {
+    "enabled" : [
+      "Python 3",
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.weak_password_policy" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.weak_security_constraint" : {
+    "enabled" : [
+      "Text"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.weak_xss_protection" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.webview_file_access" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.webview_javascript_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGMA.write_using_auxiliary_file" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.xml_entity_enabled" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIGMA.xml_external_entity_enabled" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SIGMA.xss_filter_disabled" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "SIGN_EXTENSION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SIZEOF_MISMATCH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SOCKET_ACCEPT_ALL_ORIGINS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SQLI" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "SSRF" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "STRAY_SEMICOLON" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "STREAM_FORMAT_STATE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "STRICT_TRANSPORT_SECURITY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SUPPRESSED_ERROR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "SWAPPED_ARGUMENTS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "TAINTED_ENVIRONMENT_WITH_EXECUTION" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "TAINT_ASSERT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "TEMPLATE_INJECTION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "TRUST_BOUNDARY_VIOLATION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNCAUGHT_EXCEPT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNCHECKED_ORIGIN" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "UNENCRYPTED_SENSITIVE_DATA" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNEXPECTED_CONTROL_FLOW" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "UNINIT" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNINIT_CTOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNINTENDED_GLOBAL" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "UNINTENDED_INTEGER_DIVISION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNKNOWN_LANGUAGE_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNLESS_CASE_SENSITIVE_ROUTE_MATCHING" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "UNLOCKED_ACCESS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNLOGGED_SECURITY_EXCEPTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNNECESSARY_STRING_COPY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNREACHABLE" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "UNRESTRICTED_ACCESS_TO_FILE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNRESTRICTED_DISPATCH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_BASIC_AUTH" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_DESERIALIZATION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_FUNCTIONALITY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_JNI" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_NAMED_QUERY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_REFLECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNSAFE_SESSION_SETTING" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "UNUSED_VALUE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "URL_MANIPULATION" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "USELESS_CALL" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "USE_AFTER_FREE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "USE_AFTER_MOVE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "VARARGS" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "VIRTUAL_DTOR" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "VOLATILE_ATOMICITY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "WEAK_GUARD" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "WEAK_PASSWORD_HASH" : {
+    "enabled" : [
+      "Python 3"
+    ],
+    "unsupported" : [
+      "JavaScript",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "WRAPPER_ESCAPE" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "WRITE_CONST_FIELD" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "WRONG_METHOD" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "XML_EXTERNAL_ENTITY" : {
+    "enabled" : [
+      "JavaScript",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Python 3",
+      "Text"
+    ]
+  },
+  "XPATH_INJECTION" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  },
+  "XSS" : {
+    "enabled" : [
+      "JavaScript",
+      "Python 3",
+      "TypeScript"
+    ],
+    "unsupported" : [
+      "Text"
+    ]
+  },
+  "Y2K38_SAFETY" : {
+    "unsupported" : [
+      "JavaScript",
+      "Python 3",
+      "Text",
+      "TypeScript"
+    ]
+  }
+}

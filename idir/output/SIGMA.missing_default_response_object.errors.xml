@@ -1,0 +1,450 @@
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth/users - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/upload - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/clusters - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/reasoning - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/exploitability - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/tickets - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/jira/export - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.missing_default_response_object</checker>
+<type>sigma.missing_default_response_object</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the operation's configuration for handling unexpected server states. In the OpenAPI spec file, this is configured by a `responses` field with a `default` response object.}}</description>
+<line>1</line>
+</event>
+<extra>missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.missing_default_response_object_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing default HTTP response</type>
+<cwe>391</cwe>
+<localEffect></localEffect>
+<longDescription>The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>

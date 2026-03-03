@@ -1,0 +1,18 @@
+"C:\Program Files\Coverity\Coverity Static Analysis\bin\cov-analyze" --dir C:\coverity-testing\helion-4\idir --strip-path C:\coverity-testing\helion-4 --ticker-mode none --recommended-security-checkers --enable-scan-transparency-data 
+Analysis summary report:
+------------------------
+Files analyzed                 : 210 Total
+    JavaScript                 : 1
+    Python 3                   : 94
+    Text                       : 99
+    TypeScript                 : 16
+Total LoC input to cov-analyze : 49321
+Functions analyzed             : 911
+Paths analyzed                 : 17408
+Time taken by analysis         : 00:02:31
+Defect occurrences found       : 26 Total
+                                  1 SIGMA.default_allow_all_authz_policy
+                                  2 SIGMA.hardcoded_secret
+                                  3 SIGMA.http_method_missing_authz
+                                 10 SIGMA.missing_default_response_object
+                                 10 SIGMA.no_rate_limiting

@@ -1,0 +1,450 @@
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth/users - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/upload - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/clusters - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/reasoning - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/exploitability - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/tickets - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/jira/export - post - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.no_rate_limiting</checker>
+<type>sigma.no_rate_limiting</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{Audit the use of rate limiting controls. This is configured by including a `429 Too Many Requests` or similar response object.}}</description>
+<line>1</line>
+</event>
+<extra>no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get - responses</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.no_rate_limiting_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Missing rate limiting</type>
+<cwe>307</cwe>
+<localEffect></localEffect>
+<longDescription>The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>

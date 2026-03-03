@@ -1,0 +1,9 @@
+# Version: 8600bcfa3c p-2025.12-push-40
+# Command Line: C:\Program Files\Coverity\Coverity Static Analysis\bin\cov-security-da --dir C:\coverity-testing\helion-4\idir --ticker-mode none
+timer                         ms      calls
+-------------------------------------------
+cov_security_da::run           0          1
+
+activity                      ms      calls
+-------------------------------------------
+cov_security_da::run           0          1

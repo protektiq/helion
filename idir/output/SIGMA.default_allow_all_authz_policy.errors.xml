@@ -1,0 +1,45 @@
+<error>
+<domain>OTHER</domain>
+<lang>Text</lang>
+<checker>SIGMA.default_allow_all_authz_policy</checker>
+<type>sigma.default_allow_all_authz_policy</type>
+<subtype>openapi</subtype>
+<file>C:/coverity-testing/helion-4/openapi.json</file>
+<isRapidScan>true</isRapidScan>
+<function>unknown</function>
+<ordered>true</ordered>
+<event>
+<main>true</main>
+<tag>Sigma main event</tag>
+<description>{CovLStrv2{The API does not have a global security scheme, indicating a default allow-all configuration. Any API operations without an explicit security scheme will allow unauthorized requests.}}</description>
+<line>1</line>
+</event>
+<event>
+<remediation>true</remediation>
+<tag>remediation</tag>
+<description>{CovLStrv2{The global security field should contain one or more security schemes, for example `{L}'security':[{L}'OAuth2':['read','write']{R}]{R}`.}}</description>
+<line>1</line>
+</event>
+<extra>default_allow_all_authz_policy_openapi -- //openapi.json -- ##Σ-markup</extra>
+<subcategory>openapi</subcategory>
+<antecedentMerge>
+<checker>SIGMA.default_allow_all_authz_policy_openapi</checker>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra></extra>
+</antecedentMerge>
+<antecedentMerge>
+<function></function>
+<extra>/helion-4/openapi.json</extra>
+</antecedentMerge>
+<typePropertiesGroup>
+<category>Sigma</category>
+<impact>Low</impact>
+<type>Default allow all</type>
+<cwe>862</cwe>
+<localEffect></localEffect>
+<longDescription>The API does not have a global security scheme, indicating a default allow-all configuration. Any API operations without an explicit security scheme will allow unauthorized requests.</longDescription>
+<securityKind>true</securityKind>
+</typePropertiesGroup>
+</error>

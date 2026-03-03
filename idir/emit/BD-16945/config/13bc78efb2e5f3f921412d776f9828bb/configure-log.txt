@@ -1,0 +1,4 @@
+Native Compiler invocation: ./ --coverity_resp_file=C:\coverity-testing\helion-4\idir\tmp\cicf-1dc4da54811e15860666186a7637ae56\cov-translate-resp-file1
+Working directory: C:\coverity-testing\helion-4
+Comptype: capture-config-files
+* Configuring Configuration Buildless Capture

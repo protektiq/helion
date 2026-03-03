@@ -1,0 +1,8 @@
+Native Compiler invocation: ./ --coverity_resp_file=C:\coverity-testing\helion-4\idir\tmp\cicf-1dc4da54811e15860666186a7637ae56\cov-translate-resp-file13
+Working directory: C:\coverity-testing\helion-4
+Comptype: typescript
+* Configuring TypeScript Buildless Capture
+Checking for 'mount' command
+Checking for Cygwin registry keys
+           * HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Cygnus Solutions\Cygwin
+           * HKEY_CURRENT_USER\SOFTWARE\Wow6432Node\Cygnus Solutions\Cygwin

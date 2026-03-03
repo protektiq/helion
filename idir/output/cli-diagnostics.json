@@ -1,0 +1,714 @@
+{
+  "type": "Coverity CLI Diagnostics Data",
+  "version": 1,
+  "general": {
+    "coverity-static-analysis-version": "2025.12.0"
+  },
+  "capture": {
+    "primary-capture-mode": "Auto",
+    "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\coverity.exe --machine-readable-output json capture --project-dir C:\\coverity-testing\\helion-4 --dir C:\\coverity-testing\\helion-4\\idir --config C:\\coverity-testing\\helion-4\\coverity.yaml -o commit.connect.stream=helion-4 -o commit.connect.url=https://coverity.field-test.blackduck.com -o analyze.location=local -o commit.connect.auth-key-file=C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key --incremental",
+    "working-directory": "C:\\coverity-testing\\helion-4",
+    "project-directory": "C:\\coverity-testing\\helion-4",
+    "intermediate-directory": "C:\\coverity-testing\\helion-4\\idir",
+    "configuration-file-path": "C:\\coverity-testing\\helion-4\\coverity.yaml",
+    "configuration": {
+      "command-line-overrides": [
+        "--config-override",
+        "commit.connect.stream=helion-4",
+        "--config-override",
+        "commit.connect.url=https://coverity.field-test.blackduck.com",
+        "--config-override",
+        "analyze.location=local",
+        "--config-override",
+        "commit.connect.auth-key-file=C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key"
+      ],
+      "file-configuration": {
+        "analyze": {
+          "location": "local"
+        },
+        "commit": {
+          "connect": {
+            "stream": "helion-4",
+            "url": "https://coverity.field-test.blackduck.com"
+          }
+        }
+      },
+      "effective-configuration": {
+        "analyze": {
+          "location": "local"
+        },
+        "commit": {
+          "connect": {
+            "auth-key-file": "C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key",
+            "on-new-cert": "distrust",
+            "stream": "helion-4",
+            "url": "https://coverity.field-test.blackduck.com:443"
+          }
+        },
+        "caching": {
+          "bytecode": true,
+          "tu": false,
+          "wur": true
+        }
+      },
+      "configuration-hash": "255c047ba728feb31b7cadaf59df90d73fb226d52a1f4b735f5e5e867e4d5565"
+    },
+    "capture-summary": {
+      "files-captured": 262,
+      "ignored": 160,
+      "lines-of-code": 130185,
+      "succeeded": 262
+    },
+    "capture-rate": 100,
+    "command-info": [
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir create",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "start-time": "2026-03-02T13:13:10.9557813-08:00",
+        "end-time": "2026-03-02T13:13:11.0241672-08:00",
+        "duration": 68385900
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir list-capture-diagnostics",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "{",
+          "  \"type\" : \"Coverity Capture Diagnostics\",",
+          "  \"format_version\" : 4,",
+          "  \"captured-files\" : []",
+          "}"
+        ],
+        "start-time": "2026-03-02T13:13:11.6686865-08:00",
+        "end-time": "2026-03-02T13:13:11.7136149-08:00",
+        "duration": 44928400
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler gcc --comptype gcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: *-g++ *-gcc ar g++ g++-* gcc gcc-* ld"
+        ],
+        "start-time": "2026-03-02T13:13:11.7404856-08:00",
+        "end-time": "2026-03-02T13:13:12.1376165-08:00",
+        "duration": 397130900
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler cc --comptype gcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: cc"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-gcc-config-1 already exists for gcc-* and will be reused. ",
+          "[WARNING] Template config template-gcc-config-2 already exists for *-gcc and will be reused. ",
+          "[WARNING] Template config template-g++-config-1 already exists for g++-* and will be reused. ",
+          "[WARNING] Template config template-g++-config-2 already exists for *-g++ and will be reused. ",
+          "[WARNING] Template config template-ld-config-0 already exists for ld and will be reused. ",
+          "[WARNING] Template config template-ar-config-0 already exists for ar and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:12.1376165-08:00",
+        "end-time": "2026-03-02T13:13:12.580191-08:00",
+        "duration": 442574500
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler c++ --comptype g++ --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: c++"
+        ],
+        "start-time": "2026-03-02T13:13:12.5807149-08:00",
+        "end-time": "2026-03-02T13:13:12.9834686-08:00",
+        "duration": 402753700
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler clang --comptype clangcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: clang clang++"
+        ],
+        "start-time": "2026-03-02T13:13:12.9839987-08:00",
+        "end-time": "2026-03-02T13:13:13.3655749-08:00",
+        "duration": 381576200
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler java --comptype java --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: apt java javac javaw",
+          "Successfully generated configuration for the buildless capture patterns: jar"
+        ],
+        "start-time": "2026-03-02T13:13:13.3655749-08:00",
+        "end-time": "2026-03-02T13:13:13.7566252-08:00",
+        "duration": 391050300
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler go --comptype go --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: go"
+        ],
+        "start-time": "2026-03-02T13:13:13.7566252-08:00",
+        "end-time": "2026-03-02T13:13:14.1204247-08:00",
+        "duration": 363799500
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler ccache --comptype prefix --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: ccache"
+        ],
+        "start-time": "2026-03-02T13:13:14.1204247-08:00",
+        "end-time": "2026-03-02T13:13:14.4775853-08:00",
+        "duration": 357160600
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler kotlinc --comptype kotlinc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: kotlin kotlinc",
+          "Successfully generated configuration for the buildless capture patterns: android kotlin-module"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-java-config-0 already exists for java and will be reused. ",
+          "[WARNING] Template config template-apt-config-0 already exists for apt and will be reused. ",
+          "[WARNING] Template config template-javaw-config-0 already exists for javaw and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:14.4781618-08:00",
+        "end-time": "2026-03-02T13:13:14.8438511-08:00",
+        "duration": 365689300
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler csc --comptype csc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: csc csc.dll csc2 devenv dotnet microsoft.aspnetcore.mvc.razor.viewcompilation microsoft.aspnetcore.mvc.razor.viewcompilation-x64 microsoft.aspnetcore.mvc.razor.viewcompilation-x64.dll microsoft.aspnetcore.mvc.razor.viewcompilation-x86 microsoft.aspnetcore.mvc.razor.viewcompilation-x86.dll microsoft.aspnetcore.mvc.razor.viewcompilation.dll msbuild razor"
+        ],
+        "start-time": "2026-03-02T13:13:14.8438511-08:00",
+        "end-time": "2026-03-02T13:13:15.2260629-08:00",
+        "duration": 382211800
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler vbc --comptype vbc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: vbc vbc.dll"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-dotnet-config-0 already exists for dotnet and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:15.2260629-08:00",
+        "end-time": "2026-03-02T13:13:15.6120499-08:00",
+        "duration": 385987000
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler cl --comptype msvc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: cl lib link"
+        ],
+        "start-time": "2026-03-02T13:13:15.6120499-08:00",
+        "end-time": "2026-03-02T13:13:16.0212198-08:00",
+        "duration": 409169900
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler i686-w64-mingw32-gcc --comptype gcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: i686-w64-mingw32-g++ i686-w64-mingw32-gcc"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-gcc-config-1 already exists for gcc-* and will be reused. ",
+          "[WARNING] Template config template-gcc-config-2 already exists for *-gcc and will be reused. ",
+          "[WARNING] Template config template-g++-config-1 already exists for g++-* and will be reused. ",
+          "[WARNING] Template config template-g++-config-2 already exists for *-g++ and will be reused. ",
+          "[WARNING] Template config template-ld-config-0 already exists for ld and will be reused. ",
+          "[WARNING] Template config template-ar-config-0 already exists for ar and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:16.0212198-08:00",
+        "end-time": "2026-03-02T13:13:16.4186534-08:00",
+        "duration": 397433600
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler i686-w64-mingw32-c++ --comptype g++ --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: i686-w64-mingw32-c++"
+        ],
+        "start-time": "2026-03-02T13:13:16.4186534-08:00",
+        "end-time": "2026-03-02T13:13:16.8154795-08:00",
+        "duration": 396826100
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler mingw32-gcc --comptype gcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: mingw32-g++ mingw32-gcc"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-gcc-config-1 already exists for gcc-* and will be reused. ",
+          "[WARNING] Template config template-gcc-config-2 already exists for *-gcc and will be reused. ",
+          "[WARNING] Template config template-g++-config-1 already exists for g++-* and will be reused. ",
+          "[WARNING] Template config template-g++-config-2 already exists for *-g++ and will be reused. ",
+          "[WARNING] Template config template-ld-config-0 already exists for ld and will be reused. ",
+          "[WARNING] Template config template-ar-config-0 already exists for ar and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:16.8154795-08:00",
+        "end-time": "2026-03-02T13:13:17.2073255-08:00",
+        "duration": 391846000
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler mingw32-c++ --comptype g++ --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: mingw32-c++"
+        ],
+        "start-time": "2026-03-02T13:13:17.2073255-08:00",
+        "end-time": "2026-03-02T13:13:17.5832811-08:00",
+        "duration": 375955600
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler x86_64-w64-mingw32-gcc --comptype gcc --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: x86_64-w64-mingw32-g++ x86_64-w64-mingw32-gcc"
+        ],
+        "stderr-tail": [
+          "[WARNING] Template config template-gcc-config-1 already exists for gcc-* and will be reused. ",
+          "[WARNING] Template config template-gcc-config-2 already exists for *-gcc and will be reused. ",
+          "[WARNING] Template config template-g++-config-1 already exists for g++-* and will be reused. ",
+          "[WARNING] Template config template-g++-config-2 already exists for *-g++ and will be reused. ",
+          "[WARNING] Template config template-ld-config-0 already exists for ld and will be reused. ",
+          "[WARNING] Template config template-ar-config-0 already exists for ar and will be reused. "
+        ],
+        "start-time": "2026-03-02T13:13:17.5838121-08:00",
+        "end-time": "2026-03-02T13:13:17.9633572-08:00",
+        "duration": 379545100
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\build-compiler-configs\\coverity_config.xml --compiler x86_64-w64-mingw32-c++ --comptype g++ --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/build-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the compilers: x86_64-w64-mingw32-c++"
+        ],
+        "start-time": "2026-03-02T13:13:17.9633572-08:00",
+        "end-time": "2026-03-02T13:13:18.3947344-08:00",
+        "duration": 431377200
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --dart",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files dart"
+        ],
+        "start-time": "2026-03-02T13:13:18.3947344-08:00",
+        "end-time": "2026-03-02T13:13:18.7989849-08:00",
+        "duration": 404250500
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --javascript",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files html javascript jsx typescript vue"
+        ],
+        "start-time": "2026-03-02T13:13:18.799514-08:00",
+        "end-time": "2026-03-02T13:13:19.2040138-08:00",
+        "duration": 404499800
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --php",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files php"
+        ],
+        "start-time": "2026-03-02T13:13:19.2040138-08:00",
+        "end-time": "2026-03-02T13:13:19.5878844-08:00",
+        "duration": 383870600
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --python",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files python"
+        ],
+        "start-time": "2026-03-02T13:13:19.5878844-08:00",
+        "end-time": "2026-03-02T13:13:19.9948961-08:00",
+        "duration": 407011700
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --ruby",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files ruby"
+        ],
+        "start-time": "2026-03-02T13:13:19.9955441-08:00",
+        "end-time": "2026-03-02T13:13:20.4084281-08:00",
+        "duration": 412884000
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --scala",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: capture-config-files scala"
+        ],
+        "start-time": "2026-03-02T13:13:20.4089762-08:00",
+        "end-time": "2026-03-02T13:13:20.8299259-08:00",
+        "duration": 420949700
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --java-buildless",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: android capture-config-files java-buildless jsp"
+        ],
+        "start-time": "2026-03-02T13:13:20.8305205-08:00",
+        "end-time": "2026-03-02T13:13:21.2611104-08:00",
+        "duration": 430589900
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --comptype capture-config-files --file-regex $capture-config-files$ --template",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stderr-tail": [
+          "[WARNING] Configuration already exists for file regex $capture-config-files$",
+          "          and it will not be updated."
+        ],
+        "start-time": "2026-03-02T13:13:21.2611104-08:00",
+        "end-time": "2026-03-02T13:13:21.3149321-08:00",
+        "duration": 53821700
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-configure -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --cs-buildless",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "",
+          "Generated coverity_config.xml at location C:/coverity-testing/helion-4/idir/coverity-cli/buildless-compiler-configs/coverity_config.xml",
+          "Successfully generated configuration for the buildless capture patterns: cs-buildless"
+        ],
+        "stderr-tail": [
+          "Skipping generation of coverity scan configuration because a configuration has already been generated"
+        ],
+        "start-time": "2026-03-02T13:13:21.3154719-08:00",
+        "end-time": "2026-03-02T13:13:21.6947075-08:00",
+        "duration": 379235600
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-internal-capture-files --dir C:\\coverity-testing\\helion-4\\idir -c C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\buildless-compiler-configs\\coverity_config.xml --ticker-mode none --append-log --capture-list-file C:\\coverity-testing\\helion-4\\idir\\coverity-cli\\capture-file-list-3112626099",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "[INFO] Buildless capture started.",
+          "[INFO] Emitting 375 Files.",
+          "[INFO] Buildless capture completed."
+        ],
+        "start-time": "2026-03-02T13:13:21.9776851-08:00",
+        "end-time": "2026-03-02T13:13:39.6920369-08:00",
+        "duration": 17714351800
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir list-capture-diagnostics",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "        \"id\" : 267,",
+          "        \"source-language\" : \"TypeScript JSX ES6 module\",",
+          "        \"capture-percentage\" : 100,",
+          "        \"had-failures\" : false,",
+          "        \"had-recoverable-errors\" : false,",
+          "        \"had-abstract-syntax-trees\" : true",
+          "      }",
+          "    }",
+          "  ]",
+          "}"
+        ],
+        "start-time": "2026-03-02T13:13:39.6938444-08:00",
+        "end-time": "2026-03-02T13:13:39.7680025-08:00",
+        "duration": 74158100
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-security-da --dir C:\\coverity-testing\\helion-4\\idir --ticker-mode none",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "start-time": "2026-03-02T13:13:39.7881793-08:00",
+        "end-time": "2026-03-02T13:13:39.8605957-08:00",
+        "duration": 72416400
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir list-capture-diagnostics",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file,capture.build.clean-command,capture.build.build-command"
+        },
+        "stdout-tail": [
+          "        \"id\" : 267,",
+          "        \"source-language\" : \"TypeScript JSX ES6 module\",",
+          "        \"capture-percentage\" : 100,",
+          "        \"had-failures\" : false,",
+          "        \"had-recoverable-errors\" : false,",
+          "        \"had-abstract-syntax-trees\" : true",
+          "      }",
+          "    }",
+          "  ]",
+          "}"
+        ],
+        "start-time": "2026-03-02T13:13:39.9873565-08:00",
+        "end-time": "2026-03-02T13:13:40.0569385-08:00",
+        "duration": 69582000
+      }
+    ]
+  },
+  "analysis": {
+    "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\coverity.exe --machine-readable-output json analyze --project-dir C:\\coverity-testing\\helion-4 --dir C:\\coverity-testing\\helion-4\\idir --config C:\\coverity-testing\\helion-4\\coverity.yaml -o commit.connect.stream=helion-4 -o commit.connect.url=https://coverity.field-test.blackduck.com -o analyze.location=local -o commit.connect.auth-key-file=C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key",
+    "working-directory": "C:\\coverity-testing\\helion-4",
+    "project-directory": "C:\\coverity-testing\\helion-4",
+    "intermediate-directory": "C:\\coverity-testing\\helion-4\\idir",
+    "configuration-file-path": "C:\\coverity-testing\\helion-4\\coverity.yaml",
+    "configuration": {
+      "command-line-overrides": [
+        "--config-override",
+        "commit.connect.stream=helion-4",
+        "--config-override",
+        "commit.connect.url=https://coverity.field-test.blackduck.com",
+        "--config-override",
+        "analyze.location=local",
+        "--config-override",
+        "commit.connect.auth-key-file=C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key"
+      ],
+      "file-configuration": {
+        "analyze": {
+          "location": "local"
+        },
+        "commit": {
+          "connect": {
+            "stream": "helion-4",
+            "url": "https://coverity.field-test.blackduck.com"
+          }
+        }
+      },
+      "effective-configuration": {
+        "analyze": {
+          "location": "local"
+        },
+        "commit": {
+          "connect": {
+            "auth-key-file": "C:\\Users\\CARLOS~1\\AppData\\Local\\Temp\\1626856513_auth_key",
+            "on-new-cert": "distrust",
+            "stream": "helion-4",
+            "url": "https://coverity.field-test.blackduck.com:443"
+          }
+        },
+        "caching": {
+          "bytecode": true,
+          "tu": false,
+          "wur": true
+        }
+      },
+      "configuration-hash": "255c047ba728feb31b7cadaf59df90d73fb226d52a1f4b735f5e5e867e4d5565"
+    },
+    "command-info": [
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir check-compatible",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file"
+        },
+        "stdout-tail": [
+          "Intermediate directory C:/coverity-testing/helion-4/idir is compatible"
+        ],
+        "start-time": "2026-03-02T13:13:41.0933029-08:00",
+        "end-time": "2026-03-02T13:13:41.1389008-08:00",
+        "duration": 45597900
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir reset-host-name",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file"
+        },
+        "start-time": "2026-03-02T13:13:41.0466018-08:00",
+        "end-time": "2026-03-02T13:13:41.0933029-08:00",
+        "duration": 46701100
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-manage-emit --dir C:\\coverity-testing\\helion-4\\idir list-capture-diagnostics",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file"
+        },
+        "stdout-tail": [
+          "        \"id\" : 267,",
+          "        \"source-language\" : \"TypeScript JSX ES6 module\",",
+          "        \"capture-percentage\" : 100,",
+          "        \"had-failures\" : false,",
+          "        \"had-recoverable-errors\" : false,",
+          "        \"had-abstract-syntax-trees\" : true",
+          "      }",
+          "    }",
+          "  ]",
+          "}"
+        ],
+        "start-time": "2026-03-02T13:13:42.5835835-08:00",
+        "end-time": "2026-03-02T13:13:42.6429299-08:00",
+        "duration": 59346400
+      },
+      {
+        "command-line": "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-analyze --dir C:\\coverity-testing\\helion-4\\idir --strip-path C:\\coverity-testing\\helion-4 --ticker-mode none --recommended-security-checkers --enable-scan-transparency-data",
+        "cwd": "C:\\coverity-testing\\helion-4",
+        "env": {
+          "COVERITY_CLI_IGNORE_CONFIG": "commit.connect.ca-certs-file"
+        },
+        "stdout-tail": [
+          "Functions analyzed             : 911",
+          "Paths analyzed                 : 17408",
+          "Time taken by analysis         : 00:02:31",
+          "Defect occurrences found       : 26 Total",
+          "                                  1 SIGMA.default_allow_all_authz_policy",
+          "                                  2 SIGMA.hardcoded_secret",
+          "                                  3 SIGMA.http_method_missing_authz",
+          "                                 10 SIGMA.missing_default_response_object",
+          "                                 10 SIGMA.no_rate_limiting",
+          ""
+        ],
+        "start-time": "2026-03-02T13:13:42.6918152-08:00",
+        "end-time": "2026-03-02T13:16:14.1552614-08:00",
+        "duration": 151463446200
+      }
+    ]
+  }
+}

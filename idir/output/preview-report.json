@@ -1,0 +1,898 @@
+{
+  "header" : {
+    "format" : "commit preview report",
+    "version" : 2
+  },
+  "analysisInfo" : {
+    "ownerAssignmentRule" : "default_component_owner",
+    "comparisonSnapshotId" : null,
+    "reportTimestamp" : "2026-03-02T21:16:27.071Z",
+    "user" : "admin",
+    "command" : "C:\\Program Files\\Coverity\\Coverity Static Analysis\\bin\\cov-analyze --dir C:\\coverity-testing\\helion-4\\idir --strip-path C:\\coverity-testing\\helion-4 --ticker-mode none --recommended-security-checkers --enable-scan-transparency-data"
+  },
+  "issueInfo" : [ {
+    "cid" : 111283,
+    "mergeKey" : "fc4b7055c7f202d9337275442a25def4",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/tickets - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111284,
+    "mergeKey" : "7b4b4764c98be1aee795f8094b8547b5",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111288,
+    "mergeKey" : "75da7103a83db019de54534b98ef85b2",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.http_method_missing_authz",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111287,
+    "mergeKey" : "1e81e6219ac762ed16dc22d62b123d35",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/clusters - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111286,
+    "mergeKey" : "b9ec1c4fafde7a070ac823460bf7271e",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111285,
+    "mergeKey" : "327809ef4dd5f1024214bc30c2091ba6",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/clusters - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111292,
+    "mergeKey" : "714942ba51697eb1390d1ef3c4357e2c",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/exploitability - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111302,
+    "mergeKey" : "cfe8de98f928b9d658d06aaad93027aa",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/reasoning - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111297,
+    "mergeKey" : "2edb7c54f95926fecbd8360bf0db38d6",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth/users - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111289,
+    "mergeKey" : "29033239e7112f0eb36681aa754f11f8",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth/users - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111290,
+    "mergeKey" : "e56c8f7af7d646b54af21581d19541ed",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.http_method_missing_authz",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111296,
+    "mergeKey" : "69607a41449ad4576b410219e2b6b77d",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/jira/export - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111304,
+    "mergeKey" : "ce894146eb7b128e417b97e6e43d4da9",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/auth - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111291,
+    "mergeKey" : "1547e91cd10d5b791ff5169b4ec4ddbd",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.hardcoded_secret",
+      "file" : "/.env.example",
+      "function" : "unknown",
+      "extra" : "JWT_SECRET-change-me-in-production",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "pattern_low",
+      "mainEventLineNumber" : 65,
+      "mainEventDescription" : "A secret, such as a password, cryptographic key, or token is stored in plaintext directly in the source code, in an application's properties, or configuration file. Users with access to the secret may then use the secret to access resources that they otherwise would not have access to. Secret type: Secret (generic).",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111307,
+    "mergeKey" : "93cd0287c2c0987ada5a61d11df37ff8",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111298,
+    "mergeKey" : "9dbbdaae3847862fbc54b475f257f2f6",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.default_allow_all_authz_policy",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "default_allow_all_authz_policy_openapi -- //openapi.json -- ##Σ-markup",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API does not have a global security scheme, indicating a default allow-all configuration. Any API operations without an explicit security scheme will allow unauthorized requests.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111301,
+    "mergeKey" : "6eaa0ac3982b3e88dcd3804b3981fbce",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/exploitability - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111293,
+    "mergeKey" : "92c8b01ce68178b4f5346a9b4e70043e",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/jira/export - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111294,
+    "mergeKey" : "0ef7d6bdc5687f1b4ae1afae83482beb",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/reasoning - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111309,
+    "mergeKey" : "c9d361d4133825c2d25cac79da8fb4e7",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/upload - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111295,
+    "mergeKey" : "3bda89a1090514dd26f90eeda81599a2",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111303,
+    "mergeKey" : "3383cdf5b64e1a0be4c897cc88b683e4",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.missing_default_response_object",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "missing_default_response_object_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - / - get - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API operation does not have a default response object and may encounter an unexpected state resulting in unpredictable behavior, such as returning stack traces or verbose error messages.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111311,
+    "mergeKey" : "798b05f27991f0a03954e9635220dab3",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/upload - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111310,
+    "mergeKey" : "a5b0fe225c2d68587787727e20285ca7",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.no_rate_limiting",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "no_rate_limiting_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/tickets - post - responses",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The text spec file defines an operation that does not include a `429 Too Many Requests` response object, indicating no rate limiting. An attacker can submit a large number of request over a short period of time to exhaust API resources or facilitate brute force attacks.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111305,
+    "mergeKey" : "1fe9d7a48994d07ea880a5d60148f539",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.http_method_missing_authz",
+      "file" : "/openapi.json",
+      "function" : "unknown",
+      "extra" : "http_method_missing_authz_openapi -- //openapi.json -- ##Σ-markup - ##Σ-markup - paths - /api/v1/health/ - get",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "openapi",
+      "mainEventLineNumber" : 1,
+      "mainEventDescription" : "The API does not have a global security scheme, and one or more operations are missing a local security scheme which allows unauthorized requests.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  }, {
+    "cid" : 111306,
+    "mergeKey" : "8216e8e78168983366490203abadcf7d",
+    "presentInComparisonSnapshot" : false,
+    "firstDetectedDateTime" : "2026-02-25T20:58:04.381Z",
+    "occurrences" : [ {
+      "checker" : "SIGMA.hardcoded_secret",
+      "file" : "/.env.example",
+      "function" : "unknown",
+      "extra" : "postgresql://postgres:postgres@localhost:5432/helion",
+      "mergeWithLowercaseFile" : false,
+      "subcategory" : "pattern_low",
+      "mainEventLineNumber" : 26,
+      "mainEventDescription" : "A secret, such as a password, cryptographic key, or token is stored in plaintext directly in the source code, in an application's properties, or configuration file. Users with access to the secret may then use the secret to access resources that they otherwise would not have access to. Secret type: Password in URI.",
+      "componentName" : "Other",
+      "componentDefaultOwner" : null,
+      "componentDefaultOwnerLdapServer" : null,
+      "score" : null,
+      "language" : "Text"
+    } ],
+    "triage" : {
+      "severity" : "Unspecified",
+      "owner" : null,
+      "externalReference" : null,
+      "legacy" : "False",
+      "fixTarget" : "Untargeted",
+      "action" : "Undecided",
+      "classification" : "Unclassified"
+    },
+    "customTriage" : {
+      "User Name" : null,
+      "ID" : null
+    },
+    "ownerLdapServerName" : null
+  } ]
+}

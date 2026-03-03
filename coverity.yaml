@@ -1,0 +1,6 @@
+analyze:
+  location: local
+commit:
+  connect:
+    stream: helion-4
+    url: https://coverity.field-test.blackduck.com
